@@ -1,0 +1,22 @@
+<div ng-include="'angular/partial/headtemplate.html'"></div>
+<div ng-include="'angular/partial/homemenu.html'"></div>
+
+<div class="content-wrapper">
+  <section class="content">
+      
+    <div class="row">
+        <div class="col-md-12">
+          <uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
+            <uib-slide ng-repeat="slide in slides track by slide.id" index="slide.id">
+              <img ng-src="{{slide.image}}" style="margin:auto; max-height=50%; max-width=50%">
+              <div class="carousel-caption bg-green" style="padding:5px">
+                <p align="justify">{{slide.text}}</p>
+              </div>
+            </uib-slide>
+          </uib-carousel>
+        </div>
+    </div>
+  </section><!-- /.content -->
+</div><!-- /.content-wrapper -->
+<div ng-include="'angular/partial/foottemplate.html'"></div>
+ 

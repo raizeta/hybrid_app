@@ -1,0 +1,60 @@
+
+<style>
+
+.widget-clock.blue-light .clock-face {
+  stroke: #153b6f;
+  fill: #0e2434;
+}
+.widget-clock.blue-light .minor {
+  stroke: #0089ff;
+  stroke-width: 0.5;
+}
+.widget-clock.blue-light .major {
+  stroke: rgba(119, 176, 242, 0.97);
+  stroke-width: 0.5;
+}
+.widget-clock.blue-light .hour {
+  stroke: rgba(119, 176, 242, 0.97);
+  stroke-width: 1;
+}
+.widget-clock.blue-light .minute {
+  stroke: #0089ff;
+  stroke-width: 0.75;
+}
+.widget-clock.blue-light .second,
+.widget-clock.blue-light .second-counterweight {
+  stroke: rgb(234, 31, 54);
+  stroke-width: 0.5;
+}
+.widget-clock.blue-light .second-counterweight {
+  stroke-width: 1.5;
+}
+</style>
+<div ng-include="'angular/partial/headtemplate.html'"></div>
+<div ng-include="'angular/partial/homemenu.html'"></div>
+<div class="content-wrapper" class="ng-cloak">
+    <span data-ng-show="loadingcontent" us-spinner="{radius:30, width:8, length: 16, position:'fixed'}"></span>
+    <section class="content">
+      <div class="row">
+        <div class="col-md-3">
+            <ds-widget-clock theme="blue-light"></ds-widget-clock>
+        </div>
+      </div>
+      <div class="row">
+            <div class="col-md-12">
+              <!-- <button class="btn btn-success" ng-disabled="buttonabsensimasuk" ng-click="absensimasuk()">ABSENSI MASUK</button>
+              <button class="btn btn-success" ng-disabled="buttonabsensikeluar" ng-click="absensikeluar()">ABSENSI KELUAR</button> -->
+              <button type="button" class="btn btn-success btn-lg btn-block" ng-show="showbuttonabsensimasuk" ng-click="absensimasuk()">
+                  ABSENSI MASUK
+              </button>
+              <button type="button" class="btn btn-danger btn-lg btn-block"  ng-show="showbuttonabsensikeluar"  ng-model="idabsensi" ng-click="absensikeluar()">
+                ABSENSI KELUAR
+              </button>
+              <button type="button" class="btn btn-lg btn-block bg-aqua"  ng-show="showbuttonnotifiabsen">
+                SUDAH ABSEN KELUAR
+              </button>
+            </div>
+      </div>
+    </section>
+</div>
+<div ng-include="'angular/partial/foottemplate.html'"></div>

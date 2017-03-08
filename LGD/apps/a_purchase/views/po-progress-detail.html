@@ -1,0 +1,24 @@
+<ion-view view-title="INBOX DETAIL">
+  <ion-content class="has-header has-footer" padding="true">
+		    <div class="list ">
+            <div class="button-bar">
+              <button type="submit" class="button button-block button-positive">
+                  Rp {{total|number}}
+              </button>
+            </div>
+            <ion-toggle ng-repeat="item in purchaselist" ng-model="item.checked" ng-change="toggleChange(item)">
+              {{ item.NM_BARANG }}</br>
+              <span>Rp. {{item.HARGA|number}} X {{item.QTY}}</span></br>
+              <span>Rp. {{(item.HARGA)*(item.QTY)|number}}</span>
+            </ion-toggle>
+            <div class="button-bar">
+              <button type="submit" class="button button-block button-assertive" ng-click="confirmasi(['reject',purchaselist[0]])">
+                <i class="icon ion-close-round"></i>
+              </button>
+              <button type="submit" class="button button-block button-positive" ng-click="confirmasi(['aprove',purchaselist[0]])">
+                <i class="icon ion-checkmark-round"></i>
+              </button>
+            </div>
+        </div>
+  </ion-content>
+</ion-view>

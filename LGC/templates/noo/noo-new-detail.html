@@ -1,0 +1,30 @@
+<ion-view view-title="NOO DETAIL">
+  <ion-content>
+    <div class="row" ng-repeat="(keys,items) in images" style="border-top: 1px solid #999;">
+      <div class="col col-50 " ng-repeat="(key,item) in items" style="padding:1px;border-right:1px solid #999">
+          <div class="item item-images" style="border-width: 0px; border-style: none;">
+          <img  data-ng-src="data:image/jpeg;base64,{{item.IMG_NM_BASE64}}" width="100%" ng-click="showImages($index)"/>
+          </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
+
+<!-- <ion-view>
+<ion-content class="has-header padding" ng-controller="MediaCtrl">
+      <br><br>
+    <div class="item item-divider">
+      <i class="ion-images"></i>
+      My Images
+    </div>
+    <a class="item item-list-detail">
+      <ion-scroll direction="x">
+        <img ng-repeat="image in allImages" ng-src="{{image.src}}" ng-click="showImages($index)" class="image-list-thumb"/>
+      </ion-scroll>
+    </a>
+    <br><br>
+    <div class="button-bar">
+    <button class="button button-outline button-positive" ng-click="playVideo()">Play a video</button>
+  </div>
+</ion-content>
+</ion-view> -->

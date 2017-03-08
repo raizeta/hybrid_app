@@ -1,0 +1,145 @@
+@media (max-width: 360px) {
+	.list
+	{
+	    margin-bottom: -10px
+	}
+	.badge
+	{
+	  position: absolute;
+	  top: 0px;
+	  right: 5px;
+	  font-size: 8px;
+	}
+}
+@media (min-width: 361px) and (max-width: 480px) {
+	.badge
+	{
+	  position: absolute;
+	  top: 0px;
+	  right: 10px;
+	  font-size: 12px;
+	}
+}
+@media (min-width: 481px){
+	.badge
+	{
+	  position: absolute;
+	  top: 0px;
+	  right: 40px;
+	  font-size: 14px;
+	}
+}
+.tabs-bukalapak > .tabs,
+.tabs.tabs-bukalapak {
+  border-color: #d71149;
+  background-color: #d71149;
+  background-image: linear-gradient(0deg, #d71149, #d71149 50%, transparent 50%);
+  color: #fff; }
+  .tabs-bukalapak > .tabs .tab-item .badge,
+  .tabs.tabs-bukalapak .tab-item .badge {
+    background-color: #fff;
+    color: #d71149; }
+
+.tabs-striped.tabs-bukalapak .tabs {
+  background-color: #d71149; }
+
+.tabs-striped.tabs-bukalapak .tab-item {
+  color: #d71149;
+  opacity: 1; }
+  .tabs-striped.tabs-bukalapak .tab-item .badge {
+    opacity: 0.4; }
+  .tabs-striped.tabs-bukalapak .tab-item.tab-item-active, .tabs-striped.tabs-bukalapak .tab-item.active, .tabs-striped.tabs-bukalapak .tab-item.activated {
+    margin-top: -2px;
+    color: #fff;
+    border-style: solid;
+    border-width: 2px 0 0 0;
+    border-color: #fff; }
+
+  .button-bar.bar-bukalapak > .button {
+    border-color: #d71149; }
+
+   .bar.bar-bukalapak {
+    border-color: #d71149;
+    background-color: #d71149;
+    background-image: linear-gradient(0deg, #d71149, #d71149 50%, transparent 50%);
+    color: #fff; }
+    .bar.bar-bukalapak .title {
+      color: #fff; }
+    .bar.bar-bukalapak.bar-footer {
+      background-image: linear-gradient(180deg, #d71149, #d71149 50%, transparent 50%); }
+
+.bar-bukalapak .button {
+  border-color: #d71149;
+  background-color: #d71149;
+  color: #fff; }
+  .bar-bukalapak .button:hover {
+    color: #fff;
+    text-decoration: none; }
+  .bar-bukalapak .button.active, .bar-bukalapak .button.activated {
+    border-color: #d71149;
+    background-color: #d71149; }
+  .bar-bukalapak .button.button-clear {
+    border-color: transparent;
+    background: none;
+    box-shadow: none;
+    color: #fff;
+    font-size: 17px; }
+  .bar-bukalapak .button.button-icon {
+    border-color: transparent;
+    background: none; }
+
+
+
+.custom {
+  background-color: #d71149 !important; /* This sets the background color*/
+ }
+ 
+/*Set the background to transparent for ion-item*/
+.custom .item {
+  background-color: transparent;
+  border:none;   /*Removes all borders*/
+  border-top: 1px solid;   /*Top Border for each menu item*/
+  border-bottom:1px;   /*Bottom border for each menu item*/
+  border-color: #ef473a;   /*Sets colors for top and bottom border*/
+  color: white;    /*Text color for each item*/
+}
+ 
+/*Changes the border for the last item*/
+.custom .item:last-child {
+  border-bottom: 1px solid #ef473a;
+}
+ 
+.custom .item-complex .item-content, .dark .item-radio .item-content {
+  background-color: transparent;
+}
+ 
+/*Just makes the type white*/
+.custom h2,
+.custom h3,
+.custom p,
+.custom a {
+  color: white;  /*Text color for each item, overrides the color property above*/
+}
+
+.app-icon {
+/*    background: rgba(0, 0, 0, 0) url(../img/screen.png) repeat scroll center center / cover;*/
+    border-radius: 0%;
+    height: 50px;
+    margin: 0 auto;
+    width: 50px;
+}
+
+.item-avatarx :first-child, .item-avatar .item-img {
+    position: absolute;
+    top: 35%;
+    left: 5px;
+    font-size: 36px;
+    max-width: 40px;
+    max-height: 40px;
+    width: 100%;
+    border-radius: 50%;
+}
+.item-icon-left-x {
+    padding-left: 64px;
+}
+

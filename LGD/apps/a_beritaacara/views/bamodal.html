@@ -1,0 +1,38 @@
+<style>
+a p{
+    white-space: pre-wrap !important;
+    text-align: justify;
+}
+</style>
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-assertive">
+    <h1 class="title">Comments</h1>
+    <button class="button button-clear" ng-click="closeModal()"><i class="icon ion-ios-close-outline"></i></button>
+  </ion-header-bar>
+  <ion-content class="padding">
+    <div class="button-bar" ng-if="mdlkomentars.length < 1">
+        <button type="submit" class="button button-block button-positive">
+          Belum Ada Komentar
+        </button>
+    </div>
+    <div class="list">
+      <a class="item item-avatar" ng-repeat="item in mdlkomentars">
+        <img ng-src="data:image/png;base64,{{item.EMP_IMG}}">
+        <h2>{{ item.CREATED_BY }}</h2>
+        <small class="time"> {{ item.CREATED_AT}}({{ item.CREATED_AT | formatTwitterDate}})</small>
+        <p class="indonesia" ng-bind-html="item.CHAT "></p>
+      </a>
+    </div>
+  </ion-content>
+  <ion-footer-bar keyboard-attach class="bar-stable item-input-inset">
+      <button class="button button-clear" ng-click="sendMessage()">
+        FILE
+      </button>
+      <label class="item-input-wrapper">
+        <input type="text" placeholder="Type your message" on-return="sendMessage(); closeKeyboard()" ng-model="data.message" on-focus="inputUp()" on-blur="inputDown()" />
+      </label>
+      <button class="button button-clear" ng-click="sendMessage()">
+        <!-- <icon class="ion-ios-paperplane-outline"></icon> -->SEND
+      </button>
+  </ion-footer-bar>
+</ion-modal-view>

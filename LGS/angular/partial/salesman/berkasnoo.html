@@ -1,0 +1,88 @@
+<div ng-include="'angular/partial/headtemplate.html'"></div>
+<div ng-include="'angular/partial/homemenu.html'"></div>
+
+<div class="content-wrapper">
+<section class="content">
+  <span data-ng-show="loadingcontent" us-spinner="{radius:30, width:8, length: 16, position:'fixed'}"></span>
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="timeline">
+        <li class="time-label">
+          <span class="bg-green">
+              {{customers.CUST_NM}}
+          </span>
+        </li>
+        <li>
+          <i ng-class="statusKTP.icon"></i>
+          <div class="timeline-item" ng-click="ambilgambar('KTP')">
+            <div class="box">
+                <div class="box-header" ng-class="statusKTP.bgcolor">
+                  <h3 class="box-title">KTP PICTURE</h3>
+                </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <i ng-class="statusTTD.icon"></i>
+          <div class="timeline-item" ng-click="ambilgambar('TTD')">
+            <div class="box">
+                <div class="box-header" ng-class="statusTTD.bgcolor">
+                  <h3 class="box-title">TANDA TANGAN</h3>
+                </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <i ng-class="statusFS1.icon"></i>
+          <div class="timeline-item" ng-click="ambilgambar('FS1')">
+            <div class="box">
+                <div class="box-header" ng-class="statusFS1.bgcolor">
+                  <h3 class="box-title">FRONT-STORE1</h3>
+                </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <i ng-class="statusFS2.icon"></i>
+          <div class="timeline-item" ng-click="ambilgambar('FS2')">
+            <div class="box">
+                <div class="box-header" ng-class="statusFS2.bgcolor">
+                  <h3 class="box-title">FRONT-STORE2</h3>
+                </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <i ng-class="statusNPWP.icon"></i>
+          <div class="timeline-item" ng-click="ambilgambar('NPWP')">
+            <div class="box">
+                <div class="box-header" ng-class="statusNPWP.bgcolor">
+                  <h3 class="box-title">NPWP PICTURE</h3>
+                </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <i ng-class="statusSIUB.icon"></i>
+          <div class="timeline-item" ng-click="ambilgambar('SIUB')">
+            <div class="box">
+                <div class="box-header" ng-class="statusSIUB.bgcolor">
+                  <h3 class="box-title">SIUB PICTURE</h3>
+                </div>
+            </div>
+          </div>
+        </li>
+        
+        <li class="time-label">
+          <span class="bg-red">
+              <a href="#/listnoo">   LIST NOO
+              </a>
+          </span>
+        </li>  
+      </ul>
+    </div>
+  </div>
+</section>
+</div>
+<div ng-include="'angular/partial/foottemplate.html'"></div>
+ 

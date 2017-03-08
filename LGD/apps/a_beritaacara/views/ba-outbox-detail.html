@@ -1,0 +1,38 @@
+<ion-view view-title="OUTBOX DETAIL">
+    <ion-content class="padding has-tabs-top" >
+        <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()"></ion-refresher>
+        <ion-list >
+            <ion-item class="discovery-item"  type="item-text-wrap" >
+                <div class="item item-avatar">
+                  <img class="head-img" ng-src="assets/img/daenerys.jpg">
+                  <h2><b>Radumta</b></h2>
+                  <p am-time-ago=""></p>
+                </div>
+
+                <div class="item item-body">
+                    <p>
+                      {{feed.status}}
+                    </p>
+                    <img class="feed-content-img" ng-src="assets/img/profile-bg.jpg">
+                  
+                    <p>
+                      <b><a href="#" class="subdued">1 likes</a>
+                      <b><a href="#" class="subdued">5 Comments</a>
+                    </p>
+                </div>
+
+                <div class="buttons-share">
+                    <button class="button button-icon icon ion-thumbsup">Like</button>
+                    <button class="button button-icon ion-chatbox">Comment</button>
+                    <button class="button button-icon ion-reply-all">Share</button>
+                </div> 
+            </ion-item>
+        </ion-list>
+        <ion-infinite-scroll
+                if="!noMoreItemsAvailable"
+                on-infinite="loadMore(10)"
+                icon="ion-loading-c"
+                distance="1%">
+        </ion-infinite-scroll>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,13 @@
+<ion-view view-title="DASHBOARD" name="dashboard-view">
+	<ion-content class="padding">
+        <div class="row" ng-repeat="menu in menus">
+            <div class="list col col-25" style="cursor:pointer" ng-repeat="item in menu">
+        	<a ng-href="{{item.link}}">
+                <img ng-src="{{item.src}}" width="100%" style="border-radius: 50%;"/>
+            </a>
+                <span class="badge badge-assertive">{{item.keterangan}}</span>
+                <p style="text-align:center;display:block;margin-top:-5px">{{item.judul}}</p>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

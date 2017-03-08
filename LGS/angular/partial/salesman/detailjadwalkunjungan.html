@@ -1,0 +1,285 @@
+<div ng-include="'angular/partial/headtemplate.html'"></div>
+<div ng-include="'angular/partial/homemenu.html'"></div>
+
+<div class="content-wrapper" class="ng-cloak">
+  <span data-ng-show="loadingcontent" us-spinner="{radius:30, width:8, length: 16,position:'fixed'}"></span>
+  <section class="content">
+    <div class="row">
+      <div class="col-md-12">
+        <button class="btn btn-primary btn-block btn-flat" ng-show="buttoncountdown">Tombol Checkout Akan Muncul Dalam {{countdowns}}</button>
+      </div>
+    </div>
+    <div class="row">
+      <div ng-cloack class="tabsdemoStaticTabs">
+        <md-content class="md-padding">
+          <md-tabs md-dynamic-height md-border-bottom class="md-accent" >
+            <md-tab id="tab1">
+              <md-tab-label>{{namacustomerdiview}}</md-tab-label>
+              <md-tab-body>
+                  <md-list>
+                    <section class="content">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <ul class="timeline">
+                            <li class="time-label">
+                              <span class="bg-green">
+                                  Start Action
+                              </span>
+                            </li>
+                            <li>
+                              <i ng-class="statusstartpicture.icon"></i>
+                              <div class="timeline-item" ng-click="starttakeapicture()">
+                                <div class="box">
+                                    <div class="box-header" ng-class="statusstartpicture.bgcolor">
+                                      <h3 class="box-title">START PICTURE</h3>
+                                    </div>
+                                </div>
+                              </div>
+                            </li>
+
+                            <li ng-repeat="salesactivity in salesaktivitas">
+                              <i ng-class="salesactivity.status.icon"></i>
+                              <div class="timeline-item" >
+                                <div class="box">
+                                    <div class="box-header" ng-class="salesactivity.status.bgcolor">
+                                      <h3 class="box-title">{{salesactivity.DIALOG_TITLE}}</h3>
+
+                                      <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                        </button>
+                                      </div>
+                                    </div>
+                                    <div class="box-body" style="display: block;">
+                                      <div class="timeline-body" ng-show="salesactivity.status.show">
+                                      	<img ng-repeat="barang in salesactivity.products" data-ng-src="data:image/png;base64,{{barang.IMAGE_BASE64}}" width="80" height="80" class="img-circle" id="{{$index}}" ng-click="updateinventoryqty($parent.$index,barang,$index,salesactivity)">
+                                      </div>
+                                    </div>
+                                </div>
+                              </div>
+                            </li>
+
+                            <li>
+                              <i ng-class="statusbarangexpired.icon"></i>
+                              <div class="timeline-item" >
+                                <div class="box">
+                                    <div class="box-header" ng-class="statusbarangexpired.bgcolor">
+                                      <h3 class="box-title">EXPIRED</h3>
+                                      <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                        </button>
+                                      </div>
+                                    </div>
+                                    <div class="box-body" style="display: block;">
+                                      <div class="timeline-body" ng-show="statusbarangexpired.show">
+                                        <img ng-repeat="barang in barangexpired" data-ng-src="data:image/png;base64,{{barang.IMAGE_BASE64}}"  class="img-circle" id="{{$index}}" ng-click="showmodal(barang,$index)">
+                                      </div>
+                                    </div>
+                                </div>
+                              </div>
+                            </li>
+                            <li>
+                              <i ng-class="statusendpicture.icon"></i>
+                              <div class="timeline-item" ng-click="endtakeapicture()">
+                                <div class="box">
+                                    <div class="box-header" ng-class="statusendpicture.bgcolor">
+                                      <h3 class="box-title">END PICTURE</h3>
+                                    </div>
+                                </div>
+                              </div>
+                            </li>
+                            <li>
+                              <i ng-class="statusmessageskunjungan.icon"></i>
+                              <div class="timeline-item" >
+                                <div class="box">
+                                    <div class="box-header" ng-class="statusmessageskunjungan.bgcolor">
+                                      <h3 class="box-title">Note Kunjungan</h3>
+                                      <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                        </button>
+                                      </div>
+                                    </div>
+                                    <form name="FormSalesMemo" ng-submit="submitFormSalesMemo(salesmanmemo)" method="post" novalidate>
+                                    <div class="box-body" ng-disabled="messageskunjungandisabled">
+                                      <div class="form-group" ng-class="{ 'has-error' : FormSalesMemo.ISI_MESSAGES.$invalid && !FormSalesMemo.ISI_MESSAGES.$pristine,'has-success':FormSalesMemo.ISI_MESSAGES.$valid  }">
+                                        <textarea class="form-control" name="ISI_MESSAGES" class="form-control" ng-model="salesmanmemo.ISI_MESSAGES"  rows="3" placeholder="Memo Kunjungan ..." ng-disabled="messageskunjungandisabled" required></textarea>
+                                      </div>
+                                    </div>
+                                    <div class="box-footer clearfix">
+                                      <button type="submit" ng-disabled="FormSalesMemo.$invalid || messageskunjungandisabled" class="pull-right btn btn-default" id="sendEmail">Send
+                                        <i class="fa fa-arrow-circle-right"></i></button>
+                                    </div>
+                                  </form>
+                                </div>
+                              </div>
+                            </li>
+                            <li class="time-label" ng-show="showbuttoncheckout">
+                              <span class="bg-red">
+                                  <a href="" ng-click="checkout(checkouttanggal,checkoutcustomer)">CheckOut Action</a>
+                              </span>
+                            </li>  
+                          </ul>
+                        </div>
+                      </div>
+                    </section>
+                  </md-list>   
+              </md-tab-body>
+            </md-tab>
+            <md-tab id="tab5" ng-click="customercontact()">
+              <md-tab-label>CONTACT</md-tab-label>
+              <md-tab-body>
+                  <section class="content">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <span data-ng-show="loadingcontent" us-spinner="{radius:30,width:8,length:16,position:'fixed'}"></span>
+                        <form name="customerForm" ng-submit="submitContact(customer)" method="post" novalidate>
+                          <div class="box-body" >
+                            <fieldset class="scheduler-border">
+                              <legend class="scheduler-border"> Customer Identity</legend>
+                              <div class="form-group">
+                              <label>NAMA CUST</label>
+                                <input type="text" name="namacust" class="form-control" ng-model="customer.namacust">
+                              </div>
+                              <div class="form-group">
+                              <label>PIC CUST</label>
+                                <input type="text" name="pic" class="form-control" ng-model="customer.pic">
+                              </div>
+                              <div class="form-group">
+                              <label>TELP CUST</label>
+                                <input type="text" name="notelp" class="form-control" ng-model="customer.notelp">
+                              </div>
+                            </fieldset>
+                          </div>
+                          <div class="box-footer clearfix">
+                            <button type="submit" ng-disabled="customerForm.$invalid" class="btn btn-sm btn-success btn-flat pull-right">Submit</button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </section>
+              </md-tab-body>
+            </md-tab>
+            <md-tab id="tab2">
+              <md-tab-label>MAP {{customer.CUST_KD}}</md-tab-label>
+              <md-tab-body>
+                  <ng-map zoom="11" center="-6.229337,106.6585016" style="display:block; width:100%; height:400px" scrollwheel="false">
+                      <marker position="{{googlemaplat}},{{googlemaplong}}" on-click="toggleBounce()" animation="BOUNCE" draggable="false"></marker>
+
+                      <marker position="{{CUST_MAP_LAT}}, {{CUST_MAP_LNG}}"  draggable="false" icon='http://google-maps-icons.googlecode.com/files/factory.png'></marker>
+
+                      <shape name="circle"
+                          stroke-color="#FF0000"
+                          stroke-opacity="0.8"
+                          stroke-weight="2"
+                          fill-color="#FF0000"
+                          fill-opacity="0.35"
+                          center="{{CUST_MAP_LAT}}, {{CUST_MAP_LNG}}"
+                          radius="100">
+                      </shape>
+                  </ng-map>
+              </md-tab-body>
+            </md-tab>
+
+            <md-tab id="tab3" ng-click="summarycustomer()">
+              <md-tab-label>Summary</md-tab-label>
+              <md-tab-body>
+                  <section class="content">
+                    <div class="row" >
+                      <div class="col-md-12">
+                        <div class="panel panel-danger">
+                          <div class="panel-body table-responsive">
+                             <table class="table table-hover table-striped table-bordered">
+                              <thead>
+                                <th class="bg-aqua">NAMA PRODUCT</th>
+                                <th class="bg-aqua"ng-repeat-start="xxx in summarysqlite[0].penjualan">
+                                  {{xxx.DIALOG_TITLE}}
+                                </th>
+                                <th ng-repeat-end style="display:none"></th>
+                              </thead>
+                              <tbody>
+                                <tr ng-repeat="barang in summarysqlite">
+                                  <td>{{barang.NM_BARANG}}</td>
+                                  <td align="center" ng-repeat-start="xxx in barang.penjualan">{{xxx.QTY|number}}</td>
+                                  <td align="center" ng-repeat-end style="display:none"></td>
+                                </tr>
+                              </tbody>
+                             </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </section>   
+              </md-tab-body>
+            </md-tab>
+
+            <md-tab id="tab4" ng-click="lastvisitsummary()">
+              <md-tab-label>LV SUMMARY</md-tab-label>
+              <md-tab-body>
+                  <section class="content">
+                    <div class="row" >
+                      <div class="col-md-12">
+                        <div class="panel panel-danger">
+                          <div class="panel-body table-responsive">
+                             <table class="table table-hover table-striped table-bordered">
+                              <thead>
+                                <tr align="center">
+                                  <th class="success">
+                                    Nama Pengunjung Terakhir
+                                  </th>
+                                  <th class="success">
+                                    {{Lastvisitsummary[0].NM_FIRST}}
+                                  </th>
+                                </tr>
+                                <tr align="center">
+                                  <th class="success">
+                                    Tanggal Kunjungan Terakhir
+                                  </th>
+                                  <th class="success">
+                                    {{Lastvisitsummary[0].TGL}}
+                                  </th>
+                                </tr>
+                              </thead>
+                            </table>
+                            <table class="table table-hover table-striped table-bordered">
+                              <thead>
+                                <!-- <th class="bg-aqua">Product</th> -->
+                                <th class="bg-aqua">Nama Product</td>
+                                <th class="bg-aqua">Stock Qty</th>
+                                <th class="bg-aqua">Sell Out</th>
+                                <th class="bg-aqua">Sell In</th>
+                                <th class="bg-aqua">Return</th>
+                                <th class="bg-aqua">Request</th>
+                              </thead>
+                              <tbody>
+                                <tr ng-repeat="barangsummary in Lastvisitsummary">
+                                  <!-- <td>{{barangsummary.KD_BARANG}}</td> -->
+                                  <td>{{barangsummary.NM_BARANG}}</td>
+                                  <td>{{barangsummary.TYPE5}}</td>
+                                  <td>{{barangsummary.TYPE6}}</td>
+                                  <td>{{barangsummary.TYPE7}}</td>
+                                  <td>{{barangsummary.TYPE8}}</td>
+                                  <td>{{barangsummary.TYPE9}}</td>
+                                </tr>
+                                <!-- <tr>
+                                  <td>Total</td>
+                                  <td>{{totalstockqty}}</td>
+                                  <td>{{totalsellout}}</td>
+                                  <td>{{totalsellin}}</td>
+                                </tr> -->
+                              </tbody>
+                             </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </section><!-- /.content -->
+              </md-tab-body>
+            </md-tab>
+            
+          </md-tabs>
+        </md-content>
+      </div>
+    </div>
+  </section>
+</div>
+<div ng-include="'angular/partial/foottemplate.html'"></div>
+ 

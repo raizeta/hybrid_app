@@ -1,0 +1,83 @@
+<style>
+.widget-clock .digital {
+     text-align: left; 
+     font-size: 4px;
+}
+</style>
+<div ng-include="'angular/partial/headtemplate.html'"></div>
+<div ng-include="'angular/partial/homemenu.html'"></div>
+<div class="content-wrapper" ng-model="gpslat">
+    <section class="content">
+      <div class="row" ng-if="(userInfo.accessid == 1)">
+        <span data-ng-show="loadingcontent" us-spinner="{radius:30, width:8, length: 16, position:'fixed'}"></span>
+            <div class="col-md-12">
+              <div class="box box-widget">
+                <div class="box-header with-border">
+                  <div class="user-block">
+                    <img class="img-circle" data-ng-src="data:image/jpeg;base64,{{userInfo.gambar}}" alt="User Image">
+                    <span class="username"><a href="#">{{userInfo.username}}</a></span>
+                    <span class="description">
+                      <ds-widget-clock show-digital digital-format="'dd-MMM-yyyy hh:mm:ss a'"></ds-widget-clock>
+                    </span>
+                  </div>
+                  <!-- /.user-block -->
+                  <div class="box-tools">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                  </div>
+                </div>
+                <form name="customerForm" ng-submit="submitForm(salesmanmemo)" method="post" novalidate>
+                  <div class="box-body">
+                    <div class="form-group" ng-class="{ 'has-error' : customerForm.ISI_MESSAGES.$invalid && !customerForm.ISI_MESSAGES.$pristine,'has-success':customerForm.ISI_MESSAGES.$valid  }">
+                      <textarea class="form-control" name="ISI_MESSAGES" class="form-control" ng-model="salesmanmemo.ISI_MESSAGES"  rows="3" placeholder="Broadcast a Messages To Salesman ..." required></textarea>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error':customerForm.STATUSMEMO.$invalid && !customerForm.STATUSMEMO.$pritine,'has-success':customerForm.STATUSMEMO.$valid}">
+                      <label>Attention</label>
+                      <select class="form-control"  name="STATUSMEMO" style="width: 100%;" ng-model="salesmanmemo.STATUSMEMO"  ng-required="true">
+                        <option value='' selected disabled>Choose One</option>
+                        <option value='URGENT'>URGENT</option>
+                        <option value='HIGH'>HIGH ATTENTION</option>
+                        <option value='MEDIUM'>MEDIUM ATTENTION</option>
+                        <option value='LOW'>LOW ATTENTION</option>
+                      </select>
+                      
+                    </div>
+                  </div>
+                  <div class="box-footer clearfix">
+                    <button type="submit" ng-disabled="customerForm.$invalid" class="pull-right btn btn-default" id="sendEmail">Send
+                      <i class="fa fa-arrow-circle-right"></i></button>
+                  </div>
+                </form>
+              </div>
+
+            </div>
+
+      </div>
+      <div class="row">
+          <div class="col-md-6" ng-repeat="memo in salesmanmemo | orderBy: 'CREATE_AT':true ">
+            <div class="box box-widget">
+              <div class="box-header with-border">
+                <div class="user-block">
+                  <!-- <img class="img-circle" data-ng-src="data:image/jpg;charset=utf-8;base64,{{memo.IMG_BASE64}}" alt="User Image"> -->
+                  <img class="img-circle" data-ng-src="asset/admin/dist/img/manager.png" alt="User Image">
+                  <span class="username"><a href="#">{{memo.NM_USER}}</a></span>
+                  <span class="description">{{memo.STATUS_MESSAGES}} @{{memo.CREATE_AT| myDateFormat}}</span>
+                </div>
+                <!-- /.user-block -->
+                <div class="box-tools">
+                  <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                </div>
+              </div>
+              <div class="box-body" compile="memo.ISI_MESSAGES ">
+                {{ memo.ISI_MESSAGES }}
+              </div>
+            </div>
+
+          </div>
+      </div>
+    </section>
+</div>
+<div ng-include="'angular/partial/foottemplate.html'"></div>

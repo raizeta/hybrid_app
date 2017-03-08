@@ -1,0 +1,71 @@
+
+<div ng-include="'angular/partial/headtemplate.html'"></div>
+<div ng-include="'angular/partial/homemenu.html'"></div>
+<div class="content-wrapper">
+    <span data-ng-show="loadingcontent" us-spinner="{radius:30, width:8, length: 16, position:'fixed'}"></span>
+    <section class="content">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="box">
+            <div class="box-header bg-maroon">
+                CUSTOMERS NOO
+            </div>
+            <div class="panel-body" id="no-more-tables">
+                <table class="table-bordered table-striped table-condensed cf">
+                <thead class="cf">
+                    <tr>
+                        <th class="numeric">NO.KTP</th>
+                        <th class="numeric">NAMA</th>
+                        <th class="numeric">ALAMAT</th>
+                        <th class="numeric">NO.TELP</th>
+                        <th class="numeric">EMAIL</th>
+                        <th class="numeric">TGL JOIN</th>
+                        <th class="numeric">NPWP</th>
+                        <th class="numeric">SIUP</th>
+                        <th colspan="2" class="numeric">ACTION</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in noocustomers">
+                        <td data-title="NO.KTP" class="preview">
+                            {{item.KTP}}
+                        </td>
+                        <td data-title="NAMA CUST" class="preview">
+                            {{item.CUST_NM}}
+                        </td>
+                        <td data-title="ALAMAT" class="preview">
+                            {{item.ALAMAT}}
+                        </td>
+                        <td data-title="NO.TELP" class="preview">
+                            {{item.TLP1}}
+                        </td>
+                        <td data-title="EMAIL" class="preview">
+                            {{item.EMAIL}}
+                        </td>
+                        <td data-title="TGL JOIN" class="preview">
+                            {{item.JOIN_DATE}}
+                        </td>
+                        <td data-title="NPWP" class="preview">
+                            {{item.NPWP}}
+                        </td>
+                        <td data-title="SIUP" class="preview">
+                            {{item.SIUP}}
+                        </td>
+                        <td data-title="ACTION" class="preview">
+                            <a class="btn btn-danger btn-sm" ng-click="showmodal(item)">
+                              <i class="fa fa-edit"></i> &nbsp;UBAH
+                            </a>
+                            <a class="btn btn-success btn-sm" ng-click="showberkas(item)">
+                              <i class="fa fa-edit"></i> &nbsp;BERKAS
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+               </table>
+            </div>
+         </div>
+        </div>
+      </div>
+    </section>
+</div>
+<div ng-include="'angular/partial/foottemplate.html'"></div>

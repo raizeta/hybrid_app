@@ -1,0 +1,22 @@
+<ion-view view-title="CASHIER">
+  <ion-content>
+    <ion-list>
+      <ion-item class="profile-item">
+        <div class="profile-picture big-profile-picture" style="background:#93C178">
+          <img data-ng-src="img/C.png" width="100%" height="100%">
+        </div>
+        <h5 class="profile-name dark">{{'HOLD TRANSACTIONS  '|uppercase}}</h5>
+      </ion-item>
+    </ion-list>
+    <ion-list>
+      <ion-item ng-repeat="item in transaks track by $index" ng-click="gotoitem(item)">
+        {{item.notransk}}
+      </ion-item>
+      <ion-item ng-if="transaks.length == 0">
+        Belum Ada Transaksi
+      </ion-item>
+  </ion-content>
+  <button class="button button-float" ng-click="tambahtransaksi()">
+    <i class="icon ion-plus"></i>
+  </button>
+</ion-view>

@@ -1,0 +1,96 @@
+<div ng-include="'angular/partial/headtemplate.html'"></div>
+<div ng-include="'angular/partial/homemenu.html'"></div>
+
+<!-- <div class="content-wrapper">
+    <section class="content">
+
+        <div class="row">
+          <span data-ng-show="loading" us-spinner="{radius:30, width:8, length: 16}"></span>
+              <div class="col-md-12">
+                <div class="box box-danger">
+                  <form name="customerForm" ng-submit="submitForm(customer)" method="post" novalidate>
+                  <div class="box-body" >
+                    <fieldset class="scheduler-border">
+                      <legend class="scheduler-border">Set Customer Out Case</legend>
+                      <div class="form-group" ng-class="{'has-error':customerForm.ID.$invalid && !customerForm.ID.$pritine,'has-success':customerForm.ID.$valid}">
+                          <label>Customer Group</label>
+                          <select class="form-control"  name="ID" style="width: 100%;" ng-model="customer.ID" ng-change="customergroupchange()" ng-required="true" ng-options="customergroup.ID as customergroup.ALIAS for customergroup in customergroups track by customergroup.ID">
+                            <option value='' selected disabled>Choose Group</option>
+                          </select>
+                          
+                        </div>
+                        <div class="form-group" ng-class="{'has-error':customerForm.customer.$invalid && !customerForm.customer.$pritine,'has-success':customerForm.customer.$valid}" ng-show="showcustomer">
+                          <label>List Customer</label>
+                          <select class="form-control"  name="customer"  ng-model="customer.CUST_KD" ng-required="true" ng-options="customer.CUST_KD as customer.CUST_NM for customer in ((customers | filter:{'SCDL_GROUP':customergroup})) track by customer.CUST_KD">
+                            <option value=''selected disabled>Choose Customer</option>
+                          </select>
+                        </div>
+                        <div class="form-group" ng-class="{'has-error':customerForm.users.$invalid && !customerForm.users.$pritine,'has-success':customerForm.users.$valid}" ng-show="showusers">
+                          <label>Diwewenangkan Oleh</label>
+                          <select class="form-control"  name="users"  ng-model="customer.USERS" ng-required="true">
+                            <option value=''selected disabled>Choose Users</option>
+                            <option value='userssatu'>Users Satu</option>
+                          </select>
+                        </div>
+                    </fieldset>
+                  </div>
+
+                  <div class="box-footer clearfix">
+                    <button type="submit" ng-disabled="customerForm.$invalid || isSubmitButtonDisabled" class="btn btn-lg btn-success btn-flat pull-right">
+                    	Set Out Case</button>
+                  </div>
+                </div>
+              </form>
+              </div>
+            </div>
+    </section>
+</div> -->
+
+<div class="content-wrapper">
+    <section class="content">
+
+        <div class="row">
+          <span data-ng-show="loadingcontent" us-spinner="{radius:30, width:8, length: 16, position:'fixed'}"></span>
+              <div class="col-md-12">
+                <div class="box box-danger">
+                  <form name="customerForm" ng-submit="submitForm(submitcustomer)" method="post" novalidate>
+                  <div class="box-body" >
+                    <fieldset class="scheduler-border">
+                      <legend class="scheduler-border">Set Customer Out Case</legend>
+                      <div class="form-group" ng-class="{'has-error':customerForm.ID.$invalid && !customerForm.ID.$pritine,'has-success':customerForm.ID.$valid}">
+                          <label>Customer Group</label>
+                          <select class="form-control"  name="ID" style="width: 100%;" ng-model="submitcustomer.CUST_GRP" ng-change="customerparentchange()" ng-required="true" ng-options="customeparent.CUST_GRP as customeparent.CUST_NM for customeparent in customeparents track by customeparent.CUST_GRP">
+                            <option value='' selected disabled>Choose Group</option>
+                          </select>
+                          
+                        </div>
+                        <div class="form-group" ng-class="{'has-error':customerForm.customer.$invalid && !customerForm.customer.$pritine,'has-success':customerForm.customer.$valid}" ng-show="showcustomer">
+                          <label>List Customer</label>
+                          <select class="form-control"  name="customer"  ng-model="submitcustomer.CUST_KD" ng-change="customerchange(customer)" ng-required="true" ng-options="customer.CUST_KD as customer.CUST_NM for customer in ((customers | filter:{'CUST_GRP':submitcustomer.CUST_GRP})) track by customer.CUST_KD">
+                            <option value=''selected disabled>Choose Customer</option>
+                          </select>
+                        </div>
+                        <div class="form-group" ng-class="{'has-error':customerForm.managers.$invalid && !customerForm.managers.$pritine,'has-success':customerForm.managers.$valid}" ng-show="showusers">
+                          <label>Diwewenangkan Oleh</label>
+                          <select class="form-control"  name="managers"  ng-model="submitcustomer.MGRS" ng-change="customerchange()" ng-required="true" ng-options="manager.username as manager.username for manager in managers  track by manager.username">
+                            <option value=''selected disabled>Choose Managers</option>
+                          </select>
+                        </div>
+                    </fieldset>
+                  </div>
+                  <!-- /.box-body -->
+                  <div class="box-footer clearfix">
+                    <!-- <a href="javascript::;" class="btn btn-sm btn-danger btn-flat pull-left">Cancel</a> -->
+                    <button type="submit" ng-disabled="customerForm.$invalid || isSubmitButtonDisabled" class="btn btn-lg btn-success btn-flat pull-right">
+                      Set Out Case</button>
+                  </div>
+                </div>
+              </form>
+                <!-- /.box -->
+              </div>
+              <!-- /.col (left) -->
+            </div>
+    </section>
+</div>
+<div ng-include="'angular/partial/foottemplate.html'"></div>
+ 

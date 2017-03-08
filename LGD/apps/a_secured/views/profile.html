@@ -1,0 +1,41 @@
+<ion-view view-title="Profile">
+    <ion-content ng-class="{expanded:$scope.isExpanded}">
+        <div class="hero slide-up" style="background-image: url('img/profile-bg.jpg');">
+            <div class="content">
+                <div class="avatar" style="background-image: url('img/daenerys.jpg');"></div>
+                <h3><a class="light">Radumta Sitepu</a></h3>
+                <h4>@raizeta</h4>
+            </div>
+        </div>
+        <div class="tabs tabs-dark tabs-icon-top static">
+            <a href="#/main/profile" class="tab-item">
+                <i class="icon ion-arrow-graph-up-right"></i> Activity
+            </a>
+            <a href="#/main/rangking" class="tab-item">
+                <i class="icon ion-android-done-all"></i> Banner
+            </a>
+            <a href="#/main/shop" class="tab-item">
+                <i class="icon ion-locked"></i> Security
+            </a>
+        </div>
+        <ion-list>
+            <div class="item card-item chat-item item-remove-animate" ng-repeat="group in groups">
+              <ion-item class="item-stable"
+                        ng-click="toggleGroup(group)"
+                        ng-class="{active: isGroupShown(group)}" ng-if="$even">
+                  <i class="icon" ng-class="isGroupShown(group) ? 'ion-minus' : 'ion-checkmark-round'"></i>
+                &nbsp;
+                Login {{$index + 1 }} Pada Waktu 23-09-2016 16:45
+              </ion-item>
+              <ion-item class="item-stable"
+                        ng-click="toggleGroup(group)"
+                        ng-class="{active: isGroupShown(group)}" ng-if="$odd">
+                  <i class="icon" ng-class="isGroupShown(group) ? 'ion-minus' : 'ion-checkmark-round'"></i>
+                &nbsp;
+                Logout {{$index  }} Pada Waktu 23-09-2016 16:45
+              </ion-item>
+            </div>
+        </ion-list>  
+    </ion-content>
+</ion-view>
+<link href="www/lib/ionic-material/dist/ionic.material.min.css" rel="stylesheet">

@@ -1,0 +1,15 @@
+<ion-view view-title="{{params}} {{tanggalview}}">
+  <ion-content class="padding">
+  <ion-refresher pulling-text="" on-refresh="doRefresh()"></ion-refresher>
+    <div class="container">
+        <div class="cell-row cell-row-{{$index + 1}}" ng-repeat="items in datas" >
+          <div class="cell-{{($parent.$index * items.length)+($index+1)}}" ng-repeat="item in items">
+            <div>
+              <div><h2>{{item.NILAI}}</h2></div>
+              <div>{{item.NM_FIRST}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </ion-content>
+</ion-view>

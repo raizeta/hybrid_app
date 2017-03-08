@@ -1,0 +1,71 @@
+<div class="modal fade">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">{{title}}</h4>
+      </div>
+      <form class="form-horizontal" role="form" name="customerForm" ng-submit="submitForm(customer)">
+      <div class="modal-body bg-grey">
+  		  <fieldset class="scheduler-border">
+                <legend class="scheduler-border">Customer Identity</legend>
+                <div class="form-group"  ng-class="{ 'has-error' : customerForm.KTP.$invalid && !customerForm.KTP.$pristine,'has-success':customerForm.KTP.$valid  }">
+                <label>NO KTP</label>
+                  <input type="number" name="KTP" class="form-control" ng-model="customer.KTP" required focus-on="focusUsername">
+                  <p ng-show="customerForm.KTP.$invalid && !customerForm.KTP.$pristine" class="help-block">Nama Customer Tidak Boleh Kosong.</p>
+                </div>
+
+                <div class="form-group"  ng-class="{ 'has-error' : customerForm.CUST_NM.$invalid && !customerForm.CUST_NM.$pristine,'has-success':customerForm.CUST_NM.$valid  }">
+                <label>Nama Customer</label>
+                  <input type="text" name="CUST_NM" class="form-control" ng-model="customer.CUST_NM" required>
+                  <p ng-show="customerForm.CUST_NM.$invalid && !customerForm.CUST_NM.$pristine" class="help-block">Nama Customer Tidak Boleh Kosong.</p>
+                </div>
+
+                <div class="form-group"  ng-class="{ 'has-error' : customerForm.ALAMAT.$invalid && !customerForm.ALAMAT.$pristine,'has-success':customerForm.ALAMAT.$valid  }">
+                <label>Alamat Customer</label>
+                  <textarea name="ALAMAT" class="form-control" ng-model="customer.ALAMAT" required></textarea>
+                  <p ng-show="customerForm.ALAMAT.$invalid && !customerForm.ALAMAT.$pristine" class="help-block">AlamatTidak Boleh Kosong.</p>
+                </div>
+
+                <div class="form-group"  ng-class="{ 'has-error' : customerForm.ALAMAT_KIRIM.$invalid && !customerForm.ALAMAT_KIRIM.$pristine,'has-success':customerForm.ALAMAT_KIRIM.$valid  }">
+                <label>Alamat Pengiriman</label>
+                  <textarea name="ALAMAT_KIRIM" class="form-control" ng-model="customer.ALAMAT_KIRIM" required></textarea>
+                  <p ng-show="customerForm.ALAMAT_KIRIM.$invalid && !customerForm.ALAMAT_KIRIM.$pristine" class="help-block">
+                    Alamat Pengiriman Tidak Boleh Kosong.
+                  </p>
+                </div>
+                
+                <div class="form-group"  ng-class="{ 'has-error' : customerForm.TLP1.$invalid && !customerForm.TLP1.$pristine,'has-success':customerForm.TLP1.$valid  }">
+                <label>Customer Telpon Number</label>
+                  <input type="text" name="TLP1" class="form-control" ng-model="customer.TLP1" required>
+                  <p ng-show="customerForm.TLP1.$invalid && !customerForm.TLP1.$pristine" class="help-block">No.Telepon Tidak Boleh Kosong.</p>
+                </div>
+                <div class="form-group"  ng-class="{ 'has-error' : customerForm.EMAIL.$invalid && !customerForm.EMAIL.$pristine,'has-success':customerForm.EMAIL.$valid  }">
+                  <label>Customer Email</label>
+                    <input type="EMAIL" name="EMAIL" class="form-control" ng-model="customer.EMAIL" required>
+                    <p ng-show="customerForm.EMAIL.$invalid && !customerForm.EMAIL.$pristine" class="help-block">Email Tidak Boleh Kosong.</p>
+                </div>
+                <div class="form-group"  ng-class="{ 'has-error' : customerForm.NPWP.$invalid && !customerForm.NPWP.$pristine,'has-success':customerForm.NPWP.$valid  }">
+                  <label>Customer NPWP</label>
+                    <input type="text" name="NPWP" class="form-control" ng-model="customer.NPWP" required>
+                    <p ng-show="customerForm.NPWP.$invalid && !customerForm.NPWP.$pristine" class="help-block">NPWP Tidak Boleh Kosong.</p>
+                </div>
+                <div class="form-group"  ng-class="{ 'has-error' : customerForm.SIUP.$invalid && !customerForm.SIUP.$pristine,'has-success':customerForm.SIUP.$valid  }">
+                  <label>Customer SIUP</label>
+                    <input type="text" name="SIUP" class="form-control" ng-model="customer.SIUP" required>
+                    <p ng-show="customerForm.SIUP.$invalid && !customerForm.SIUP.$pristine" class="help-block">SIUP Tidak Boleh Kosong.</p>
+                </div>
+                <div class="form-group"  ng-class="{ 'has-error' : customerForm.NOTE.$invalid && !customerForm.NOTE.$pristine,'has-success':customerForm.NOTE.$valid  }">
+                <label>NOTE</label>
+                  <textarea name="NOTE" class="form-control" ng-model="customer.NOTE"></textarea>
+                  <p ng-show="customerForm.NOTE.$invalid && !customerForm.NOTE.$pristine" class="help-block">Note Tidak Boleh Kosong.</p>
+                </div>
+        </fieldset>
+      </div>
+      <div class="modal-footer bg-aqua">
+        <button type="submit" ng-click="close()" ng-disabled="customerForm.$invalid" class="btn btn-primary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+    </form>
+  </div>
+</div>

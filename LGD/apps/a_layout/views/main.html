@@ -1,0 +1,47 @@
+<ion-side-menus enable-menu-with-back-views="false">
+  <ion-side-menu-content drag-content="false">
+    <ion-nav-bar class="bar-assertive">
+      <ion-nav-back-button></ion-nav-back-button>
+      <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+      </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-tabs  class="tabs-icon-top tabs-assertive">
+      <ion-tab title="Dashboard" icon="ion-earth" href="#/main/dashboard">
+        <ion-nav-view name="dashboard-tab"></ion-nav-view>
+      </ion-tab>
+      <ion-tab title="Foodtown" icon="icon ion-coffee" href="#/main/foodtown/sale">
+        <ion-nav-view name="foodtown-tab"></ion-nav-view>
+      </ion-tab>
+      <ion-tab title="Purchase" icon="ion-social-usd-outline" href="#/main/po/inbox">
+        <ion-nav-view name="po-tab"></ion-nav-view>
+      </ion-tab>
+      <ion-tab title="Charts" icon="ion-pie-graph" href="#/main/charts">
+        <ion-nav-view name="charts-tab"></ion-nav-view>
+      </ion-tab>
+      <ion-tab title="KAM" icon="ion-paper-airplane" href="#/main/kam">
+        <ion-nav-view name="ba-kam"></ion-nav-view>
+      </ion-tab>
+      <ion-tab title="BA" icon="icon ion-android-people" href="#/main/ba/inbox">
+        <ion-nav-view name="ba-tab"></ion-nav-view>
+      </ion-tab>
+    </ion-tabs>
+  </ion-side-menu-content>
+  <ion-side-menu side="left">
+    <ion-header-bar class="bar-assertive">
+      <h1 class="title">PT.LUKISON GROUP</h1>
+    </ion-header-bar>
+    <ion-content class="has-header custom">
+      <div class="item item-avatar">
+        <img data-ng-src="data:image/png;base64,{{profile.gambar}}">
+        <h2>{{profile.username}}</h2>
+      </div>
+      <ion-list>
+        <ion-item item-type="item-icon-left" ng-repeat="item in sidemenu" nav-clear menu-close ng-href="{{item.link}}">
+          {{item.judul}}
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-side-menu>
+</ion-side-menus>

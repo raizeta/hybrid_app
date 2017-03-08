@@ -1,0 +1,607 @@
+{
+    "Visit": {
+        "chart": {
+            "caption": " Daily Customers Visits",
+            "subCaption": "Custommer Call, Active Customer, Efictif Customer",
+            "captionFontSize": "12",
+            "subcaptionFontSize": "10",
+            "subcaptionFontBold": "0",
+            "paletteColors": "#cc0000,#1e86e5,#16ce87,#b7843d",
+            "bgcolor": "#ffffff",
+            "showBorder": "0",
+            "showShadow": "0",
+            "showCanvasBorder": "0",
+            "usePlotGradientColor": "0",
+            "legendBorderAlpha": "0",
+            "legendShadow": "0",
+            "showAxisLines": "0",
+            "showAlternateHGridColor": "0",
+            "divlineThickness": "1",
+            "divLineIsDashed": "1",
+            "divLineDashLen": "1",
+            "divLineGapLen": "1",
+            "xAxisName": "Day",
+            "showValues": "0"
+        },
+        "categories": [
+            {
+                "category": [
+                    {
+                        "label": "1"
+                    },
+                    {
+                        "label": "5"
+                    },
+                    {
+                        "label": "6"
+                    },
+                    {
+                        "label": "7"
+                    },
+                    {
+                        "label": "8"
+                    },
+                    {
+                        "label": "10"
+                    },
+                    {
+                        "label": "12"
+                    },
+                    {
+                        "label": "13"
+                    },
+                    {
+                        "label": "14"
+                    },
+                    {
+                        "label": "15"
+                    },
+                    {
+                        "label": "17"
+                    },
+                    {
+                        "label": "19"
+                    },
+                    {
+                        "label": "20"
+                    },
+                    {
+                        "label": "21"
+                    },
+                    {
+                        "label": "22"
+                    },
+                    {
+                        "label": "24"
+                    }
+                ]
+            }
+        ],
+        "dataset": [
+            {
+                "seriesname": "CC",
+                "data": [
+                    {
+                        "value": "30"
+                    },
+                    {
+                        "value": "29"
+                    },
+                    {
+                        "value": "31"
+                    },
+                    {
+                        "value": "30"
+                    },
+                    {
+                        "value": "30"
+                    },
+                    {
+                        "value": "31"
+                    },
+                    {
+                        "value": "29"
+                    },
+                    {
+                        "value": "32"
+                    },
+                    {
+                        "value": "29"
+                    },
+                    {
+                        "value": "30"
+                    },
+                    {
+                        "value": "30"
+                    },
+                    {
+                        "value": "29"
+                    },
+                    {
+                        "value": "31"
+                    },
+                    {
+                        "value": "30"
+                    },
+                    {
+                        "value": "30"
+                    },
+                    {
+                        "value": "31"
+                    }
+                ]
+            },
+            {
+                "seriesname": "AC",
+                "data": [
+                    {
+                        "value": "28"
+                    },
+                    {
+                        "value": "3"
+                    },
+                    {
+                        "value": "31"
+                    },
+                    {
+                        "value": "20"
+                    },
+                    {
+                        "value": "6"
+                    },
+                    {
+                        "value": "29"
+                    },
+                    {
+                        "value": "30"
+                    },
+                    {
+                        "value": "17"
+                    },
+                    {
+                        "value": "21"
+                    },
+                    {
+                        "value": "29"
+                    },
+                    {
+                        "value": "24"
+                    },
+                    {
+                        "value": "29"
+                    },
+                    {
+                        "value": "28"
+                    },
+                    {
+                        "value": "27"
+                    },
+                    {
+                        "value": "29"
+                    },
+                    {
+                        "value": "10"
+                    }
+                ]
+            },
+            {
+                "seriesname": "EC",
+                "data": [
+                    {
+                        "value": "3"
+                    },
+                    {
+                        "value": "1"
+                    },
+                    {
+                        "value": "2"
+                    },
+                    {
+                        "value": "4"
+                    },
+                    {
+                        "value": "0"
+                    },
+                    {
+                        "value": "5"
+                    },
+                    {
+                        "value": "6"
+                    },
+                    {
+                        "value": "2"
+                    },
+                    {
+                        "value": "8"
+                    },
+                    {
+                        "value": "1"
+                    },
+                    {
+                        "value": "2"
+                    },
+                    {
+                        "value": "5"
+                    },
+                    {
+                        "value": "6"
+                    },
+                    {
+                        "value": "2"
+                    },
+                    {
+                        "value": "0"
+                    },
+                    {
+                        "value": "1"
+                    }
+                ]
+            },
+            {
+                "seriesname": "CASE",
+                "data": [
+                    {
+                        "value": "4"
+                    },
+                    {
+                        "value": "0"
+                    },
+                    {
+                        "value": "3"
+                    },
+                    {
+                        "value": "5"
+                    },
+                    {
+                        "value": "0"
+                    },
+                    {
+                        "value": "4"
+                    },
+                    {
+                        "value": "4"
+                    },
+                    {
+                        "value": "4"
+                    },
+                    {
+                        "value": "6"
+                    },
+                    {
+                        "value": "5"
+                    },
+                    {
+                        "value": "6"
+                    },
+                    {
+                        "value": "4"
+                    },
+                    {
+                        "value": "5"
+                    },
+                    {
+                        "value": "3"
+                    },
+                    {
+                        "value": "0"
+                    },
+                    {
+                        "value": "0"
+                    }
+                ]
+            }
+        ],
+        "trendlines": [
+            {
+                "line": [
+                    {
+                        "startvalue": "22.5625",
+                        "color": "#0b0d0f",
+                        "valueOnRight": "1",
+                        "displayvalue": "AvgAC (22.56)"
+                    },
+                    {
+                        "startvalue": "3",
+                        "color": "#0b0d0f",
+                        "valueOnRight": "1",
+                        "displayvalue": "AvgEC (3.00)"
+                    }
+                ]
+            }
+        ]
+    },
+    "ActionVisit": {
+        "chart": {
+            "caption": " Daily Stock Update",
+            "subCaption": "Maxi Product\/Pcs",
+            "captionFontSize": "12",
+            "subcaptionFontSize": "10",
+            "subcaptionFontBold": "0",
+            "paletteColors": "#cc0000,#e7ff1f,#16ce87,#1e86e5",
+            "bgcolor": "#ffffff",
+            "showBorder": "0",
+            "showShadow": "0",
+            "showCanvasBorder": "0",
+            "usePlotGradientColor": "0",
+            "legendBorderAlpha": "0",
+            "legendShadow": "0",
+            "showAxisLines": "0",
+            "showAlternateHGridColor": "0",
+            "divlineThickness": "1",
+            "divLineIsDashed": "1",
+            "divLineDashLen": "1",
+            "divLineGapLen": "1",
+            "yAxisName": "Pcs",
+            "xAxisName": "Day",
+            "showValues": "0"
+        },
+        "categories": [
+            {
+                "category": [
+                    {
+                        "label": "Sa-01-10"
+                    },
+                    {
+                        "label": "Ra-05-10"
+                    },
+                    {
+                        "label": "Ka-06-10"
+                    },
+                    {
+                        "label": "Ju-07-10"
+                    },
+                    {
+                        "label": "Sa-08-10"
+                    },
+                    {
+                        "label": "Se-10-10"
+                    },
+                    {
+                        "label": "Ra-12-10"
+                    },
+                    {
+                        "label": "Ka-13-10"
+                    },
+                    {
+                        "label": "Ju-14-10"
+                    },
+                    {
+                        "label": "Sa-15-10"
+                    },
+                    {
+                        "label": "Se-17-10"
+                    },
+                    {
+                        "label": "Ra-19-10"
+                    },
+                    {
+                        "label": "Ka-20-10"
+                    },
+                    {
+                        "label": "Ju-21-10"
+                    },
+                    {
+                        "label": "Sa-22-10"
+                    },
+                    {
+                        "label": "Se-24-10"
+                    }
+                ]
+            }
+        ],
+        "dataset": [
+            {
+                "seriesname": "Cassava Chips Balado",
+                "data": [
+                    {
+                        "value": "155.00"
+                    },
+                    {
+                        "value": "5.00"
+                    },
+                    {
+                        "value": "446.00"
+                    },
+                    {
+                        "value": "457.00"
+                    },
+                    {
+                        "value": "80.00"
+                    },
+                    {
+                        "value": "578.00"
+                    },
+                    {
+                        "value": "734.00"
+                    },
+                    {
+                        "value": "293.00"
+                    },
+                    {
+                        "value": "339.00"
+                    },
+                    {
+                        "value": "85.00"
+                    },
+                    {
+                        "value": "198.00"
+                    },
+                    {
+                        "value": "475.00"
+                    },
+                    {
+                        "value": "744.00"
+                    },
+                    {
+                        "value": "517.00"
+                    },
+                    {
+                        "value": "212.00"
+                    },
+                    {
+                        "value": "188.00"
+                    }
+                ]
+            },
+            {
+                "seriesname": "Talos Roasted Corn",
+                "data": [
+                    {
+                        "value": "142.00"
+                    },
+                    {
+                        "value": "0.00"
+                    },
+                    {
+                        "value": "752.00"
+                    },
+                    {
+                        "value": "220.00"
+                    },
+                    {
+                        "value": "93.00"
+                    },
+                    {
+                        "value": "574.00"
+                    },
+                    {
+                        "value": "353.00"
+                    },
+                    {
+                        "value": "149.00"
+                    },
+                    {
+                        "value": "468.00"
+                    },
+                    {
+                        "value": "189.00"
+                    },
+                    {
+                        "value": "289.00"
+                    },
+                    {
+                        "value": "136.00"
+                    },
+                    {
+                        "value": "498.00"
+                    },
+                    {
+                        "value": "683.00"
+                    },
+                    {
+                        "value": "243.00"
+                    },
+                    {
+                        "value": "179.00"
+                    }
+                ]
+            },
+            {
+                "seriesname": "Cassava Crackers Hot Spicy",
+                "data": [
+                    {
+                        "value": "240.00"
+                    },
+                    {
+                        "value": "0.00"
+                    },
+                    {
+                        "value": "537.00"
+                    },
+                    {
+                        "value": "255.00"
+                    },
+                    {
+                        "value": "94.00"
+                    },
+                    {
+                        "value": "302.00"
+                    },
+                    {
+                        "value": "472.00"
+                    },
+                    {
+                        "value": "274.00"
+                    },
+                    {
+                        "value": "548.00"
+                    },
+                    {
+                        "value": "265.00"
+                    },
+                    {
+                        "value": "329.00"
+                    },
+                    {
+                        "value": "360.00"
+                    },
+                    {
+                        "value": "603.00"
+                    },
+                    {
+                        "value": "557.00"
+                    },
+                    {
+                        "value": "307.00"
+                    },
+                    {
+                        "value": "153.00"
+                    }
+                ]
+            },
+            {
+                "seriesname": "mixed Roots",
+                "data": [
+                    {
+                        "value": "187.00"
+                    },
+                    {
+                        "value": "0.00"
+                    },
+                    {
+                        "value": "440.00"
+                    },
+                    {
+                        "value": "239.00"
+                    },
+                    {
+                        "value": "61.00"
+                    },
+                    {
+                        "value": "338.00"
+                    },
+                    {
+                        "value": "376.00"
+                    },
+                    {
+                        "value": "92.00"
+                    },
+                    {
+                        "value": "386.00"
+                    },
+                    {
+                        "value": "202.00"
+                    },
+                    {
+                        "value": "247.00"
+                    },
+                    {
+                        "value": "201.00"
+                    },
+                    {
+                        "value": "451.00"
+                    },
+                    {
+                        "value": "378.00"
+                    },
+                    {
+                        "value": "315.00"
+                    },
+                    {
+                        "value": "147.00"
+                    }
+                ]
+            }
+        ]
+    }
+}

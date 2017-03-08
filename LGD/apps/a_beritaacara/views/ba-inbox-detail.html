@@ -1,0 +1,30 @@
+<ion-view view-title="BA INBOX DETAIL">
+    <ion-content class="padding has-tabs-top" >
+        <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()"></ion-refresher>
+        <ion-list >
+            <ion-item class="discovery-item"  type="item-text-wrap" >
+                <div class="item item-avatar">
+                  <img class="head-img" data-ng-src="data:image/png;base64,{{baheader.IMG_BASE64}}">
+                  <h2><b>{{baheader.CREATE_NM}}</b></h2>
+                  <p am-time-ago="">{{baheader.KD_BERITA}}</p>
+                </div>
+
+                <div class="item item-body">
+                    <p>
+                      {{baheader.JUDUL}}
+                    </p>
+<!--                     <img class="feed-content-img" ng-src="assets/img/profile-bg.jpg"> -->
+                  
+                    <p>
+                      <b><a href="#" class="subdued">{{jumlahkoment}} Comments</a>
+                    </p>
+                </div>
+
+                <div class="buttons-share">
+                    <button class="button button-icon icon ion-thumbsup"> Like</button>
+                    <button class="button button-icon ion-chatbox" ng-click="openModal()"> Comment</button>
+                </div> 
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

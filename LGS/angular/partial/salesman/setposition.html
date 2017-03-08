@@ -1,0 +1,62 @@
+
+<div ng-include="'angular/partial/headtemplate.html'"></div>
+<div ng-include="'angular/partial/homemenu.html'"></div>
+<div class="content-wrapper">
+    <section class="content">
+
+        <div class="row">
+          <span data-ng-show="loading" us-spinner="{radius:30, width:8, length: 16}"></span>
+              <div class="col-md-12">
+                <div class="box box-danger">
+                  <form name="customerForm" ng-submit="submitForm(customer)" method="post" novalidate>
+                  <div class="box-body" >
+                    <fieldset class="scheduler-border">
+                      <legend class="scheduler-border">Set Customer Position</legend>
+                      <div class="form-group" ng-class="{'has-error':customerForm.ID.$invalid && !customerForm.ID.$pritine,'has-success':customerForm.ID.$valid}">
+                          <label>Customer Group</label>
+                          <select class="form-control"  name="ID" style="width: 100%;" ng-model="customergroup" ng-change="customergroupchange()" ng-required="true" ng-options="customergroup.ID as customergroup.ALIAS for customergroup in customergroups track by customergroup.ID">
+                            <option value='' selected disabled>Choose Group</option>
+                          </select>
+                          
+                        </div>
+                        <div class="form-group" ng-class="{'has-error':customerForm.customer.$invalid && !customerForm.customer.$pritine,'has-success':customerForm.customer.$valid}" ng-show="showcustomer">
+                          <label>List Customer</label>
+                          <select class="form-control"  name="customer"  ng-model="customer" ng-change="customerchange()" ng-required="true" ng-options="customer.CUST_KD as customer.CUST_NM for customer in ((customers | filter:{'SCDL_GROUP':customergroup})) track by customer.CUST_KD">
+                            <option value=''selected disabled>Choose Customer</option>
+                          </select>
+                        </div>
+                    </fieldset>
+                  </div>
+                  <!-- /.box-body -->
+                  <div class="box-footer clearfix">
+                    <!-- <a href="javascript::;" class="btn btn-sm btn-danger btn-flat pull-left">Cancel</a> -->
+                    <button type="submit" ng-disabled="customerForm.$invalid" class="btn btn-sm btn-success btn-flat pull-right">Set Customer Position</button>
+                  </div>
+                </div>
+              </form>
+                <!-- /.box -->
+              </div>
+              <!-- /.col (left) -->
+            </div>
+
+        <div class="row">
+          <div class="col-md-12 col-sm-6 col-xs-12" >
+            <ng-map zoom="11" center="{{gpslat}},{{gpslong}}" style="display:block; width:100%; height:500px">
+                <marker position="{{gpslat}}, {{gpslong}}"  draggable="false"></marker>
+                <shape name="circle"
+                    stroke-color="#FF0000"
+                    stroke-opacity="0.8"
+                    stroke-weight="2"
+                    fill-color="#FF0000"
+                    fill-opacity="0.35"
+                    center="{{gpslat}}, {{gpslong}}"
+                    radius="100">
+                </shape>
+                <marker position="{{currentcustlat}}, {{currentcustlng}}" draggable="true" icon='asset/admin/dist/img/factory.png' 
+                on-dragend="doSth()" visible="{{visible}}"></marker>
+            </ng-map>
+          </div>
+        </div>
+    </section>
+</div>
+<div ng-include="'angular/partial/foottemplate.html'"></div>

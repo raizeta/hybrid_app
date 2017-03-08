@@ -1,0 +1,77 @@
+<aside class="main-sidebar">
+  <section class="sidebar">
+    <div class="user-panel">
+      <div class="pull-left image">
+        <img data-ng-src="data:image/jpeg;base64,{{userInfo.gambar}}" class="img-circle" alt="User Image">
+      </div>
+      <div class="pull-left info">
+        <p>{{userInfo.username}}</p>
+        <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+      </div>
+    </div>
+    <ul class="sidebar-menu">
+      <li class="header bg-red"><h4>PT. Lukison Group</h4></li>
+      <li ng-class="activehome">
+        <a href="#/home">
+          <i class="fa fa-th"></i> <span>HOME</span>
+        </a>
+      </li>
+      <li ng-class="activeabsensi">
+        <a href="#/absensi">
+          <i class="fa fa-th"></i> <span>ABSENSI</span>
+        </a>
+      </li>
+      <li ng-class="activesetposition" ng-if="(userInfo.accessid == 1)">
+        <a href="#/setposition">
+          <i class="fa fa-th"></i> <span>SET POSITION</span>
+        </a>
+      </li>
+      <li ng-class="activesalestrack" ng-if="(userInfo.accessid == 1)">
+        <a href="#/salestrack">
+          <i class="fa fa-th"></i> <span>SLS TRACK</span>
+        </a>
+      </li>
+
+      <li ng-class="activeagendatoday" ng-if="(userInfo.accessid != 1)">
+        <a href="#/agenda/{{tanggalharini}}">
+          <i class="fa fa-th"></i> <span>AGENDA TODAY</span>
+        </a>
+      </li>
+      <li ng-class="activeoutcase" ng-if="(userInfo.accessid != 1)">
+        <a href="#/outcase">
+          <i class="fa fa-th"></i> <span>OUT CASE</span>
+        </a>
+      </li>
+      <li ng-class="activehistory" ng-if="(userInfo.accessid != 1)">
+        <a href="#/history">
+          <i class="fa fa-th"></i> <span>HISTORY</span>
+        </a>
+      </li>
+      <li ng-class="activenoo" ng-if="(userInfo.accessid != 1)">
+        <a href="#/noo">
+          <i class="fa fa-th"></i> <span>N.O.O</span>
+        </a>
+      </li>
+      <li ng-class="activelistnoo" ng-if="(userInfo.accessid != 1)">
+        <a href="#/listnoo">
+          <i class="fa fa-th"></i> <span>LIST NOO</span>
+        </a>
+      </li>
+      <li ng-class="activekpi" ng-if="(userInfo.accessid != 1)">
+        <a href="#/kpi">
+          <i class="fa fa-th"></i> <span>KPI</span>
+        </a>
+      </li>
+      <li ng-class="activehelp" ng-if="(userInfo.accessid != 1)">
+        <a href="#/help">
+          <i class="fa fa-th"></i> <span>HELP</span>
+        </a>
+      </li>
+      <li ng-class="activeconfig" ng-if="(userInfo.accessid != 1)">
+        <a href="#/configuration">
+          <i class="fa fa-th"></i> <span>CONFIG</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+</aside>

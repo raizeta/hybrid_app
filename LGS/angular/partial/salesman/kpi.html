@@ -1,0 +1,58 @@
+<div ng-include="'angular/partial/headtemplate.html'"></div>
+<div ng-include="'angular/partial/homemenu.html'"></div>
+<div class="content-wrapper" ng-model="gpslat">
+  <span data-ng-show="loadingcontent" us-spinner="{radius:30, width:8, length: 16, position:'fixed'}"></span>
+    <section class="content">
+      <div class="button-bar">
+          <label class="item item-input">
+            <input type="month" name="input" ng-model="example.value" ng-change="onSearchChange()">
+          </label>
+      </div>
+      <div class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="ion ion-person-add"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-number">NOO</span>
+              <span class="info-box-number">{{results.NOO}} Customers</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-red"><i class="fa fa-google-plus"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-number">ACTIVE CALL</span>
+              <span class="info-box-number">{{results.AC}} Kunjungan</span>
+            </div>
+          </div>
+        </div>
+        <div class="clearfix visible-sm-block"></div>
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-number">REQUEST ORDERS</span>
+              <span class="info-box-number">{{results.EC}} Customers</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-yellow"><i class="ion ion-bag"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-number">SALES ORDERS</span>
+              <span class="info-box-number">{{results.SC}} Customers</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+</div>
+<div ng-include="'angular/partial/foottemplate.html'"></div>

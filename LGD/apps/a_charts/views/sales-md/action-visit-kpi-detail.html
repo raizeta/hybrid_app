@@ -1,0 +1,32 @@
+<ion-view view-title="SALES-MD ACTION-VISIT-KPI-DETAIL">
+  <ion-content class="has-header has-footer" padding="true">
+<!--   		  <div class="button-bar">
+          	<label class="item item-input">
+      			  <span class="input-label">Month</span>
+      			  <input type="month" name="input" ng-model="example.value" ng-change="onSearchChange()">
+      			</label>
+        </div> -->
+        <form method="post" novalidate>
+          <div class="button-bar">
+              <label class="item item-input">
+                <span class="input-label">Start</span>
+                <input type="date" name="valuestart" ng-model="exampleForm.valuestart" required>
+              </label>
+              <label class="item item-input">
+                <span class="input-label">End</span>
+                <input type="date" name="valueend" ng-model="exampleForm.valueend" required>
+              </label>
+              <label class="item item-input" ng-click="SubmitForm(exampleForm)">
+                <span class="input-label" style="cursor:pointer">
+                  Submit
+                </span>
+              </label>
+          </div>
+        </form>
+      	<div id="chart-actionvisitsellout"></div>
+      	<div id="chart-effectivecall"></div>
+      	<div id="chart-newcustomer"></div>
+        <div id="chart-jumlahkunjunganlayera"></div>
+        <div id="chart-jumlahkunjunganlayerb"></div>
+  </ion-content>
+</ion-view>

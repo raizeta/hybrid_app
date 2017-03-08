@@ -1,0 +1,29 @@
+<div ng-include="'angular/partial/headtemplate.html'"></div>
+<div ng-include="'angular/partial/homemenu.html'"></div>
+
+<div class="content-wrapper">
+  <section class="content">
+    <div class="row">
+        <div class="col-md-12 col-sm-6 col-xs-12" >
+            <div class="info-box bg-green" >
+              <span class="info-box-icon"><i class="fa fa-thumbs-o-up"></i></span>
+              <div class="info-box-content" >
+                <span class="info-box-text" style="cursor:pointer" ng-click="newcustomer()">
+                  <h1>LIST CUSTOMER</h1>
+                </span>
+              </div>
+
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-6 col-xs-12" >
+            <ul class="list-group">
+              <li class="list-group-item" style="margin:12px;box-shadow:0 3px 25px black;" ng-repeat="customer in customers">
+                <span class="badge">CHECK-IN</span><a href="#/detailcustomer/{{customer.CUST_KD}}">CUSTOMER {{customer.CUST_NM}}</a>
+              </li>
+            </ul>
+        </div>
+    </div>
+  </section><!-- /.content -->
+</div><!-- /.content-wrapper -->
+<div ng-include="'angular/partial/foottemplate.html'"></div>
+ 

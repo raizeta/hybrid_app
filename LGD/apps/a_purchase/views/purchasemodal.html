@@ -1,0 +1,82 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-assertive">
+    <h1 class="title">Purchase Detail</h1>
+    <button class="button button-clear" ng-click="closeModal()"><i class="icon ion-ios-close-outline"></i></button>
+  </ion-header-bar>
+  <ion-content class="padding">
+    <div class="list">
+      <label class="item item-input">
+        <span class="input-label">BILLING_ADD</span>
+        <input ng-model="detailpurchase.BILLING_ADD" type="text">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">CREATE_AT</span>
+        <input ng-model="detailpurchase.CREATE_AT" type="text">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">CREATE_BY</span>
+        <input ng-model="detailpurchase.CREATE_NM" type="text">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">DELIVERY_COST</span>
+        <input ng-model="detailpurchase.DELIVERY_COST" type="text">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">DISCOUNT</span>
+        <input ng-model="detailpurchase.DISCOUNT" type="text">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">ETA</span>
+        <input ng-model="detailpurchase.ETA" type="text">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">ETD</span>
+        <input ng-model="detailpurchase.ETD" type="text">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">NM_CORP</span>
+        <input ng-model="detailpurchase.NM_CORP" type="text">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">KD_PO</span>
+        <input ng-model="detailpurchase.KD_PO" type="text">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">NM_SUPPLIER</span>
+        <input ng-model="detailpurchase.NM_SUPPLIER" type="text">
+      </label>
+
+      <label class="item item-input">
+        <span class="input-label">NOTE</span>
+        <!-- <input ng-model="detailpurchase.NOTE" type="text"> -->
+        <textarea ng-bind-html="detailpurchase.NOTE" rows="5"></textarea>
+      </label>
+      <label class="item item-input">
+        <span class="input-label">PAJAK</span>
+        <input ng-model="detailpurchase.PAJAK" type="text">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">PARENT_PO</span>
+        <input ng-model="detailpurchase.PARENT_PO" type="text">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">SHIPPING_ADD</span>
+        <input ng-model="detailpurchase.SHIPPING_ADD" type="text">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">STATUS</span>
+        <input ng-model="detailpurchase.STATUS" type="text">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">TOP_DURATION</span>
+        <input ng-model="detailpurchase.TOP_DURATION" type="text">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">TOP_TYPE</span>
+        <input ng-model="detailpurchase.TOP_TYPE" type="text">
+      </label>
+
+      <button class="button button-full button-assertive" ng-click="closeModal()">Close</button>
+    </div>
+  </ion-content>
+</ion-modal-view>

@@ -1,0 +1,12 @@
+<ion-view view-title="ACTION-VISIT-KPI" name="dashboard-view">
+    <ion-content class="padding">
+        <div class="row" ng-repeat="menu in salesmans">
+            <div class="list col col-25" style="cursor:pointer" ng-repeat="item in menu">
+            <a ng-href="#/main/salesmd/action-visit-kpi/{{item.ID_USER}}">
+                <img data-ng-src="data:image/png;base64,{{item.IMG_BASE64}}" width="100%" style="border-radius: 50%;"/>
+            </a>
+                <p style="text-align:center;display:block;margin-top:-5px">{{item.NM_FIRST}}</p>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

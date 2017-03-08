@@ -1,0 +1,42 @@
+<ion-view view-title="CHARTS" name="dashboard-view">
+	<ion-content class="padding">
+        
+        <div class="row">
+        	<div class="list col col-25" style="cursor:pointer">
+        		<img ng-src="assets/img/img/200x200/chart.jpg" width="100%" style="border-radius: 50%;" 
+	        		ng-click="openModalMap()"/>
+	        	<span class="badge badge-assertive"></span>
+	        	<p style="text-align:center;display:block;margin-top:-5px">Maps</p>
+		    </div>
+	        <div class="list col col-25" style="cursor:pointer">
+	        	<a ng-href="#/main/salesmd/visit">
+	        		<img ng-src="assets/img/img/200x200/chart.jpg" width="100%" style="border-radius: 50%;" />
+	        	</a>
+	        	<span class="badge badge-assertive"></span>
+	        	<p style="text-align:center;display:block;margin-top:-5px">Sales-MD</p>
+		    </div>
+		    <div class="list col col-25" style="cursor:pointer">
+		    	<a ng-href="#/main/chartpurchases/price-year">
+	        		<img ng-src="assets/img/img/200x200/chart.jpg" width="100%" style="border-radius: 50%;" />
+	        	</a>
+	        	<span class="badge badge-assertive"></span>
+	        	<p style="text-align:center;display:block;margin-top:-5px">Purchases</p>
+		    </div>
+		    <div class="list col col-25" style="cursor:pointer">
+		    	<a ng-href="#/main/customers/layergeo">
+	        		<img ng-src="assets/img/img/200x200/chart.jpg" width="100%" style="border-radius: 50%;" />
+	        	</a>
+	        	<span class="badge badge-assertive"></span>
+	        	<p style="text-align:center;display:block;margin-top:-5px">Customers</p>
+		    </div>
+		</div>
+		<div class="row" ng-repeat="menu in menus">
+            <div class="list col col-25" style="cursor:pointer" ng-repeat="item in menu">
+                <img ng-src="{{item.src}}" width="100%" style="border-radius: 50%;" ng-click="{{item.link}}"/>
+                <span class="badge badge-assertive"></span>
+                <p style="text-align:center;display:block;margin-top:-5px">{{item.judul}}</p>
+            </div>
+            
+        </div>
+    </ion-content>
+</ion-view>

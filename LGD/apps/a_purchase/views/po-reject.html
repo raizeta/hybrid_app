@@ -1,0 +1,23 @@
+<ion-view view-title="REJECT PO">
+  <ion-content class="has-header has-footer" padding="true">
+      <!-- <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()"></ion-refresher> -->
+      <div class="button-bar" ng-if="purchaselist.length < 1">
+          <button type="submit" class="button button-block button-positive">
+            Belum Ada PO Yang Di Reject
+          </button>
+      </div>
+      <ion-list show-Delete = "!data.showDelete" show-Reorder = "!data.showReorder">
+          <ion-item class="item-avatar item-icon-right" ng-repeat="item in purchaselist" type="item-text-wrap" >
+              <img ng-src="assets/img/logo.png">
+              <h2>{{item.KD_PO}}
+                  <br> 
+                  <font size="2" color="gray" >{{item.CREATE_AT}}</font>
+                  <br> 
+                  <font size="2" color="gray" >{{item.CREATE_BY}}</font>
+              </h2>
+              <ion-delete-button class="ion-ios-plus-outline" ng-click="openModal(item);"></ion-delete-button>
+              <ion-reorder-button class="ion-arrow-right-a" ui-sref="main.po.rejectdetail({id:item.KD_PO})"></ion-reorder-button>
+          </ion-item>
+      </ion-list>
+  </ion-content>
+</ion-view>

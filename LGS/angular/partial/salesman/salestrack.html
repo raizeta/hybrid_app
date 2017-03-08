@@ -1,0 +1,35 @@
+
+<div ng-include="'angular/partial/headtemplate.html'"></div>
+<div ng-include="'angular/partial/homemenu.html'"></div>
+<div class="content-wrapper" class="ng-cloak">
+  <span data-ng-show="loadingcontent" us-spinner="{radius:30, width:8, length: 16, position:'fixed'}"></span>
+  <section class="content">
+    <div class="row" >
+      <div class="col-md-12">
+        <div class="panel panel-danger">
+          <div class="panel-body table-responsive">
+            <table class="table table-hover table-striped table-bordered">
+              <thead>
+                <th class="bg-aqua">NAMA SALES</th>
+                <th class="bg-aqua">CHECK IN</td>
+                <th class="bg-aqua">CHECK OUT</th>
+                <th class="bg-aqua">@ CUST KD</th>
+                <th class="bg-aqua">@ CUST NM</th>
+              </thead>
+              <tbody>
+                <tr ng-repeat="salestrack in salestracks">
+                  <td><a href="#/salestrack/{{salestrack.USER_ID}}">{{salestrack.salesman}}</a></td>
+                  <td>{{salestrack.CHECKIN_TIME}}</td>
+                  <td>{{salestrack.CHECKOUT_TIME}}</td>
+                  <td>{{salestrack.CUST_KD}}</td>
+                  <td>{{salestrack.CUST_NM}}</td>
+                </tr>
+              </tbody>
+             </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section><!-- /.content -->
+</div>
+<div ng-include="'angular/partial/foottemplate.html'"></div>

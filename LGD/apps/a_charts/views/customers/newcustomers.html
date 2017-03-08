@@ -1,0 +1,24 @@
+<ion-view view-title="NEW CUSTOMER/MONTH">
+  <ion-content class="has-header has-footer" padding="true">
+        <form method="post" novalidate>
+          <div class="button-bar">
+              <label class="item item-input">
+                <span class="input-label">Start</span>
+                <input type="date" name="valuestart" ng-model="exampleForm.valuestart" required>
+              </label>
+              <label class="item item-input">
+                <span class="input-label">End</span>
+                <input type="date" name="valueend" ng-model="exampleForm.valueend" required>
+              </label>
+              <label class="item item-input" ng-click="SubmitForm(exampleForm)">
+                <span class="input-label" style="cursor:pointer">
+                  Submit
+                </span>
+              </label>
+          </div>
+        </form>
+        
+        <div id="chart-layer"></div>
+        <div id="chart-geo-sales"></div>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,26 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-assertive">
+    <h1 class="title">PRODUCT DETAIL</h1>
+    <button class="button button-clear left" ng-click="closeModal()"><!-- <i class="icon ion-ios-close-outline"></i> --></button>
+  </ion-header-bar>
+
+ <ion-content class="has-header" padding="true">
+        <div class="list card">
+          <div style="min-height: 30px;" class="item item-divider  bar-assertive">
+          	{{item.nama}} 
+          </div>
+          <div class="item item-body" >
+            <img ng-src="{{item.gambar}}" width="100%" class="box-shadow">
+            <div class="button-bar" style="box-shadow: none;">
+              <button ng-click="clearquantity()" class="button button-assertive button-block button-small icon ion-android-delete right">
+              </button>
+              <button class="button button-calm button-clear button-block  icon ion-minus" ng-click="incdec('dec')" ></button>
+              <button class="button button-stable button-clear button-block button-small">{{item.quantity}}</button>
+              <button class="button button-positive button-clear button-block button-small icon ion-plus" ng-click="incdec('inc')"></button>
+              <button ng-click="closeModal()" class="button button-balanced button-block button-small icon ion-checkmark-round left" >
+              </button>
+            </div>
+          </div>
+        </div>
+    </ion-content>
+</ion-modal-view>

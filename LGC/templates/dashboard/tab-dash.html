@@ -1,0 +1,27 @@
+<ion-view view-title="Dashboard">
+  <ion-content class="padding">
+    <ion-refresher pulling-text="" on-refresh="onSearchChange()"></ion-refresher>
+      <div style="text-align:center;" >
+          <form method="post" novalidate>
+            <div>
+                <label class="item item-input">
+                  <input type="date" name="valuestart" ng-model="exampleForm.valuestart" required ng-change="SubmitForm(exampleForm)">
+                </label>
+            </div>
+          </form>
+      </div>
+      <div class="row" style="text-align:center;" >
+      </div>
+
+      <div class="container">
+        <div class="cell-row cell-row-{{$index + 1}}" ng-repeat="items in datas" >
+          <div class="cell-{{(2 * $parent.$index) + $index + 1}}" ng-repeat="item in items" ng-click="gotodashdetail(item.kunci,item.status)">
+            <div>
+              <div><h1>{{item.nilai}} </h1></div>
+              <div><h2>{{item.kunci}}</h2></div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </ion-content>
+</ion-view>

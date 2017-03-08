@@ -1,0 +1,17 @@
+<div ng-include="'angular/partial/headtemplate.html'"></div>
+<div ng-include="'angular/partial/homemenu.html'"></div>
+
+<div class="content-wrapper">
+  <span data-ng-show="loadingcontent" us-spinner="{radius:30, width:8, length: 16, position:'fixed'}"></span>
+  <section class="content">
+    <div class="row">
+        <div class="col-md-12 col-sm-6 col-xs-12">
+        	
+            <div ui-calendar="uiConfig.calendar" class="span8 calendar" ng-model="eventSources"></div>
+        </div>
+      </div>
+    </div>
+  </section><!-- /.content -->
+</div><!-- /.content-wrapper -->
+<div ng-include="'angular/partial/foottemplate.html'"></div>
+ 

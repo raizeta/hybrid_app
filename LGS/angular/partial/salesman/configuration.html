@@ -1,0 +1,54 @@
+<div ng-include="'angular/partial/headtemplate.html'"></div>
+<div ng-include="'angular/partial/homemenu.html'"></div>
+<div class="content-wrapper">
+    <span data-ng-show="loadingcontent" us-spinner="{radius:30, width:8, length: 16, position:'fixed'}"></span>
+    <section class="content">
+      <div class="row">
+        <div class="col-md-12">
+        <div class="box box-widget">
+          <div class="box-body">
+            <button type="button" class="btn btn-lg btn-block bg-aqua-active"  ng-show="showbuttonproduct" ng-click="sinkronproduct()">
+              SINKRONISASI PRODUCT
+            </button>
+          </div>
+          <div class="box-body">
+            <button type="button" class="btn btn-lg btn-block bg-fuchsia-active"  ng-show="showbuttonscdlheader" ng-click="sinkronscdlkalender()">
+              SINKRONISASI SCDL KALENDER
+            </button>
+          </div>
+          <div class="box-body">  
+            <button type="button" class="btn btn-lg btn-block bg-maroon-active"  ng-show="showbuttonagenda" ng-click="sinkronagenda()">
+              SINKRONISASI AGENDA
+            </button>
+          </div>
+          <div class="box-body">
+            <button type="button" class="btn btn-lg btn-block bg-olive-active"  ng-show="showbuttonabsensi" ng-click="sinkronabsensi()">
+              SINKRONISASI ABSENSI
+            </button>
+          </div>
+          <div class="box-body">
+            <button type="button" class="btn btn-lg btn-block bg-orange-active"  ng-show="showbuttonsot2" ng-click="Sot2()">
+              SINKRONISASI SOT2
+            </button>
+          </div>
+          <div class="box-body">
+            <button type="button" class="btn btn-lg btn-block bg-purple-active"  ng-show="showbuttonsotype" ng-click="Sot2Type()">
+              SINKRONISASI SOT2TYPE
+            </button>
+          </div>
+          <div class="box-body">
+            <button type="button" class="btn btn-lg btn-block bg-purple-active"  ng-show="showbuttonoutofcase" ng-click="OutofCase()">
+              SINKRONISASI OUT OF CASE
+            </button>
+          </div>
+          <div class="box-body">
+            <button type="button" class="btn btn-lg btn-block bg-orange-active" ng-show="showbuttonsynccustomers" ng-click="SinkronCustomers()">
+              SINKRONISASI CUSTOMERS
+            </button>
+          </div>
+        </div>
+        </div>
+      </div>
+    </section>
+</div>
+<div ng-include="'angular/partial/foottemplate.html'"></div>

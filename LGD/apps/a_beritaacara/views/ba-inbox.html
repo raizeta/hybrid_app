@@ -1,0 +1,15 @@
+<ion-view view-title="BA INBOX">
+  <ion-content class="has-header has-footer" padding="true">
+        <ion-list>
+            <div class="card">
+                <a  ng-repeat="item in beritaacaras" ng-click="linkberitacarakomentar(item)" class="item item-avatar item-icon-right">
+                    <img data-ng-src="data:image/png;base64,{{item.IMG_BASE64}}">
+                    <h2>{{item.KD_BERITA}}</h2>
+                    <p>{{item.CREATE_NM}}</p>
+                    <p>{{item.JUDUL|uppercase}}</p>
+                    <i class="icon ion-chatbubble muted"></i>
+                </a>
+            </div>
+        </ion-list>
+  </ion-content>
+</ion-view>

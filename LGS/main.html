@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html ng-app="myAppModule">
+
+<head>
+    <title>PT. LUKISON GROUP</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,minimal-ui" name="viewport">
+
+
+    <link rel="stylesheet" href="asset/map.css">
+    <link href="angular/vendor/angular-animate.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="bower_components/ngToast/dist/ngToast.css">
+    <link rel="stylesheet" href="bower_components/ngToast/dist/ngToast-animations.css">
+
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
+    <link rel="stylesheet" href="bower_components/sweetalert/dist/sweetalert.css">
+    <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
+
+    <link rel="stylesheet" href="bower_components/ladda/dist/ladda-themeless.min.css">
+    <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.css"/>
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="asset/css/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="asset/css/_all-skins.min.css" rel="stylesheet">
+    <link href="asset/css/AdminLTE.min.css" rel="stylesheet">
+    <link href="asset/css/animation.css" rel="stylesheet" >
+    <link href="asset/custom/notables.css" rel="stylesheet" >
+
+    <link rel="stylesheet" href="bower_components/angular-ui-clock/dist/angular-clock.css">
+    <link href='//fonts.googleapis.com/css?family=Syncopate:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="bower_components/v-accordion/dist/v-accordion.css">
+    <link rel="stylesheet" href="bower_components/ihover/src/ihovermodif.css">
+    <link rel="stylesheet" href="bower_components/ihover/src/ihovermobile.css">
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDaEXYArxCQLYuQ0UIYwVybTxKd46AIwk4" type="text/javascript"></script>
+
+    <style>
+    .carousel-caption {
+    position: relative;
+    left: auto;
+    right: auto;
+    margin: 20px auto;
+
+}
+.glyphicon-chevron-left,.glyphicon-chevron-right{
+  color: black;
+}
+</style>
+
+</head>
+
+<body class="login-page sidebar-mini" off-canvas-menu ng-class="{'sidebar-open':isMenuOpen}">
+        <div class="wrapper skin-blue">
+            <span data-ng-show="loading" us-spinner="{radius:30, width:8, length: 16, position:'fixed'}">
+            </span>
+            <toast></toast>
+
+            <div ng-view></div>
+        </div>
+
+        <script src="bower_components/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="angular/vendor/angular.js"></script>
+        <script src="angular/scripts/vendor.js"></script>
+        <script src="bower_components/moment/moment.js"></script>
+
+        <script type="text/javascript" src="bower_components/angular-ui-calendar/src/calendar.js">
+        </script>
+        <script type="text/javascript" src="bower_components/fullcalendar/dist/fullcalendar.min.js">
+        </script>
+        <script type="text/javascript" src="bower_components/fullcalendar/dist/gcal.js">
+        </script>
+
+        <!-- // <script type="text/javascript" src="bower_components/ihover/dist/scripts/app.js"></script> -->
+
+        <script src="angular/modules/myapp.js"></script>
+
+        <script src="angular/services/loginservices.js"></script>
+        <script src="angular/services/apiservices.js"></script>
+        <script src="angular/services/jadwalkunjunganservices.js"></script>
+        <script src="angular/services/locationservices.js"></script>
+        <script src="angular/services/summaryservices.js"></script>
+        <script src="angular/services/singleapiservices.js"></script>
+        <script src="angular/services/customerservices.js"></script>
+        <script src="angular/services/productservices.js"></script>
+        <script src="angular/services/cameraservice.js"></script>
+        <script src="angular/services/broadcastservices.js"></script>
+        <script src="angular/services/checkinservices.js"></script>
+        <script src="angular/services/checkoutservices.js"></script>
+        <script src="angular/services/inventoryservices.js"></script>
+        <script src="angular/services/gambarservices.js"></script>
+        <script src="angular/services/expiredservices.js"></script>
+        <script src="angular/services/absensiservices.js"></script>
+        <script src="angular/services/configurationservices.js"></script>
+        <script src="angular/services/lastvisitsummaryservices.js"></script>
+        <script src="angular/services/lastvisitsummarycustomerservices.js"></script>
+        <script src="angular/services/salestrackservices.js"></script>
+        <script src="angular/services/salesaktifitasservices.js"></script>
+        <script src="angular/services/outcaseservices.js"></script>
+        <script src="angular/services/managerservices.js"></script>
+        <script src="angular/services/datecountdownservices.js"></script>
+        <script src="angular/services/gagalactionservices.js"></script>
+        <script src="angular/services/whosyncservices.js"></script>
+
+        <script src="angular/services/sqlite/sot2.js"></script>
+        <script src="angular/services/sqlite/agenda.js"></script>
+        <script src="angular/services/sqlite/absensi.js"></script>
+        <script src="angular/services/sqlite/configradius.js"></script>
+        <script src="angular/services/sqlite/expired.js"></script>
+        <script src="angular/services/sqlite/lamakunjungan.js"></script>
+        <script src="angular/services/sqlite/gagalcheck.js"></script>
+        <script src="angular/services/sqlite/gagalgambar.js"></script>
+
+        <script src="angular/routing/loginrouting.js"></script>
+        <script src="angular/routing/errorrouting.js"></script>
+        <script src="angular/routing/salesrouting.js"></script>
+
+
+        <script src="angular/controller/logincontroller.js"></script>
+        <script src="angular/controller/errorcontroller.js"></script>
+        <script src="angular/controller/salesman/dblocal.js"></script>
+
+        <script src="cordova.js"></script>
+        <script src="angular/directives/offcanvas.js"></script>
+        <script src="angular/directives/numberonly.js"></script>
+        <script src="angular/filter/roundup.js"></script>
+
+        <script src="angular/controller/salesman/homecontroller.js"></script>
+        <script src="angular/controller/salesman/detailagenda.js"></script>
+        <script src="angular/controller/salesman/historycontroller.js"></script>
+        <script src="angular/controller/salesman/detailjadwalkunjungan.js"></script>
+        <script src="angular/controller/salesman/absensicontroller.js"></script>
+        <script src="angular/controller/salesman/help.js"></script>
+        <script src="angular/controller/salesman/outcase.js"></script>
+        <script src="angular/controller/salesman/configuration.js"></script>
+        <script src="angular/controller/salesman/noo.js"></script>
+        <script src="angular/controller/salesman/kpi.js"></script>
+
+        <script src="angular/services/comb/customercomb.js"></script>
+        <script src="angular/services/comb/customerfactory.js"></script>
+        <script src="angular/services/comb/customersqlite.js"></script>
+
+
+        <script src="angular/factory/kpifactory.js"></script>
+
+        <script src="angular/services/util/utils.js"></script>
+        <script src="angular/services/util/storage.js"></script>
+
+
+</body>
+</html>

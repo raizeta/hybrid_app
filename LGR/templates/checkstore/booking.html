@@ -1,0 +1,48 @@
+<ion-view view-title="BOOKING {{tglsekarang}}">
+  <ion-content>
+        <div class="row" ng-repeat="items in datas">
+          <div class ="col">
+            <button class="button button-stable button-small">
+              {{items.ItemNm|capitalize}}
+            </button>
+          </div>
+          <div class ="col">
+            <button class="button button-outline button-stable button-small">50</button>
+            <button class="button button-outline button-stable button-small">0</button>
+            <button class="button button-outline button-stable button-small">50</button>
+          </div>
+          <div class ="col">
+            <button class="button button-dark button-small icon ion-videocamera" ng-click="deleteone(item)"></button>
+          </div>
+          <div class ="col">
+            <button class="button button-outline button-calm button-small ion-minus" ng-click="incdec('dec',item)" ></button>
+            <button class="button button-outline button-stable button-small">0</button>
+            <button class="button button-outline button-positive button-small ion-plus" ng-click="incdec('inc',item)"></button>
+          </div>
+          <div class ="col">
+            <button class="button button-outline button-positive button-small icon ion-ios-help-outline" ng-click="deleteone(item)"></button>
+          </div>
+        </div>
+        <div class="row">
+          <div class ="col">
+            <button class="button button-stable button-small">Risol Medan</button>
+          </div>
+          <div class ="col">
+            <button class="button button-outline button-stable button-small">10</button>
+            <button class="button button-outline button-stable button-small">8</button>
+            <button class="button button-outline button-stable button-small">2</button>
+          </div>
+          <div class ="col">
+            <button class="button button-balanced button-small icon ion-checkmark-round" ng-click="deleteone(item)"></button>
+          </div>
+          <div class ="col">
+            <button class="button button-outline button-calm button-small ion-minus" ng-click="incdec('dec',item)" ></button>
+            <button class="button button-balanced button-stable button-small">10</button>
+            <button class="button button-outline button-positive button-small ion-plus" ng-click="incdec('inc',item)"></button>
+          </div>
+          <div class ="col">
+            <button class="button button-balanced button-small icon ion-checkmark-circled" ng-click="deleteone(item)"></button>
+          </div>
+        </div>
+  </ion-content>
+</ion-view>

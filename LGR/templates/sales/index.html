@@ -1,0 +1,34 @@
+<ion-view view-title="NO RESI: {{noresi}}">
+  <ion-nav-buttons side="right">
+      <button class="button button-icon icon ion-ios-cart"  ng-click="gotocart()">
+          <span class="badge badge-assertive icon-badge">{{banyakdicart}}</span>
+      </button>
+  </ion-nav-buttons>  
+  <ion-content class="has-header" padding="false">
+    <div class="row" ng-repeat="items in datas">
+      <div class="col col-25" ng-repeat="item in items track by $index" >
+        <div class="list">
+          <div class="item item-image" style="padding-right:3px">
+            <img class="box-shadow" ng-click="AddToCart(item)" ng-src="{{item.gambar}}" width="100%" />
+          </div>
+
+          <a class="aitem item-icon-right">
+          <p style="font-size: 12px;text-align:left;">
+            {{item.nama}} <br/>
+            <span style="font-weight: bold;color: black;">{{item.harga|number}}</span>
+          </p>
+          <i style="font-size: 35px; margin-right:0px;right:1px;"  ng-click="AddToCart(item)" class="icon ion-ios-cart">
+            <span class="badge badge-balanced icon-badge" ng-if="item.quantity > 0">{{item.quantity}}</span>
+            <span class="badge badge-positive icon-badge" ng-if="item.quantity == 0">{{item.quantity}}</span>
+          </i>
+          </a>
+          <div class="ribbon"><span>{{item.maksimal}}</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="row" ng-if="datas.length < 1">
+      Belum Ada Product Yang Akan Dijual
+    </div>
+
+  </ion-content>
+</ion-view>

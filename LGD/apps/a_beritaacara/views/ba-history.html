@@ -1,0 +1,16 @@
+<ion-view view-title="HISTORY">
+  <ion-content class="padding">
+        <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()"></ion-refresher>
+        <ion-list>
+            <div class="card">
+                <a  ng-repeat="item in beritaacara" ui-sref="main.ba.inboxdetail({id:item.id})" class="item item-avatar item-icon-right">
+                    <img src="{{item.gambar}}">
+                    <h2>{{item.nopo}}</h2>
+                    <p>{{item.createat}}</p>
+                    <p>{{item.harga}}</p>
+                    <i class="icon ion-chatbubble muted"></i>
+                </a>
+            </div>
+        </ion-list>
+  </ion-content>
+</ion-view>
