@@ -1,7 +1,8 @@
 angular.module('starter')
 .controller('CashierCtrl', function($scope,$filter,$state,$ionicLoading,$ionicModal,StorageService,ProductFac) 
 {
-    $scope.profile  = StorageService.get('profile');
+    $scope.profile      = StorageService.get('profile');
+    $scope.lokasistore  = StorageService.get('LokasiStore');
     if($scope.profile.gambar == 'none')
     {
         $scope.profile.gambar = "img/customer.jpg";
@@ -30,44 +31,47 @@ angular.module('starter')
     }
     
     $scope.tambahtransaksi = function()
-    {   var data = {};
-        var panjangtransaksi = $scope.transaks.length
-        if( panjangtransaksi > 0)
+    {   var localbarangpenjualan = StorageService.get('barangpenjualan');
+        if(localbarangpenjualan)
         {
-            var stringtransaksi = $scope.transaks[panjangtransaksi-1].notransk;
-            var lastthree       = stringtransaksi.substr(stringtransaksi.length - 3); // => "Tabs1"
-            data.notransk = 'LG-SR-KB-' + tglsekarang + '-00' + (Number(lastthree) + 1);
+            var data = {};
+            var panjangtransaksi = $scope.transaks.length
+            if( panjangtransaksi > 0)
+            {
+                var stringtransaksi = $scope.transaks[panjangtransaksi-1].notransk;
+                var lastthree       = stringtransaksi.substr(stringtransaksi.length - 3); // => "Tabs1"
+                data.notransk = 'LG-SR-KB-' + tglsekarang + '-00' + (Number(lastthree) + 1);
+                data.status   ='incomplete';
+            }
+            else
+            {
+                data.notransk = 'LG-SR-KB-' + tglsekarang + '-00' + ($scope.transaks.length + 1);
+                data.status   ='incomplete';
+            }
+
+            $scope.transaks.push(data);
+            StorageService.set('bookingtransaksi',$scope.transaks);
+            $scope.statusincomplete = 1;
         }
         else
         {
-            data.notransk = 'LG-SR-KB-' + tglsekarang + '-00' + ($scope.transaks.length + 1);
+            alert("Anda Belum Melakukan Inventory Penjualan.Silahkan Lakukan Inventory Terlebih Dahulu!");
         }
-        $scope.transaks.push(data);
-        StorageService.set('bookingtransaksi',$scope.transaks);
     }
-
-    
+    $scope.statusincomplete = _.findIndex($scope.transaks, {'status': 'incomplete'});
 
 })
 
 .controller('SalesCtrl', function($scope,$state,$ionicLoading,$ionicModal,UtilService,StorageService) 
 {
-
-    var array = 
-    [
-        {'id':1,'nama':'Risol A','harga':15000,'gambar':'img/risol.jpg','quantity':0,'maksimal':5},
-        {'id':2,'nama':'Lapis A','harga':13000,'gambar':'img/lapis-legit.jpg','quantity':0,'maksimal':6},
-        {'id':3,'nama':'Martabak A','harga':11000,'gambar':'img/martabak.JPG','quantity':0,'maksimal':7},
-        {'id':4,'nama':'Bika A','harga':14000,'gambar':'img/bika-ambon.jpg','quantity':0,'maksimal':8},
-        {'id':5,'nama':'Risol B','harga':12000,'gambar':'img/risol.jpg','quantity':0,'maksimal':9},
-        {'id':6,'nama':'Lapis B','harga':12000,'gambar':'img/lapis-legit.jpg','quantity':0,'maksimal':0},
-        {'id':7,'nama':'Martabak B','harga':12000,'gambar':'img/martabak.JPG','quantity':0,'maksimal':0},
-        {'id':8,'nama':'Bika B','harga':12000,'gambar':'img/bika-ambon.jpg','quantity':0,'maksimal':0}
-    ];
-
-
+    var arrayasli   = StorageService.get('barangpenjualan');
+    var array       = angular.copy(arrayasli);
     $scope.noresi   = StorageService.get('notransaksi');
     var resi        = StorageService.get($scope.noresi);
+    angular.forEach(array,function(value,key)
+    {
+        value.quantity = 0;
+    });
     if(resi)
     {
         angular.forEach(resi,function(value,key)
@@ -75,7 +79,7 @@ angular.module('starter')
             var itemaddtocart = _.findIndex(array, {'id': value.id});
             if(itemaddtocart != -1)
             {
-                array[itemaddtocart] = value;
+                array[itemaddtocart].quantity = value.quantity;
             }
         });
     }
@@ -87,11 +91,12 @@ angular.module('starter')
     $scope.datas = UtilService.ArrayChunk(array,4);
     $scope.AddToCart = function(item) 
     {
-
+        var indexarrayasli = _.findIndex(arrayasli, {'id': item.id});
         if(item.quantity == 0 && item.maksimal != 0)
         {
             item.quantity = 1;
             item.maksimal = item.maksimal - 1;
+            arrayasli[indexarrayasli].maksimal = arrayasli[indexarrayasli].maksimal - 1;
         }
         $ionicModal.fromTemplateUrl('templates/sales/addtocartmodal.html', 
         {
@@ -104,6 +109,7 @@ angular.module('starter')
             $scope.modal            = modal;
             $scope.modal.show();
             $scope.item = item;
+            StorageService.set('barangpenjualan',arrayasli);
         });  
     };
 
@@ -136,7 +142,7 @@ angular.module('starter')
 
     $scope.incdec = function(data)
     {
-
+        var indexarrayasli = _.findIndex(arrayasli, {'id': $scope.item.id});
         if(data == 'inc')
         {
             if($scope.item.maksimal == 0)
@@ -155,6 +161,7 @@ angular.module('starter')
             {
                 $scope.item.quantity +=1;
                 $scope.item.maksimal -=1;
+                arrayasli[indexarrayasli].maksimal = arrayasli[indexarrayasli].maksimal - 1;
             }
         }
         else if(data == 'dec')
@@ -167,12 +174,18 @@ angular.module('starter')
             {
                 $scope.item.quantity -=1;
                 $scope.item.maksimal +=1;
+                arrayasli[indexarrayasli].maksimal = arrayasli[indexarrayasli].maksimal + 1;
             }
         }
+        StorageService.set('barangpenjualan',arrayasli);
     }
+
     $scope.clearquantity = function()
     {
         $scope.item.maksimal = $scope.item.maksimal + $scope.item.quantity;
+        var indexarrayasli = _.findIndex(arrayasli, {'id': $scope.item.id});
+        arrayasli[indexarrayasli].maksimal = $scope.item.quantity;
+        StorageService.set('barangpenjualan',arrayasli);
         $scope.item.quantity = 0;
     }
 
@@ -185,8 +198,7 @@ angular.module('starter')
         else
         {
             alert("Belum Ada Item Yang Dipilih");
-        }
-        
+        } 
     } 
 })
 
@@ -240,9 +252,8 @@ angular.module('starter')
         alert("Belanjaan Anda Berhasil Diproses.Total Pembayaran = Rp. " + $scope.total);
         var bookingtransaksi        = StorageService.get('bookingtransaksi');
         var indexbookingtransaksi   = _.findIndex(bookingtransaksi, {'notransk': $scope.noresi});
-        bookingtransaksi.splice(indexbookingtransaksi,1);
+        bookingtransaksi[indexbookingtransaksi].status = 'complete';
         StorageService.set('bookingtransaksi',bookingtransaksi);
-        StorageService.destroy(noresi);
         StorageService.destroy('notransaksi');
         $ionicHistory.nextViewOptions({disableAnimate: true, disableBack: true});
         $state.go('tab.cashier');

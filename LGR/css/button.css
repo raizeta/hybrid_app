@@ -25,3 +25,13 @@ body {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4) !important;
   background: #e42112 !important;
 }
+
+.large_button {
+  line-height: 20vh !important;
+  width: 50%;
+}
+
+.small_button {
+  line-height: 25px !important;
+  min-height: 35px !important;
+}

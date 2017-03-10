@@ -18,11 +18,14 @@ angular.module('starter')
 
     var SerializeObject = function (objecttoserialize) 
     {
-        var result={};
+        var resultobjecttoserialize = {};
         function serializeObj(obj) 
         {
             var result = [];
-            for (var property in obj) result.push(encodeURIComponent(property) + "=" + encodeURIComponent(obj[property]));
+            for (var property in obj) 
+            {
+              result.push(encodeURIComponent(property) + "=" + encodeURIComponent(obj[property]));
+            }
             return result.join("&");
         }
         
@@ -35,10 +38,10 @@ angular.module('starter')
                 'Content-Type': 'application/x-www-form-urlencoded;application/json;charset=utf-8;'   
             }
         };
-        result.serialized   = serialized;
-        result.config       = config;
+        resultobjecttoserialize.serialized   = serialized;
+        resultobjecttoserialize.config       = config;
 
-        return result;
+        return resultobjecttoserialize;
     }
 
     var SumPriceQtyWithCondition = function(items,price,qty,condition)

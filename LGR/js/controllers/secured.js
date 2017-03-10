@@ -1,6 +1,20 @@
 angular.module('starter')
-.controller('LoginCtrl', function($scope, $state, $ionicPopup,$ionicLoading,SecuredFac) 
+.controller('LoginCtrl', function($scope, $state, $ionicPopup,$ionicLoading,SecuredFac,StoreFac,StorageService) 
 {
+    StoreFac.GetStores()
+    .then(function(response)
+    {
+        $scope.datastore = response;
+    },
+    function(error)
+    {
+        console.log(error)
+    })
+    .finally(function()
+    {
+        console.log("Sukses");
+    });
+
     $scope.login = function (user) 
     {
         $ionicLoading.show
@@ -8,15 +22,18 @@ angular.module('starter')
             template: 'Loading...'
         });
 
+        
+
         $scope.disableInput = true;
         $scope.users    = angular.copy(user);
         var username    = $scope.users.username;
         var password    = $scope.users.password;
-        
+        var lokasistore = $scope.users.lokasistore
+            
+
         SecuredFac.Login(username, password)
         .then(function (result) 
         {
-            console.log(result);
             if(result == 'username_salah')
             {
                 var alertPopup = $ionicPopup.alert({
@@ -37,9 +54,9 @@ angular.module('starter')
             }
             else
             {
+                StorageService.set('LokasiStore',lokasistore);
                 $state.go('tab.cashier', {}, {reload: true});
             }   
-            
         }, 
         function (err) 
         {          

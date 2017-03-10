@@ -16,6 +16,17 @@
                               <span class="input-label">Your Password</span>
                                 <input type="password" ng-model="users.password" class="form-control" placeholder="password" required>
                             </label>
+                            <label class="item item-input item-select">
+                                <div class="input-label">
+                                  LOKASI STORE
+                                </div>
+<!--                                 <select ng-model="users.lokasistore" required>
+                                  <option ng-repeat="item in datastore" ng-value="">{{item.OUTLET_NM}}</option>
+                                </select> -->
+                                <select ng-model="users.lokasistore" ng-options="item.OUTLET_NM for item in datastore" required>
+                                  <option value="">-- Pilih Store --</option>
+                                </select>
+                            </label>
                         </div>
                         <button type="submit" class="button button-block button-assertive" ng-disabled="loginForm.$invalid">
                           Login
