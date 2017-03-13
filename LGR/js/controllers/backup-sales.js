@@ -184,7 +184,7 @@ angular.module('starter')
     {
         $scope.item.maksimal = $scope.item.maksimal + $scope.item.quantity;
         var indexarrayasli = _.findIndex(arrayasli, {'id': $scope.item.id});
-        arrayasli[indexarrayasli].maksimal = $scope.item.maksimal;
+        arrayasli[indexarrayasli].maksimal = $scope.item.quantity;
         StorageService.set('barangpenjualan',arrayasli);
         $scope.item.quantity = 0;
     }
