@@ -1,0 +1,26 @@
+<ion-view view-title="SYNC PENJUALAN {{tglsekarang}}">
+  <ion-content>
+        <div class="row" ng-repeat="items in datas" ng-if="items.status != 'incomplete'">
+          <div class ="col">
+            <button class="button button-stable small_button">
+              {{items.notransk|uppercase}}
+            </button>
+          </div>
+          <div class ="col">
+            <button class="button button-positive small_button">
+              3 Items
+            </button>
+          </div>
+          <div class ="col">
+            <button class="button button-balanced small_button">
+              Rp. {{100000|number}}
+            </button>
+          </div>
+          <div class ="col">
+            <button class="button button-positive small_button  ion-checkmark-circled"  
+              ng-click="rechecked(items)">
+            </button>
+          </div>
+        </div>
+  </ion-content>
+</ion-view>

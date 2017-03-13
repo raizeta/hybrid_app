@@ -2,47 +2,70 @@
   <ion-content>
         <div class="row" ng-repeat="items in datas">
           <div class ="col">
-            <button class="button button-stable button-small">
-              {{items.ItemNm|capitalize}}
+            <button class="button button-stable small_button">
+              {{items.ITEM_NM|capitalize}}
             </button>
           </div>
           <div class ="col">
-            <button class="button button-outline button-stable button-small">50</button>
-            <button class="button button-outline button-stable button-small">0</button>
-            <button class="button button-outline button-stable button-small">50</button>
+            <button class="button  button-balanced small_button">
+              {{items.ITEM_QTY}}
+            </button>
+            <button class="button  button-positive small_button">
+              {{items.qtychecked}}
+            </button>
+            <button class="button  button-calm small_button">
+              {{items.sellout}}
+            </button>
+            <button class="button  button-stable small_button">
+              {{items.qtychecked - items.sellout}}
+            </button>
           </div>
           <div class ="col">
-            <button class="button button-dark button-small icon ion-videocamera" ng-click="deleteone(item)"></button>
+            <button class="button button-dark small_button ion-videocamera" ng-click="deleteone(item)">
+            </button>
           </div>
           <div class ="col">
-            <button class="button button-outline button-calm button-small ion-minus" ng-click="incdec('dec',item)" ></button>
-            <button class="button button-outline button-stable button-small">0</button>
-            <button class="button button-outline button-positive button-small ion-plus" ng-click="incdec('inc',item)"></button>
+            <button class="button  button-calm small_button" ng-click="incdec('dec',items,10)">
+              10
+            </button>
+            <button class="button  button-calm small_button ion-minus" ng-click="incdec('dec',items,1)" >
+            </button>
+            <button class="button  button-stable small_button">
+              {{items.qtybooking}}
+            </button>
+            <button class="button  button-positive small_button ion-plus" ng-click="incdec('inc',items,1)">
+            </button>
+            <button class="button  button-calm small_button" ng-click="incdec('inc',items,10)">
+              10
+            </button>
           </div>
-          <div class ="col">
-            <button class="button button-outline button-positive button-small icon ion-ios-help-outline" ng-click="deleteone(item)"></button>
-          </div>
+          <!-- <div class ="col">
+            <button class="button  button-positive small_button ion-ios-help-outline" ng-click="deleteone(item)"></button>
+          </div> -->
         </div>
-        <div class="row">
+        <button class="button button-dark button-block" ng-click="submitbooking(datas)">
+          BOOKING
+        </button>
+        <!-- <div class="row">
           <div class ="col">
-            <button class="button button-stable button-small">Risol Medan</button>
+            <button class="button button-stable small_button">Risol Medan</button>
           </div>
           <div class ="col">
-            <button class="button button-outline button-stable button-small">10</button>
-            <button class="button button-outline button-stable button-small">8</button>
-            <button class="button button-outline button-stable button-small">2</button>
+            <button class="button  button-stable small_button">10</button>
+            <button class="button  button-stable small_button">8</button>
+            <button class="button  button-stable small_button">2</button>
           </div>
           <div class ="col">
-            <button class="button button-balanced button-small icon ion-checkmark-round" ng-click="deleteone(item)"></button>
+            <button class="button button-balanced small_button icon ion-checkmark-round" ng-click="deleteone(item)"></button>
           </div>
           <div class ="col">
-            <button class="button button-outline button-calm button-small ion-minus" ng-click="incdec('dec',item)" ></button>
-            <button class="button button-balanced button-stable button-small">10</button>
-            <button class="button button-outline button-positive button-small ion-plus" ng-click="incdec('inc',item)"></button>
+            <button class="button  button-calm small_button ion-minus" ng-click="incdec('dec',item)" ></button>
+            <button class="button button-balanced button-stable small_button">10</button>
+            <button class="button  button-positive small_button ion-plus" ng-click="incdec('inc',item)"></button>
           </div>
           <div class ="col">
-            <button class="button button-balanced button-small icon ion-checkmark-circled" ng-click="deleteone(item)"></button>
+            <button class="button button-balanced small_button icon ion-checkmark-circled" ng-click="deleteone(item)"></button>
           </div>
-        </div>
+        </div> -->
   </ion-content>
 </ion-view>

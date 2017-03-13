@@ -38,4 +38,17 @@ angular.module('starter')
           },
     });
 
+    $stateProvider.state('tab.checkstore.sync', 
+    {
+          url: "/sync",
+          views: 
+          {
+              'checkstore-sync': 
+              {
+                  templateUrl: "templates/checkstore/sync.html",
+                  controller:'SyncCtrl'
+              }
+          },
+    });
+
 });
