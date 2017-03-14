@@ -16,12 +16,10 @@
             <button class="button  button-calm small_button">
               {{items.sellout}}
             </button>
-            <button class="button  button-stable small_button">
+            <button class="button  button-assertive small_button">
               {{items.qtychecked - items.sellout}}
             </button>
-          </div>
-          <div class ="col">
-            <button class="button button-dark small_button ion-videocamera" ng-click="deleteone(item)">
+            <button class="button button-dark small_button ion-videocamera">
             </button>
           </div>
           <div class ="col">
@@ -43,7 +41,7 @@
             <button class="button  button-positive small_button ion-ios-help-outline" ng-click="deleteone(item)"></button>
           </div> -->
         </div>
-        <button class="button button-dark button-block" ng-click="submitbooking(datas)">
+        <button class="button button-dark button-block" ng-click="submitbooking(datas)" ng-if="datas.length > 0">
           BOOKING
         </button>
         <!-- <div class="row">

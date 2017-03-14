@@ -1,11 +1,11 @@
 angular.module('starter')
 .factory('ProductFac',function($http, $q, $window,$rootScope,UtilService)
 {
-    var GetProducts = function(username,password,uuid)
+    var GetProducts = function(kodestore)
     {
         var deferred        = $q.defer();
         var globalurl       = UtilService.ApiUrl();
-        var url             = globalurl + "efenbi-rasasayang/item-groups?OUTLET_ID=0001";
+        var url             = globalurl + "efenbi-rasasayang/item-groups?OUTLET_ID=" + kodestore;
         var method          = "GET";
         $http({method:method, url:url,cache:false})
         .success(function(response) 

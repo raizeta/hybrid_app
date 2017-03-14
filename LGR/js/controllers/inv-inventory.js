@@ -45,14 +45,14 @@ angular.module('starter')
         else
         {
             $scope.typeinv  = 2;
-            $scope.tglinv   = $filter('date')(kemarin,'yyyy-MM-dd');
+            $scope.tglinv   = $scope.tglsekarang;
             $scope.gettransaksi();
         }
     }
     else
     {
-        $scope.typeinv = 2;
-        $scope.tglinv   = $filter('date')(kemarin,'yyyy-MM-dd');
+        $scope.typeinv  = 2;
+        $scope.tglinv   = $scope.tglsekarang;
         $scope.gettransaksi();
     }
     

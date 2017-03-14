@@ -8,17 +8,17 @@
           </div>
           <div class ="col">
             <button class="button button-positive small_button">
-              3 Items
+              {{items.jumlahitem}} Item
             </button>
           </div>
           <div class ="col">
             <button class="button button-balanced small_button">
-              Rp. {{100000|number}}
+              Rp. {{items.subtotal|number}}
             </button>
           </div>
           <div class ="col">
             <button class="button button-positive small_button  ion-checkmark-circled"  
-              ng-click="rechecked(items)">
+              ng-click="synctoserver(items)">
             </button>
           </div>
         </div>
