@@ -49,8 +49,31 @@ angular.module('starter')
         return deferred.promise;  
     }
 
+    var SetTranskasiClosing = function(data)
+    {
+        var deferred            = $q.defer();
+        var globalurl           = UtilService.ApiUrl();      
+        var url                 = globalurl + "efenbi-rasasayang/transaksi-closings";
+
+        var result              = UtilService.SerializeObject(data);
+        var serialized          = result.serialized;
+        var config              = result.config;
+
+        $http.post(url,serialized,config)
+        .success(function(data,status,headers,config) 
+        {
+            deferred.resolve(data);
+        })
+        .error(function(err,status)
+        {
+            deferred.reject(err);
+        });
+        return deferred.promise;  
+    }
+
 	return{
             GetTransaksis:GetTransaksis,
-            SetTranskasi:SetTranskasi
+            SetTranskasi:SetTranskasi,
+            SetTranskasiClosing:SetTranskasiClosing
         }
 });

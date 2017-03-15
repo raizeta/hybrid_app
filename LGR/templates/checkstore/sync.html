@@ -1,5 +1,6 @@
 <ion-view view-title="SYNC PENJUALAN {{tglsekarang}}">
   <ion-content>
+    <ion-list>
         <div class="row" ng-repeat="items in datas" ng-if="items.status != 'incomplete'">
           <div class ="col">
             <button class="button button-positive small_button">
@@ -22,5 +23,10 @@
             </button>
           </div>
         </div>
+        <div class="row" ng-if="datas.length == 0">
+          Data Yang Perlu Disinkronisasi Masih Kosong
+        </div>
+    </ion-list>
+    <ion-list style="padding:10px"></ion-list>
   </ion-content>
 </ion-view>

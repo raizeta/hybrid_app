@@ -1,5 +1,6 @@
 <ion-view view-title="BOOKING {{tglsekarang}}">
-  <ion-content>
+  <ion-content class="padding">
+    <ion-list>
         <div class="row" ng-repeat="items in datas">
           <div class ="col">
             <button class="button button-stable small_button">
@@ -19,7 +20,9 @@
             <button class="button  button-assertive small_button">
               {{items.qtychecked - items.sellout}}
             </button>
-            <button class="button button-dark small_button ion-videocamera">
+            <button class="button button-dark small_button ion-videocamera" ng-click="saveimagesisa(items)" ng-if="!items.statussinkron">
+            </button>
+            <button class="button button-balanced small_button ion-videocamera" ng-if="items.statussinkron == true">
             </button>
           </div>
           <div class ="col">
@@ -65,5 +68,7 @@
             <button class="button button-balanced small_button icon ion-checkmark-circled" ng-click="deleteone(item)"></button>
           </div>
         </div> -->
+    </ion-list>
+    <ion-list style="padding:10px"></ion-list>
   </ion-content>
 </ion-view>

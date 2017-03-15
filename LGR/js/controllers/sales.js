@@ -35,22 +35,31 @@ angular.module('starter')
         if(localbarangpenjualan)
         {
             var data = {};
-            var panjangtransaksi = $scope.transaks.length
-            if( panjangtransaksi > 0)
+            var lastbooking = StorageService.get('LastBooking');
+            if(lastbooking)
             {
-                var stringtransaksi = $scope.transaks[panjangtransaksi-1].notransk;
-                var lastthree       = stringtransaksi.substr(stringtransaksi.length - 3); // => "Tabs1"
-                data.notransk = 'LG-SR-KB-' + tglsekarang + '-00' + (Number(lastthree) + 1);
-                data.status   ='incomplete';
+                if(lastbooking.tglbooking == tglsekarang)
+                {
+                    var lastbookingserialnumber = lastbooking.databooking;
+                    var lastthree = lastbookingserialnumber.substr(lastbookingserialnumber.length - 3); // => "Tabs1"
+                    data.notransk = 'LG-SR-KB-' + tglsekarang + '-00' + (Number(lastthree) + 1);
+                    data.status   ='incomplete';  
+                }
+                else
+                {
+                    data.notransk = 'LG-SR-KB-' + tglsekarang + '-001';
+                    data.status   ='incomplete';  
+                } 
             }
             else
             {
-                data.notransk = 'LG-SR-KB-' + tglsekarang + '-00' + ($scope.transaks.length + 1);
+                data.notransk = 'LG-SR-KB-' + tglsekarang + '-001';
                 data.status   ='incomplete';
             }
 
             $scope.transaks.push(data);
             StorageService.set('bookingtransaksi',$scope.transaks);
+            StorageService.set('LastBooking',{'databooking':data.notransk,'tglbooking':tglsekarang});
             $scope.statusincomplete = 1;
         }
         else

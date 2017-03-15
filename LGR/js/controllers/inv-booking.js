@@ -14,6 +14,7 @@ angular.module('starter')
             brgpenjualanasli[indexproduct].qtybooking = 0;
         });
         $scope.datas = brgpenjualanasli; 
+        console.log($scope.datas);
     }
     else
     {
@@ -134,6 +135,45 @@ angular.module('starter')
                 });
             }
         });
- 
+    }
+
+    $scope.saveimagesisa = function(items)
+    {
+        var indexproduct = _.findIndex($scope.datas, {'ITEM_ID': items.ITEM_ID});
+        $ionicLoading.show
+        ({
+          template: 'Saving...'
+        })
+        .then(function()
+        {
+            var data = {};
+            data.ITEM_BARCODE   = items.ITEM_ID;
+            data.OUTLET_ID      = items.OUTLET_ID;
+            data.BUY            = items.ITEM_QTY;
+            data.RCVD           = items.qtychecked;
+            data.SELL           = items.sellout;
+            data.SISA           = items.qtychecked - items.sellout;
+            data.IMG64          = "Kamera Masih Rusak";
+            data.CREATE_BY      = $scope.profile.id;
+            data.CREATE_AT      = $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss');
+            data.TRANS_DATE     = $filter('date')(new Date(),'yyyy-MM-dd'); 
+            data.STATUS         = 1;
+            TransaksiFac.SetTranskasiClosing(data)
+            .then(function(response)
+            {
+                console.log(response);
+                $scope.datas[indexproduct].statussinkron = true;
+                console.log($scope.datas);
+                StorageService.set('BrgPenjualan',$scope.datas);
+            },
+            function(error)
+            {
+                console.log(error)
+            })
+            .finally(function()
+            {
+                $ionicLoading.show({template: 'Saving...',duration: 500});
+            });
+        });
     }
 });
