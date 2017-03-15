@@ -1,5 +1,5 @@
 angular.module('starter')
-.controller('CashierCtrl', function($scope,$filter,$state,$ionicLoading,$ionicModal,StorageService,ProductFac) 
+.controller('CashierCtrl', function($scope,$filter,$state,$ionicLoading,$ionicPopup,$ionicModal,StorageService,ProductFac) 
 {
     $scope.profile      = StorageService.get('profile');
     $scope.lokasistore  = StorageService.get('LokasiStore');
@@ -59,10 +59,9 @@ angular.module('starter')
         }
     }
     $scope.statusincomplete = _.findIndex($scope.transaks, {'status': 'incomplete'});
-
 })
 
-.controller('SalesCtrl', function($scope,$state,$ionicLoading,$ionicModal,UtilService,StorageService) 
+.controller('SalesCtrl', function($scope,$state,$ionicLoading,$ionicPopup,$ionicModal,UtilService,StorageService) 
 {
     var arrayasli   = StorageService.get('barangpenjualan');
     var array       = angular.copy(arrayasli);
@@ -202,7 +201,7 @@ angular.module('starter')
     } 
 })
 
-.controller('CartCtrl', function($scope,$state,$ionicLoading,$ionicModal,$ionicHistory,$ionicNavBarDelegate,UtilService,StorageService) 
+.controller('CartCtrl', function($scope,$state,$ionicLoading,$ionicPopup,$ionicModal,$ionicHistory,$ionicNavBarDelegate,UtilService,StorageService) 
 {
     $scope.noresi   = StorageService.get('notransaksi');
     var resi        = StorageService.get($scope.noresi);
@@ -249,13 +248,25 @@ angular.module('starter')
     $scope.total = UtilService.SumPriceWithQty($scope.datas,'harga','quantity');
     $scope.pembayaran = function(noresi)
     {
-        alert("Belanjaan Anda Berhasil Diproses.Total Pembayaran = Rp. " + $scope.total);
-        var bookingtransaksi        = StorageService.get('bookingtransaksi');
-        var indexbookingtransaksi   = _.findIndex(bookingtransaksi, {'notransk': $scope.noresi});
-        bookingtransaksi[indexbookingtransaksi].status = 'complete';
-        StorageService.set('bookingtransaksi',bookingtransaksi);
-        StorageService.destroy('notransaksi');
-        $ionicHistory.nextViewOptions({disableAnimate: true, disableBack: true});
-        $state.go('tab.cashier');
+
+        var confirmPopup = $ionicPopup.confirm(
+                                {
+                                    title: 'Pembayaran',
+                                    template: 'Are you sure to pay this cart?'
+                                });
+        confirmPopup.then(function(res) 
+        {
+            if(res) 
+            {
+                var bookingtransaksi        = StorageService.get('bookingtransaksi');
+                var indexbookingtransaksi   = _.findIndex(bookingtransaksi, {'notransk': $scope.noresi});
+                bookingtransaksi[indexbookingtransaksi].status = 'complete';
+                StorageService.set('bookingtransaksi',bookingtransaksi);
+                StorageService.destroy('notransaksi');
+                $ionicHistory.nextViewOptions({disableAnimate: true, disableBack: true});
+                $state.go('tab.cashier');
+            } 
+        });
+
     }
 });

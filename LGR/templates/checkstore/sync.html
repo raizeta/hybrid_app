@@ -2,7 +2,7 @@
   <ion-content>
         <div class="row" ng-repeat="items in datas" ng-if="items.status != 'incomplete'">
           <div class ="col">
-            <button class="button button-stable small_button">
+            <button class="button button-positive small_button">
               {{items.notransk|uppercase}}
             </button>
           </div>
@@ -12,7 +12,7 @@
             </button>
           </div>
           <div class ="col">
-            <button class="button button-balanced small_button">
+            <button class="button button-positive small_button">
               Rp. {{items.subtotal|number}}
             </button>
           </div>

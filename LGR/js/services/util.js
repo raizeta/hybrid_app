@@ -21,12 +21,33 @@ angular.module('starter')
         var resultobjecttoserialize = {};
         function serializeObj(obj) 
         {
-            var result = [];
-            for (var property in obj) 
+            // var result = [];
+            // for (var property in obj) 
+            // {
+            //   result.push(encodeURIComponent(property) + "=" + encodeURIComponent(obj[property]));
+            // }
+            // return result.join("&");
+
+            var str = [];
+            for (var key in obj) 
             {
-              result.push(encodeURIComponent(property) + "=" + encodeURIComponent(obj[property]));
+                if (obj[key] instanceof Array) 
+                {
+                    for(var idx in obj[key])
+                    {
+                        var subObj = obj[key][idx];
+                        for(var subKey in subObj)
+                        {
+                            str.push(encodeURIComponent(key) + "[" + idx + "][" + encodeURIComponent(subKey) + "]=" + encodeURIComponent(subObj[subKey]));
+                        }
+                    }
+                }
+                else 
+                {
+                    str.push(encodeURIComponent(key) + "=" + encodeURIComponent(obj[key]));
+                }
             }
-            return result.join("&");
+            return str.join("&");
         }
         
         var serialized = serializeObj(objecttoserialize); 

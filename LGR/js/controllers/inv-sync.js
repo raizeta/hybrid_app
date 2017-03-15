@@ -5,6 +5,7 @@ function($scope,$ionicLoading,$filter,$ionicModal,UtilService,StorageService,Tra
     $scope.tglsekarang      = $filter('date')(new Date(),'dd-MM-yyyy');
     $scope.datas            = StorageService.get('bookingtransaksi');
     var barangpenjualan 	= StorageService.get('BrgPenjualan');
+    var lokasistore         = StorageService.get('LokasiStore');
     angular.forEach($scope.datas,function(value,key)
     {
         var itembelanja = StorageService.get(value.notransk);
@@ -20,6 +21,16 @@ function($scope,$ionicLoading,$filter,$ionicModal,UtilService,StorageService,Tra
         {
             itempembeliandengannomortransaksi[i].ITEM_QTY    = itempembeliandengannomortransaksi[i].quantity;
             itempembeliandengannomortransaksi[i].TRANS_TYPE  = 4;
+            itempembeliandengannomortransaksi[i].ITEM_NM     = itempembeliandengannomortransaksi[i].nama;
+            itempembeliandengannomortransaksi[i].ITEM_ID     = itempembeliandengannomortransaksi[i].ITEM_ID;
+            itempembeliandengannomortransaksi[i].CREATE_AT   = $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss');;
+            itempembeliandengannomortransaksi[i].CREATE_BY   = $scope.profile.id;
+            itempembeliandengannomortransaksi[i].USER_ID     = $scope.profile.id;
+            itempembeliandengannomortransaksi[i].OUTLET_ID   = lokasistore.OUTLET_BARCODE;
+            itempembeliandengannomortransaksi[i].OUTLET_NM   = lokasistore.OUTLET_NM;
+            itempembeliandengannomortransaksi[i].TRANS_ID    = nomortransaksi;
+            itempembeliandengannomortransaksi[i].STATUS      = 1;
+            console.log(itempembeliandengannomortransaksi[i]);
             TransaksiFac.SetTranskasi(itempembeliandengannomortransaksi[i])
             .then(function(response)
             {
@@ -41,9 +52,6 @@ function($scope,$ionicLoading,$filter,$ionicModal,UtilService,StorageService,Tra
             {
 
             });
-
-            
-
         }
     }
 });

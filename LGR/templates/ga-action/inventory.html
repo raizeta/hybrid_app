@@ -1,4 +1,4 @@
-<ion-view view-title="INVENTORY {{tglsekarang}}">
+<ion-view view-title="BUY {{tglsekarang}}">
   <ion-content>
       <ion-list>
         <label class = "item item-input item-select">
@@ -10,7 +10,9 @@
               <option value="">-- Pilih Store --</option>
             </select>
         </label>
-        
+        <div class="row" ng-show="showbelumbooking">
+          Belum Melakukan Booking.
+        </div>
         <div class="row" ng-repeat="items in datas">
           <div class ="col">
             <button class="button button-stable small_button">

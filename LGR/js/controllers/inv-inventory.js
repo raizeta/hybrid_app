@@ -1,5 +1,5 @@
 angular.module('starter')
-.controller('InventoryCtrl', function($scope,$ionicLoading,$filter,$ionicModal,UtilService,StorageService,ProductFac,TransaksiFac) 
+.controller('InventoryCtrl', function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,StorageService,ProductFac,TransaksiHeaderFac,TransaksiFac) 
 {
 	$scope.tglsekarang  = $filter('date')(new Date(),'yyyy-MM-dd');
     var kemarin     = new Date();
@@ -78,118 +78,92 @@ angular.module('starter')
 
     $scope.submitinventory = function(datafromview)
     {
-        var datas = angular.copy(datafromview);
-        StorageService.set('BrgPenjualan',datas);
-        angular.forEach(datas,function(value,key)
+        var confirmPopup = $ionicPopup.confirm(
         {
-            value.ITEM_QTY          = value.qtychecked;
-            value.TYPE              = 'RCVD';
-            value.TRANS_TYPE        = 3;
-            value.USER_ID           = $scope.profile.id;
-            value.CREATE_BY         = $scope.profile.id;
-            value.CREATE_AT         = $filter('date')(new Date(),'yyyy-MM-dd H:m:s');
-            
-            TransaksiFac.SetTranskasi(value)
-            .then(function(response)
-            {
-                $scope.typeinv = 3 
-                var statusinventory = {};
-                statusinventory.statuscheck     = 'CHECKED';
-                statusinventory.tanggalcheck    = $scope.tglsekarang;
-                StorageService.set('InventoryStatus',statusinventory);
-            },
-            function(error)
-            {
-                var statusinventory = {};
-                statusinventory.statuscheck     = 'CHECKED';
-                statusinventory.tanggalcheck    = $scope.tglsekarang;
-                StorageService.set('InventoryStatus',statusinventory);
-                $scope.typeinv = 2;
-            })
-            .finally(function()
-            {
-
-            });
-
+            title: 'Submit Inventory',
+            template: 'Are you sure to submit this inventory to Server?'
         });
-
-        var barangpenjualan = [];
-        angular.forEach(datafromview,function(value,key)
+        confirmPopup.then(function(res) 
         {
-            var datapenjualan       = {};
-            datapenjualan.id        = value.ID;
-            datapenjualan.nama      = value.ITEM_NM;
-            datapenjualan.harga     = Number(value.ITEM_HARGA);
-            datapenjualan.maksimal  = value.qtychecked;
-            datapenjualan.gambar    = 'img/bika-ambon.jpg';
-            barangpenjualan.push(datapenjualan);
+            if(res) 
+            {
+                var datadetail = angular.copy(datafromview);
+                StorageService.set('BrgPenjualan',datadetail);
+                var dataheader  = {'OUTLET_ID':datadetail[0].OUTLET_ID,'TRANS_TYPE':3};
+                $ionicLoading.show
+                ({
+                  template: 'Saving...'
+                })
+                .then(function()
+                {
+                    TransaksiHeaderFac.SetTranskasiHeader(dataheader)
+                    .then(function(responseserver)
+                    {
+                        if(responseserver.handling == "exist")
+                        {
+                            console.log("Sudah Ada");
+                        }
+                        else
+                        {
+                            angular.forEach(datadetail,function(value,key)
+                            {
+                                value.ITEM_QTY          = value.qtychecked;
+                                value.TYPE              = 'RCVD';
+                                value.TRANS_ID          = responseserver.TRANS_ID;
+                                value.TRANS_TYPE        = 3;
+                                value.USER_ID           = $scope.profile.id;
+                                value.CREATE_BY         = $scope.profile.id;
+                                value.CREATE_AT         = $filter('date')(new Date(),'yyyy-MM-dd H:m:s');
+                                
+                                TransaksiFac.SetTranskasi(value)
+                                .then(function(response)
+                                {
+                                    $scope.typeinv = 3 
+                                    var statusinventory = {};
+                                    statusinventory.statuscheck     = 'CHECKED';
+                                    statusinventory.tanggalcheck    = $scope.tglsekarang;
+                                    StorageService.set('InventoryStatus',statusinventory);
+                                },
+                                function(error)
+                                {
+                                    var statusinventory = {};
+                                    statusinventory.statuscheck     = 'CHECKED';
+                                    statusinventory.tanggalcheck    = $scope.tglsekarang;
+                                    StorageService.set('InventoryStatus',statusinventory);
+                                    $scope.typeinv = 2;
+                                })
+                                .finally(function()
+                                {
+
+                                });
+                            });
+                        }
+                    },
+                    function(error)
+                    {
+                        console.log(error);
+                    })
+                    .finally(function()
+                    {
+                        $ionicLoading.show({template: 'Saving...',duration: 500});
+                    });
+                });
+
+                var barangpenjualan = [];
+                angular.forEach(datafromview,function(value,key)
+                {
+                    var datapenjualan       = {};
+                    datapenjualan.id        = value.ID;
+                    datapenjualan.ITEM_ID   = value.ITEM_ID;
+                    datapenjualan.nama      = value.ITEM_NM;
+                    datapenjualan.harga     = Number(value.ITEM_HARGA);
+                    datapenjualan.maksimal  = value.qtychecked;
+                    datapenjualan.gambar    = 'img/bika-ambon.jpg';
+                    barangpenjualan.push(datapenjualan);
+                });
+                StorageService.set('barangpenjualan',barangpenjualan);
+            }
         });
-        StorageService.set('barangpenjualan',barangpenjualan);
          
     }
-})
-
-.controller('BookingCtrl', function($scope,$ionicLoading,$filter,$ionicModal,UtilService,StorageService,TransaksiFac) 
-{
-    $scope.tglsekarang      = $filter('date')(new Date(),'dd-MM-yyyy');
-    var brgpenjualanasli    = StorageService.get('BrgPenjualan');
-    var brgpenjualanstore   = StorageService.get('barangpenjualan');
-    angular.forEach(brgpenjualanstore,function(value,key)
-    {
-        var indexproduct = _.findIndex(brgpenjualanasli, {'ID': value.id});
-        brgpenjualanasli[indexproduct].sellout = brgpenjualanasli[indexproduct].qtychecked - value.maksimal;
-        brgpenjualanasli[indexproduct].qtybooking = 0;
-    });
-    $scope.datas = brgpenjualanasli;
-    $scope.incdec = function(incordec,items,valueincdec)
-    {
-        if(incordec == 'inc')
-        {
-            items.qtybooking += valueincdec;
-        }
-        else if(incordec == 'dec')
-        {
-           var qtybookingcopy           = angular.copy(items);
-           qtybookingcopy.qtybooking   -= valueincdec;
-           if(qtybookingcopy.qtybooking >= 0)
-           {
-                items.qtybooking   -= valueincdec;
-           }
-        } 
-    }
-    $scope.submitbooking    = function(datafromview)
-    {
-        var datas = angular.copy(datafromview);
-        angular.forEach(datas,function(value,key)
-        {
-            value.ITEM_QTY          = value.qtybooking;
-            value.TYPE              = 'BOOKING';
-            value.TRANS_TYPE        = 1;
-            value.USER_ID           = $scope.profile.id;
-            value.CREATE_BY         = $scope.profile.id;
-            value.CREATE_AT         = $filter('date')(new Date(),'yyyy-MM-dd H:m:s');
-            
-            TransaksiFac.SetTranskasi(value)
-            .then(function(response)
-            {
-                console.log(response)
-            },
-            function(error)
-            {
-                console.log(error);
-            })
-            .finally(function()
-            {
-
-            });
-
-        });    
-    }
-})
-
-.controller('SyncCtrl', 
-function($scope,$ionicLoading,$filter,$ionicModal,UtilService,StorageService,TransaksiFac) 
-{
-    $scope.tglsekarang      = $filter('date')(new Date(),'dd-MM-yyyy');
-    $scope.datas            = StorageService.get('bookingtransaksi');
 });
