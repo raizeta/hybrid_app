@@ -1,6 +1,15 @@
 angular.module('starter')
-.controller('CashierCtrl', function($scope,$filter,$state,$ionicLoading,$ionicPopup,$ionicModal,StorageService,ProductFac) 
+.controller('CashierCtrl', function($scope,$filter,$state,$ionicLoading,$ionicPopup,$ionicModal,StorageService,ProductFac,ProductCombFac) 
 {
+    ProductCombFac.GetPureProductComb()
+    .then(function(response)
+    {
+        console.log(response);
+    },
+    function(error)
+    {
+        console.log(error);
+    });
     $scope.profile      = StorageService.get('profile');
     $scope.lokasistore  = StorageService.get('LokasiStore');
     if($scope.profile.gambar == 'none')
@@ -68,6 +77,7 @@ angular.module('starter')
         }
     }
     $scope.statusincomplete = _.findIndex($scope.transaks, {'status': 'incomplete'});
+    console.log($filter('currency')(12000));
 })
 
 .controller('SalesCtrl', function($scope,$state,$ionicLoading,$ionicPopup,$ionicModal,UtilService,StorageService) 

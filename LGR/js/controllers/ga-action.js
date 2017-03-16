@@ -1,6 +1,6 @@
 angular.module('starter')
 .controller('GaInventoryCtrl', 
-function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,StorageService,StoreFac,TransaksiHeaderFac,TransaksiFac,ProductFac) 
+function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,StorageService,StoreCombFac,TransaksiHeaderFac,TransaksiFac,ProductFac) 
 {
     $scope.tglsekarang      = $filter('date')(new Date(),'dd-MM-yyyy');
     var kemarin     = new Date();
@@ -12,14 +12,14 @@ function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,Storag
     })
     .then(function()
     {
-        StoreFac.GetStores()
+        StoreCombFac.GetPureStoreComb()
         .then(function(response)
         {
-        	$scope.stores = response;
+            $scope.stores = response;
         },
         function(error)
         {
-        	console.log(error);
+            console.log(error)
         })
         .finally(function()
         {

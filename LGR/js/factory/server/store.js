@@ -1,7 +1,7 @@
 angular.module('starter')
 .factory('StoreFac',function($http, $q, $window,$rootScope,UtilService)
 {
-    var GetStores = function()
+    var GetPureStores = function()
     {
         var deferred        = $q.defer();
         var globalurl       = UtilService.ApiUrl();
@@ -27,6 +27,6 @@ angular.module('starter')
     }
 
 	return{
-            GetStores:GetStores
+            GetPureStores:GetPureStores
         }
 });

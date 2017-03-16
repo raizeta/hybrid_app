@@ -23,10 +23,22 @@ angular.module('starter', ['ngCordova','ionic'])
                       .handleNotificationOpened(notificationOpenedCallback)
                       .endInit();
 
-        $rootScope.db = window.sqlitePlugin.openDatabase({name:"rasasayang.db", location:'default', androidLockWorkaround: 1, androidDatabaseImplementation: 2});
-        $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_Inv_Shop (id INTEGER PRIMARY KEY AUTOINCREMENT,tanggal_transaksi TEXT,nama_product TEXT,qty_arrived INTEGER,qty_booking INTEGER,qty_checking INTEGER,qty_forsale INTEGER,status_check INTEGER)');
+     	$rootScope.db = window.sqlitePlugin.openDatabase({name:"rasasayang.db", location:'default', androidLockWorkaround: 1, androidDatabaseImplementation: 2});
+     	$cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_Inv_Shop (id INTEGER PRIMARY KEY AUTOINCREMENT,tanggal_transaksi TEXT,nama_product TEXT,qty_arrived INTEGER,qty_booking INTEGER,qty_checking INTEGER,qty_forsale INTEGER,status_check INTEGER)');
+      $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_Product (id INTEGER PRIMARY KEY AUTOINCREMENT,ITEM_ID TEXT,ITEM_NM TEXT,STATUS INTEGER,CREATE_BY TEXT,UPDATE_BY TEXT,CREATE_AT TEXT,UPDATE_AT TEXT,IMG64 TEXT)');
+      $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_Store (id INTEGER PRIMARY KEY AUTOINCREMENT,OUTLET_BARCODE TEXT,OUTLET_NM TEXT,LOCATE INTEGER,LOCATE_NAME TEXT,LOCATE_SUB INTEGER,LOCATE_SUB_NAME TEXT,ALAMAT TEXT,PIC TEXT,TLP TEXT,STATUS INTEGER,CREATE_BY TEXT,UPDATE_BY TEXT,CREATE_AT TEXT,UPDATE_AT TEXT)');
+    
     });
-
+    $rootScope.db = window.openDatabase("rasasayang.db", "1.0", "Your App", 200000);
+    // $cordovaSQLite.execute($rootScope.db, 'DROP TABLE IF EXISTS Tbl_Inv_Shop');
+    // $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_Inv_Shop (id INTEGER PRIMARY KEY AUTOINCREMENT,tanggal_transaksi TEXT,nama_product TEXT,qty_arrived INTEGER,qty_booking INTEGER,qty_checking INTEGER,qty_forsale INTEGER,status_check INTEGER)');
+   	
+    // $cordovaSQLite.execute($rootScope.db, 'DROP TABLE IF EXISTS Tbl_Product');
+    $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_Product (id INTEGER PRIMARY KEY AUTOINCREMENT,ITEM_ID TEXT,ITEM_NM TEXT,STATUS INTEGER,CREATE_BY TEXT,UPDATE_BY TEXT,CREATE_AT TEXT,UPDATE_AT TEXT,IMG64 TEXT)');
+    
+    // $cordovaSQLite.execute($rootScope.db, 'DROP TABLE IF EXISTS Tbl_Store');
+    $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_Store (id INTEGER PRIMARY KEY AUTOINCREMENT,OUTLET_BARCODE TEXT,OUTLET_NM TEXT,LOCATE INTEGER,LOCATE_NAME TEXT,LOCATE_SUB INTEGER,LOCATE_SUB_NAME TEXT,ALAMAT TEXT,PIC TEXT,TLP TEXT,STATUS INTEGER,CREATE_BY TEXT,UPDATE_BY TEXT,CREATE_AT TEXT,UPDATE_AT TEXT)');
+    
     $rootScope.getCameraOptions = function()
     {
         
