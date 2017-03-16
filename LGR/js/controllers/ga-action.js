@@ -5,6 +5,7 @@ function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,Storag
     $scope.tglsekarang      = $filter('date')(new Date(),'dd-MM-yyyy');
     var kemarin     = new Date();
     kemarin.setDate(kemarin.getDate() - 1);
+
     $ionicLoading.show
     ({
       template: 'Loading...'
@@ -25,6 +26,7 @@ function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,Storag
             $ionicLoading.show({template: 'Loading...',duration: 500});
         });
     });
+    
     $scope.selecttoko = function(item)
     {
         if(item)
@@ -72,6 +74,7 @@ function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,Storag
                                 data.USER_ID           = $scope.profile.id;
                                 $scope.datas.push(data);
                             });
+                            console.log($scope.datas);
                         },
                         function(error)
                         {
@@ -102,7 +105,6 @@ function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,Storag
 
     $scope.incdec = function(incordec,items)
     {
-   
         if(incordec == 'inc')
         {
             items.belanja += 1;
@@ -141,6 +143,7 @@ function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,Storag
                         }
                         else
                         {
+                            $scope.errordata = [];
                             angular.forEach(datadetail,function(value,key)
                             {
                                 value.ITEM_QTY          = value.belanja;
@@ -158,6 +161,7 @@ function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,Storag
                                 function(error)
                                 {
                                     console.log(error);
+                                    $scope.errordata.push(value);
                                 })
                                 .finally(function()
                                 {
@@ -173,6 +177,14 @@ function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,Storag
                     .finally(function()
                     {
                         $ionicLoading.show({template: 'Save...',duration: 500});
+                        if($scope.errordata.length > 0)
+                        {
+                            alert("Data Gagal Disimpan Dengan Sempurna.Silahkan Ulangi Lagi");
+                        }
+                        else
+                        {
+                            alert("Data Berhasil Disimpan Dengan Sempurna");
+                        }
                     });
                 });
             }

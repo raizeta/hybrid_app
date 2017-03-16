@@ -10,7 +10,8 @@ angular.module('starter', ['ngCordova','ionic'])
         }
         if (window.StatusBar) 
         {
-            StatusBar.styleDefault();
+            // StatusBar.styleDefault();
+            return StatusBar.hide();
         }
 
         var notificationOpenedCallback = function(jsonData) 

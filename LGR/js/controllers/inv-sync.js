@@ -43,10 +43,9 @@ function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,Storag
                         itempembeliandengannomortransaksi[i].USER_ID     = $scope.profile.id;
                         itempembeliandengannomortransaksi[i].OUTLET_ID   = lokasistore.OUTLET_BARCODE;
                         itempembeliandengannomortransaksi[i].OUTLET_NM   = lokasistore.OUTLET_NM;
-                        itempembeliandengannomortransaksi[i].TRANS_ID    = nomortransaksi;
+                        var lastthree = nomortransaksi.substr(nomortransaksi.length - 3); // => "Tabs1"
+                        itempembeliandengannomortransaksi[i].TRANS_ID    = '4.' + lokasistore.OUTLET_BARCODE +'.'+ $filter('date')(new Date(),'yyyy.MM.dd') +'.0000' + (Number(lastthree));
                         itempembeliandengannomortransaksi[i].STATUS      = 1;
-                        console.log(itempembeliandengannomortransaksi[i]);
-                        
                         TransaksiFac.SetTranskasi(itempembeliandengannomortransaksi[i])
                         .then(function(response)
                         {

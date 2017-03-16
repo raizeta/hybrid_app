@@ -7,6 +7,24 @@ angular.module('starter')
     var lokasistore     = StorageService.get('LokasiStore');
     $scope.profile      = StorageService.get('profile');
     var invstatus       = StorageService.get('InventoryStatus');
+    var productserver   = StorageService.get('ProductServer');
+    if(!productserver)
+    {
+        ProductFac.GetProducts(lokasistore.OUTLET_BARCODE)
+        .then(function(response)
+        {
+            productserver = response;
+            StorageService.set('ProductServer',response);
+        },
+        function(err)
+        {
+            console.log(err);
+        })
+        .finally(function()
+        {
+
+        });   
+    }
 
     $scope.gettransaksi = function()
     {
@@ -16,7 +34,9 @@ angular.module('starter')
             $scope.datas = [];
             angular.forEach(response,function(value,key)
             {
-                value.qtychecked = value.ITEM_QTY;
+                var indexproductserver =  _.findIndex(productserver, {'ITEM_BARCODE': value.ITEM_ID});
+                value.qtychecked    = value.ITEM_QTY;
+                value.formula       = productserver[indexproductserver].formula
                 if($scope.typeinv == 3)
                 {
                     value.sudahdicheckbelum = 'CHECKED';  
@@ -44,6 +64,17 @@ angular.module('starter')
         }
         else
         {
+            StorageService.destroy('BrgPenjualan');
+            StorageService.destroy('barangpenjualan');
+            StorageService.destroy('notransaksi');
+            StorageService.destroy('LastBooking');
+            var bookingtransaksi = StorageService.get('bookingtransaksi');
+            angular.forEach(bookingtransaksi,function(value,key)
+            {
+                console.log(value);
+                StorageService.destroy(value.notransk);
+            });
+            StorageService.destroy('bookingtransaksi');
             $scope.typeinv  = 2;
             $scope.tglinv   = $scope.tglsekarang;
             $scope.gettransaksi();
@@ -51,6 +82,16 @@ angular.module('starter')
     }
     else
     {
+        StorageService.destroy('BrgPenjualan');
+        StorageService.destroy('barangpenjualan');
+        StorageService.destroy('notransaksi');
+        StorageService.destroy('LastBooking');
+        var bookingtransaksi = StorageService.get('bookingtransaksi');
+        angular.forEach(bookingtransaksi,function(value,key)
+        {
+            StorageService.destroy(value.notransaksi);
+        });
+        StorageService.get('bookingtransaksi');
         $scope.typeinv  = 2;
         $scope.tglinv   = $scope.tglsekarang;
         $scope.gettransaksi();
@@ -159,11 +200,11 @@ angular.module('starter')
                     datapenjualan.harga     = Number(value.ITEM_HARGA);
                     datapenjualan.maksimal  = value.qtychecked;
                     datapenjualan.gambar    = 'img/bika-ambon.jpg';
+                    datapenjualan.formula   = value.formula;
                     barangpenjualan.push(datapenjualan);
                 });
                 StorageService.set('barangpenjualan',barangpenjualan);
             }
-        });
-         
+        });    
     }
 });

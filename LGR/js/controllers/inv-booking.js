@@ -1,5 +1,5 @@
 angular.module('starter')
-.controller('BookingCtrl', function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,StorageService,TransaksiHeaderFac,TransaksiFac,ProductFac) 
+.controller('BookingCtrl', function($rootScope,$scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,$cordovaCamera,UtilService,StorageService,TransaksiHeaderFac,TransaksiFac,ProductFac) 
 {
     $scope.tglsekarang      = $filter('date')(new Date(),'dd-MM-yyyy');
     var lokasistore         = StorageService.get('LokasiStore');
@@ -7,14 +7,13 @@ angular.module('starter')
     var brgpenjualanstore   = StorageService.get('barangpenjualan');
     if(brgpenjualanasli && brgpenjualanstore)
     {
-       angular.forEach(brgpenjualanstore,function(value,key)
+        angular.forEach(brgpenjualanstore,function(value,key)
         {
             var indexproduct = _.findIndex(brgpenjualanasli, {'ID': value.id});
             brgpenjualanasli[indexproduct].sellout = brgpenjualanasli[indexproduct].qtychecked - value.maksimal;
             brgpenjualanasli[indexproduct].qtybooking = 0;
         });
         $scope.datas = brgpenjualanasli; 
-        console.log($scope.datas);
     }
     else
     {
@@ -27,7 +26,6 @@ angular.module('starter')
             ProductFac.GetProducts(lokasistore.OUTLET_BARCODE)
             .then(function(response)
             {
-                console.log(response);
                 $scope.datas = [];
                 angular.forEach(response,function(value,key)
                 {
@@ -39,7 +37,7 @@ angular.module('starter')
                     data.ITEM_QTY       = 0;
                     data.qtybooking     = 0;
                     data.qtychecked     = 0;
-                    data.sellout        = 0
+                    data.sellout        = 0;
                     $scope.datas.push(data);
                 });
             },
@@ -72,6 +70,7 @@ angular.module('starter')
     }
     $scope.submitbooking    = function(datafromview)
     {
+        console.log(datafromview);
         var confirmPopup = $ionicPopup.confirm(
         {
             title: 'Submit Booking',
@@ -98,6 +97,7 @@ angular.module('starter')
                         }
                         else
                         {
+                            $scope.errordata = [];
                             angular.forEach(datadetail,function(value,key)
                             {
                                 value.ITEM_QTY          = value.qtybooking;
@@ -115,7 +115,7 @@ angular.module('starter')
                                 },
                                 function(error)
                                 {
-                                    console.log(error);
+                                    $scope.errordata.push(value);
                                 })
                                 .finally(function()
                                 {
@@ -131,6 +131,14 @@ angular.module('starter')
                     .finally(function()
                     {
                         $ionicLoading.show({template: 'Loading...',duration: 500});
+                        if($scope.errordata.length > 0)
+                        {
+                            alert("Data Gagal Disimpan Dengan Sempurna.Silahkan Ulangi Lagi");
+                        }
+                        else
+                        {
+                            alert("Data Berhasil Disimpan Dengan Sempurna");
+                        }
                     });
                 });
             }
@@ -140,40 +148,82 @@ angular.module('starter')
     $scope.saveimagesisa = function(items)
     {
         var indexproduct = _.findIndex($scope.datas, {'ITEM_ID': items.ITEM_ID});
-        $ionicLoading.show
-        ({
-          template: 'Saving...'
-        })
-        .then(function()
+        // $ionicLoading.show
+        // ({
+        //   template: 'Saving...'
+        // })
+        // .then(function()
+        // {
+        //     var data = {};
+        //     data.ITEM_BARCODE   = items.ITEM_ID;
+        //     data.OUTLET_ID      = items.OUTLET_ID;
+        //     data.BUY            = items.ITEM_QTY;
+        //     data.RCVD           = items.qtychecked;
+        //     data.SELL           = items.sellout;
+        //     data.SISA           = items.qtychecked - items.sellout;
+        //     data.IMG64          = "Kamera Masih Rusak";
+        //     data.CREATE_BY      = $scope.profile.id;
+        //     data.CREATE_AT      = $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss');
+        //     data.TRANS_DATE     = $filter('date')(new Date(),'yyyy-MM-dd'); 
+        //     data.STATUS         = 1;
+        //     TransaksiFac.SetTranskasiClosing(data)
+        //     .then(function(response)
+        //     {
+        //         console.log(response);
+        //         $scope.datas[indexproduct].statussinkron = true;
+        //         console.log($scope.datas);
+        //         StorageService.set('BrgPenjualan',$scope.datas);
+        //     },
+        //     function(error)
+        //     {
+        //         console.log(error)
+        //     })
+        //     .finally(function()
+        //     {
+        //         $ionicLoading.show({template: 'Saving...',duration: 500});
+        //     });
+        // });
+
+        document.addEventListener("deviceready", function () 
         {
-            var data = {};
-            data.ITEM_BARCODE   = items.ITEM_ID;
-            data.OUTLET_ID      = items.OUTLET_ID;
-            data.BUY            = items.ITEM_QTY;
-            data.RCVD           = items.qtychecked;
-            data.SELL           = items.sellout;
-            data.SISA           = items.qtychecked - items.sellout;
-            data.IMG64          = "Kamera Masih Rusak";
-            data.CREATE_BY      = $scope.profile.id;
-            data.CREATE_AT      = $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss');
-            data.TRANS_DATE     = $filter('date')(new Date(),'yyyy-MM-dd'); 
-            data.STATUS         = 1;
-            TransaksiFac.SetTranskasiClosing(data)
-            .then(function(response)
+            var options = $rootScope.getCameraOptions();
+            $cordovaCamera.getPicture(options)
+            .then(function (imageData) 
             {
-                console.log(response);
-                $scope.datas[indexproduct].statussinkron = true;
-                console.log($scope.datas);
-                StorageService.set('BrgPenjualan',$scope.datas);
-            },
-            function(error)
-            {
-                console.log(error)
-            })
-            .finally(function()
-            {
-                $ionicLoading.show({template: 'Saving...',duration: 500});
+                $ionicLoading.show
+                ({
+                  template: 'Saving...'
+                })
+                .then(function()
+                {
+                    var data = {};
+                    data.ITEM_BARCODE   = items.ITEM_ID;
+                    data.OUTLET_ID      = items.OUTLET_ID;
+                    data.BUY            = items.ITEM_QTY;
+                    data.RCVD           = items.qtychecked;
+                    data.SELL           = items.sellout;
+                    data.SISA           = items.qtychecked - items.sellout;
+                    data.IMG64          = 'data:image/jpeg;base64,' + imageData;
+                    data.CREATE_BY      = $scope.profile.id;
+                    data.CREATE_AT      = $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss');
+                    data.TRANS_DATE     = $filter('date')(new Date(),'yyyy-MM-dd'); 
+                    data.STATUS         = 1;
+                    TransaksiFac.SetTranskasiClosing(data)
+                    .then(function(response)
+                    {
+                        $scope.datas[indexproduct].statussinkron = true;
+                        StorageService.set('BrgPenjualan',$scope.datas);
+                    },
+                    function(error)
+                    {
+                        console.log(error)
+                    })
+                    .finally(function()
+                    {
+                        $ionicLoading.show({template: 'Saving...',duration: 500});
+                    });
+                });
             });
-        });
+        }, false);
     }
 });

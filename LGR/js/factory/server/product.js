@@ -5,7 +5,7 @@ angular.module('starter')
     {
         var deferred        = $q.defer();
         var globalurl       = UtilService.ApiUrl();
-        var url             = globalurl + "efenbi-rasasayang/item-groups?OUTLET_ID=" + kodestore;
+        var url             = globalurl + "efenbi-rasasayang/item-groups?expand=formula&OUTLET_ID=" + kodestore;
         var method          = "GET";
         $http({method:method, url:url,cache:false})
         .success(function(response) 
