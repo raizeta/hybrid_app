@@ -4,23 +4,29 @@
         <div class="row" ng-repeat="items in datas" ng-if="items.status != 'incomplete'">
           <div class ="col">
             <button class="button button-positive small_button">
-              {{items.notransk|uppercase}}
+              {{items.MOMOR_TRANS|uppercase}}
             </button>
           </div>
           <div class ="col">
-            <button class="button button-positive small_button">
-              {{items.jumlahitem}} Item
-            </button>
+            <div style="float:right">
+              <button class="button button-positive small_button">
+                {{items.jumlahitem}} Item
+              </button>
+            </div>
           </div>
           <div class ="col">
-            <button class="button button-positive small_button">
-              Rp. {{items.subtotal|number}}
-            </button>
+            <div style="float:right">
+              <button class="button button-positive small_button">
+                Rp. {{items.subtotal|number}}
+              </button>
+            </div>
           </div>
           <div class ="col">
-            <button class="button button-positive small_button  ion-checkmark-circled"  
-              ng-click="synctoserver(items)">
-            </button>
+            <div style="float:right">
+              <button class="button button-positive small_button  ion-checkmark-circled"  
+                ng-click="synctoserver(items)">
+              </button>
+            </div>
           </div>
         </div>
         <div class="row" ng-if="datas.length == 0">

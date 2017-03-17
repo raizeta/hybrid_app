@@ -1,15 +1,6 @@
 angular.module('starter')
-.controller('CashierCtrl', function($scope,$filter,$state,$ionicLoading,$ionicPopup,$ionicModal,StorageService,ProductFac,ProductCombFac) 
+.controller('CashierCtrl', function($scope,$filter,$state,$ionicLoading,$ionicPopup,$ionicModal,UtilService,StorageService,TransCustLiteFac) 
 {
-    ProductCombFac.GetPureProductComb()
-    .then(function(response)
-    {
-        console.log(response);
-    },
-    function(error)
-    {
-        console.log(error);
-    });
     $scope.profile      = StorageService.get('profile');
     $scope.lokasistore  = StorageService.get('LokasiStore');
     if($scope.profile.gambar == 'none')
@@ -21,75 +12,72 @@ angular.module('starter')
         $scope.profile.gambar = "data:image/png;base64," + $scope.profile.gambar;
     }
     var tglsekarang = $filter('date')(new Date(),'dd-MM-yyyy');
-    var bookingtransaksi = StorageService.get('bookingtransaksi');
 
-    if(bookingtransaksi)
+    TransCustLiteFac.GetTransCustsByDateStatus(tglsekarang,'INCOMPLETE')
+    .then(function(response)
     {
-        $scope.transaks = bookingtransaksi
-    }
-    else
-    {
-        $scope.transaks = [];
-    }
-
+        $scope.transaks = response;
+    });
 
     $scope.gotoitem = function(item)
     {
+        StorageService.set('TRANS-ACTIVE',item.MOMOR_TRANS);
         $state.go('tab.sales');
-        StorageService.set('notransaksi',item.notransk);
     }
     
     $scope.tambahtransaksi = function()
     {   var localbarangpenjualan = StorageService.get('barangpenjualan');
         if(localbarangpenjualan)
         {
-            var data = {};
-            var lastbooking = StorageService.get('LastBooking');
-            if(lastbooking)
+            TransCustLiteFac.GetTransCustsByDate(tglsekarang)
+            .then(function(responselite)
             {
-                if(lastbooking.tglbooking == tglsekarang)
+                var datacustrans = {};
+                if(responselite.length > 0)
                 {
-                    var lastbookingserialnumber = lastbooking.databooking;
-                    var lastthree = lastbookingserialnumber.substr(lastbookingserialnumber.length - 3); // => "Tabs1"
-                    data.notransk = 'LG-SR-KB-' + tglsekarang + '-00' + (Number(lastthree) + 1);
-                    data.status   ='incomplete';  
+                    var lastbookingserialnumber     = responselite[responselite.length - 1].MOMOR_TRANS;
+                    var lastthree                   = lastbookingserialnumber.substr(lastbookingserialnumber.length - 3);
+                    var nomorurut                   = UtilService.StringPad(Number(lastthree) + 1,'000');
+                    datacustrans.TGL_TRANS          = $filter('date')(new Date(),'dd-MM-yyyy');
+                    datacustrans.DATETIME_TRANS     = $filter('date')(new Date(),'dd-MM-yyyy HH:mm:ss');
+                    datacustrans.MOMOR_TRANS        = 'LG.RS.KB.' + $filter('date')(new Date(),'dd.MM.yyyy') + '.' + nomorurut;
+                    datacustrans.STATUS_BUY         = 'INCOMPLETE';
                 }
                 else
                 {
-                    data.notransk = 'LG-SR-KB-' + tglsekarang + '-001';
-                    data.status   ='incomplete';  
-                } 
-            }
-            else
-            {
-                data.notransk = 'LG-SR-KB-' + tglsekarang + '-001';
-                data.status   ='incomplete';
-            }
+                    datacustrans.TGL_TRANS          = $filter('date')(new Date(),'dd-MM-yyyy');
+                    datacustrans.DATETIME_TRANS     = $filter('date')(new Date(),'dd-MM-yyyy HH:mm:ss');
+                    datacustrans.MOMOR_TRANS        = 'LG.SR.KB.' + $filter('date')(new Date(),'dd.MM.yyyy') + '.001';
+                    datacustrans.STATUS_BUY         = 'INCOMPLETE';
+                }
 
-            $scope.transaks.push(data);
-            StorageService.set('bookingtransaksi',$scope.transaks);
-            StorageService.set('LastBooking',{'databooking':data.notransk,'tglbooking':tglsekarang});
-            $scope.statusincomplete = 1;
+                TransCustLiteFac.SetTransCusts(datacustrans)
+                .then(function(response)
+                {
+                    $scope.transaks.push(datacustrans);
+                });
+            });
+            
         }
         else
         {
             alert("Anda Belum Melakukan Inventory Penjualan.Silahkan Lakukan Inventory Terlebih Dahulu!");
         }
     }
-    $scope.statusincomplete = _.findIndex($scope.transaks, {'status': 'incomplete'});
-    console.log($filter('currency')(12000));
+
 })
 
 .controller('SalesCtrl', function($scope,$state,$ionicLoading,$ionicPopup,$ionicModal,UtilService,StorageService) 
 {
     var arrayasli   = StorageService.get('barangpenjualan');
     var array       = angular.copy(arrayasli);
-    $scope.noresi   = StorageService.get('notransaksi');
+    $scope.noresi   = StorageService.get('TRANS-ACTIVE');
     var resi        = StorageService.get($scope.noresi);
     angular.forEach(array,function(value,key)
     {
         value.quantity = 0;
     });
+
     if(resi)
     {
         angular.forEach(resi,function(value,key)
@@ -119,7 +107,9 @@ angular.module('starter')
         $ionicModal.fromTemplateUrl('templates/sales/addtocartmodal.html', 
         {
             scope: $scope,
-            animation: 'fade-in-scale'
+            animation: 'fade-in-scale',
+            backdropClickToClose: false,
+            hardwareBackButtonClose: false
         })
         .then(function(modal) 
         {
@@ -220,9 +210,9 @@ angular.module('starter')
     } 
 })
 
-.controller('CartCtrl', function($scope,$state,$ionicLoading,$ionicPopup,$ionicModal,$ionicHistory,$ionicNavBarDelegate,UtilService,StorageService) 
+.controller('CartCtrl', function($scope,$state,$ionicLoading,$ionicPopup,$ionicModal,$ionicHistory,$ionicNavBarDelegate,TransCustLiteFac,UtilService,StorageService) 
 {
-    $scope.noresi   = StorageService.get('notransaksi');
+    $scope.noresi   = StorageService.get('TRANS-ACTIVE');
     var resi        = StorageService.get($scope.noresi);
     $scope.datas    = resi;
     
@@ -277,15 +267,19 @@ angular.module('starter')
         {
             if(res) 
             {
-                var bookingtransaksi        = StorageService.get('bookingtransaksi');
-                var indexbookingtransaksi   = _.findIndex(bookingtransaksi, {'notransk': $scope.noresi});
-                bookingtransaksi[indexbookingtransaksi].status = 'complete';
-                StorageService.set('bookingtransaksi',bookingtransaksi);
-                StorageService.destroy('notransaksi');
-                $ionicHistory.nextViewOptions({disableAnimate: true, disableBack: true});
-                $state.go('tab.cashier');
+                TransCustLiteFac.UpdateTransCusts(['COMPLETE',$scope.noresi])
+                .then(function(response)
+                {
+                    StorageService.destroy('TRANS-ACTIVE');
+                    $ionicHistory.nextViewOptions({disableAnimate: true, disableBack: true});
+                    $state.go('tab.cashier');
+                },
+                function(error)
+                {
+                    console.log(error);
+                });
+
             } 
         });
-
     }
 });

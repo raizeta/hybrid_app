@@ -197,6 +197,13 @@ angular.module('starter')
 
         return hours + ":" + minutes + ":" + seconds;
     }
+
+    var StringPad   = function(stringtopad,pad) 
+    {
+        var stringtopad = "" + stringtopad;
+        var ans = pad.substring(0, pad.length - stringtopad.length) + stringtopad;
+        return ans;
+    };
     return {
       ArrayChunk:ArrayChunk,
       ApiUrl:ApiUrl,
@@ -208,6 +215,7 @@ angular.module('starter')
       getTotalHariDalamSebulan:getTotalHariDalamSebulan,
       SqliteToArray:SqliteToArray,
       SetGambarCheckinCheckout:SetGambarCheckinCheckout,
-      DiffTwoDateTime:DiffTwoDateTime
+      DiffTwoDateTime:DiffTwoDateTime,
+      StringPad:StringPad
     };
 });

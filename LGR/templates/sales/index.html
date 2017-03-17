@@ -5,6 +5,12 @@
       </button>
   </ion-nav-buttons>  
   <ion-content class="has-header" padding="false">
+    <label class = "item item-input item-select">
+      <div class = "input-label">ITEM GROUP</div>
+      <select ng-model="store" ng-options="item.OUTLET_NM for item in stores" ng-change="selecttoko(store)"required>
+          <option value="">Pilih Group</option>
+      </select>
+    </label>
     <div class="row" ng-repeat="items in datas">
       <div class="col col-25" ng-repeat="item in items track by $index" >
         <div class="list">

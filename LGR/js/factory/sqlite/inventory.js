@@ -1,6 +1,5 @@
-'use strict';
-myAppModule.factory('InventoryLiteFac',
-function($rootScope,$http, $q, $filter, $window,$cordovaSQLite)
+angular.module('starter')
+.factory('InventoryLiteFac',function($rootScope,$http, $q, $filter, $window,$cordovaSQLite)
 {
     var GetInventory = function (tanggal_transaksi)
     {
@@ -13,7 +12,7 @@ function($rootScope,$http, $q, $filter, $window,$cordovaSQLite)
         },
         function (error)
         {
-            deferred.rejected(error); 
+            deferred.reject(error); 
         });
         return deferred.promise;
     }
@@ -29,7 +28,7 @@ function($rootScope,$http, $q, $filter, $window,$cordovaSQLite)
         },
         function (error)
         {
-            deferred.rejected(error);
+            deferred.reject(error);
         });
         return deferred.promise; 
     }
@@ -45,7 +44,7 @@ function($rootScope,$http, $q, $filter, $window,$cordovaSQLite)
         },
         function(error) 
         {
-            deferred.rejected(error);
+            deferred.reject(error);
         });
         return deferred.promise; 
     }

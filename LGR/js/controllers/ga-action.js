@@ -103,15 +103,20 @@ function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,Storag
         }
     }
 
-    $scope.incdec = function(incordec,items)
+    $scope.incdec = function(incordec,items,valueincdec)
     {
         if(incordec == 'inc')
         {
-            items.belanja += 1;
+            items.belanja += valueincdec;
         }
         else if(incordec == 'dec')
         {
-            items.belanja -= 1;
+           var qtybookingcopy           = angular.copy(items);
+           qtybookingcopy.belanja   -= valueincdec;
+           if(qtybookingcopy.belanja >= 0)
+           {
+                items.belanja -= valueincdec;
+           }
         }
     }
 

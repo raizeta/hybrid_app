@@ -1,17 +1,27 @@
 angular.module('starter')
 .controller('SyncCtrl', 
-function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,StorageService,TransaksiFac) 
+function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,StorageService,TransCustLiteFac,TransaksiFac) 
 {
     $scope.tglsekarang      = $filter('date')(new Date(),'dd-MM-yyyy');
-    $scope.datas            = StorageService.get('bookingtransaksi');
     var barangpenjualan 	= StorageService.get('BrgPenjualan');
     var lokasistore         = StorageService.get('LokasiStore');
-    angular.forEach($scope.datas,function(value,key)
+
+    TransCustLiteFac.GetTransCustsByDateStatus($scope.tglsekarang,'COMPLETE')
+    .then(function(response)
     {
-        var itembelanja = StorageService.get(value.notransk);
-        $scope.datas[key].jumlahitem        = itembelanja.length;
-        $scope.datas[key].subtotal          = UtilService.SumPriceWithQty(itembelanja,'harga','quantity')
-    })
+        $scope.datas = [];
+        angular.forEach(response,function(value,key)
+        {
+            var itembelanja                     = StorageService.get(value.MOMOR_TRANS);
+            if(itembelanja)
+            {
+                value.jumlahitem        = itembelanja.length;
+                value.subtotal          = UtilService.SumPriceWithQty(itembelanja,'harga','quantity');
+                $scope.datas.push(value);   
+            } 
+        });
+    });
+    
     $scope.synctoserver  	= function(items)
     {
     	var confirmPopup = $ionicPopup.confirm(
@@ -23,7 +33,7 @@ function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,Storag
         {
             if(res) 
             {
-                var nomortransaksi  = items.notransk;
+                var nomortransaksi  = items.MOMOR_TRANS;
                 var itempembeliandengannomortransaksi 	= StorageService.get(nomortransaksi);
                 var len = itempembeliandengannomortransaksi.length;
                 $ionicLoading.show
@@ -53,10 +63,9 @@ function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,Storag
                             StorageService.set(nomortransaksi,itempembeliandengannomortransaksi);
                             if(itempembeliandengannomortransaksi.length == 0)
                             {
-                               var index =  _.findIndex($scope.datas, {'notransk': items.notransk});
+                               var index =  _.findIndex($scope.datas, {'MOMOR_TRANS': items.MOMOR_TRANS});
                                StorageService.destroy(nomortransaksi)
                                $scope.datas.splice(index,1);
-                               StorageService.set('bookingtransaksi',$scope.datas);
                                $ionicLoading.show({template: 'Loading...',duration: 500});
                                alert("Sync Data Ke Server Berhasil Dilakukan.Terima Kasih")
                             }

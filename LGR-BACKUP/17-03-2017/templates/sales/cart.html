@@ -1,0 +1,27 @@
+<ion-view view-title="CHECK-OUT: {{noresi}}">
+  <ion-content>
+    <ion-list>
+      <div class = "row" ng-repeat="item in datas track by $index">
+          <div class ="col col-20">
+            <button class="button button-stable button-small">{{item.nama}} ({{item.maksimal}})</button>
+          </div>
+          <div class ="col col-20">
+            <button class="button button-stable button-small">{{item.harga|number}}</button>
+          </div>
+          <div class ="col col-20">
+            <button class="button button-calm button-small ion-minus" ng-click="incdec('dec',item)" ></button>
+            <button class="button button-stable button-small">{{item.quantity}}</button>
+            <button class="button button-positive button-small ion-plus" ng-click="incdec('inc',item)"></button>
+          </div>
+          <div class ="col col-20">
+            <button class="button button-stable button-small">
+              {{item.harga*item.quantity|number}}</button>
+            </div>
+         <div class ="col col-20">
+            <button class="button button-assertive button-small icon ion-trash-b" ng-click="deleteone(item)"></button>
+          </div>
+      </div>
+    </ion-list>
+    <button class="button button-positive button-outline button-block" ng-click="pembayaran(noresi)">Total Pay : Rp. {{total|number}}</button>
+  </ion-content>
+</ion-view>
