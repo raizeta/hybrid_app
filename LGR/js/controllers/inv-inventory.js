@@ -1,101 +1,67 @@
 angular.module('starter')
-.controller('InventoryCtrl', function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,StorageService,ProductFac,TransaksiHeaderFac,TransaksiFac) 
+.controller('InventoryCtrl', function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,StorageService,InvCheckLiteFac,BarangForSaleLiteFac,ProductCombFac,ProductFac,TransaksiHeaderFac,TransaksiFac) 
 {
 	$scope.tglsekarang  = $filter('date')(new Date(),'yyyy-MM-dd');
-    var kemarin     = new Date();
-    kemarin.setDate(kemarin.getDate() - 1);
     var lokasistore     = StorageService.get('LokasiStore');
     $scope.profile      = StorageService.get('profile');
-    var invstatus       = StorageService.get('InventoryStatus');
-    var productserver   = StorageService.get('ProductServer');
-    if(!productserver)
-    {
-        ProductFac.GetProducts(lokasistore.OUTLET_BARCODE)
-        .then(function(response)
-        {
-            productserver = response;
-            StorageService.set('ProductServer',response);
-        },
-        function(err)
-        {
-            console.log(err);
-        })
-        .finally(function()
-        {
 
-        });   
-    }
 
-    $scope.gettransaksi = function()
+    var productserver = null;
+    ProductCombFac.GetPureProductGroupComb(lokasistore.OUTLET_BARCODE)
+    .then(function(response)
     {
-        TransaksiFac.GetTransaksis(lokasistore.OUTLET_BARCODE,$scope.tglinv,$scope.typeinv)
-        .then(function(response)
+        productserver = response;
+    });
+
+    InvCheckLiteFac.GetInvChecks($scope.tglsekarang,'RECEIVED')
+    .then(function(response)
+    {
+        console.log(response);
+        if(angular.isArray(response) && response.length > 0)
         {
-            $scope.datas = [];
-            angular.forEach(response,function(value,key)
+            $scope.typeinv  = 2;
+            TransaksiFac.GetTransaksis(lokasistore.OUTLET_BARCODE,$scope.tglsekarang,$scope.typeinv)
+            .then(function(response)
             {
-                var indexproductserver =  _.findIndex(productserver, {'ITEM_BARCODE': value.ITEM_ID});
-                value.qtychecked    = value.ITEM_QTY;
-                value.formula       = productserver[indexproductserver].formula
-                if($scope.typeinv == 3)
+                $scope.datas = [];
+                angular.forEach(response,function(value,key)
                 {
-                    value.sudahdicheckbelum = 'CHECKED';  
-                }
-                
-                $scope.datas.push(value);
+                    var indexproductserver  =  _.findIndex(productserver, {'ITEM_BARCODE': value.ITEM_ID});
+                    value.qtychecked        = value.ITEM_QTY;
+                    value.formula           = productserver[indexproductserver].formula;
+                    $scope.datas.push(value);
+                });
+            },
+            function(err)
+            {
+                console.log(err);
             });
-        },
-        function(err)
-        {
-            console.log(err);
-        })
-        .finally(function()
-        {
-
-        });
-    }
-    if(invstatus)
-    {
-        if((invstatus.tanggalcheck == $scope.tglsekarang) && (invstatus.statuscheck     == 'CHECKED'))
-        {
-           $scope.typeinv = 3;
-           $scope.tglinv  = $scope.tglsekarang;
-           $scope.datas   = StorageService.get('BrgPenjualan');
         }
         else
         {
-            StorageService.destroy('BrgPenjualan');
-            StorageService.destroy('barangpenjualan');
-            StorageService.destroy('notransaksi');
-            StorageService.destroy('LastBooking');
-            var bookingtransaksi = StorageService.get('bookingtransaksi');
-            angular.forEach(bookingtransaksi,function(value,key)
-            {
-                console.log(value);
-                StorageService.destroy(value.notransk);
-            });
-            StorageService.destroy('bookingtransaksi');
             $scope.typeinv  = 2;
-            $scope.tglinv   = $scope.tglsekarang;
-            $scope.gettransaksi();
+            TransaksiFac.GetTransaksis(lokasistore.OUTLET_BARCODE,$scope.tglsekarang,$scope.typeinv)
+            .then(function(response)
+            {
+                $scope.datas = [];
+                angular.forEach(response,function(value,key)
+                {
+                    var indexproductserver  =  _.findIndex(productserver, {'ITEM_BARCODE': value.ITEM_ID});
+                    value.qtychecked        = value.ITEM_QTY;
+                    $scope.datas.push(value);
+                });
+            },
+            function(err)
+            {
+                console.log(err);
+            }); 
         }
-    }
-    else
+    },
+    function(error)
     {
-        StorageService.destroy('BrgPenjualan');
-        StorageService.destroy('barangpenjualan');
-        StorageService.destroy('notransaksi');
-        StorageService.destroy('LastBooking');
-        var bookingtransaksi = StorageService.get('bookingtransaksi');
-        angular.forEach(bookingtransaksi,function(value,key)
-        {
-            StorageService.destroy(value.notransaksi);
-        });
-        StorageService.get('bookingtransaksi');
-        $scope.typeinv  = 2;
-        $scope.tglinv   = $scope.tglsekarang;
-        $scope.gettransaksi();
-    }
+        console.log(error);
+    });
+
     
     $scope.incdec = function(incordec,items)
     {
@@ -128,9 +94,20 @@ angular.module('starter')
         {
             if(res) 
             {
+                var datainvstatus = {};
+                datainvstatus.TGL_CHECK         = $filter('date')(new Date(),'yyyy-MM-dd');
+                datainvstatus.DATETIME_CHECK    = $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss');
+                datainvstatus.NAMA_INV          = 'RECEIVED';
+                datainvstatus.STATUS_CHECK      = 'COMPLETE';
+
+                InvCheckLiteFac.SetInvChecks(datainvstatus)
+                .then(function(response)
+                {
+                    // console.log(response);
+                });
+
                 var datadetail = angular.copy(datafromview);
-                StorageService.set('BrgPenjualan',datadetail);
-                var dataheader  = {'OUTLET_ID':datadetail[0].OUTLET_ID,'TRANS_TYPE':3};
+                var dataheader  = {'OUTLET_ID':lokasistore.OUTLET_BARCODE,'TRANS_TYPE':3};
                 $ionicLoading.show
                 ({
                   template: 'Saving...'
@@ -159,23 +136,11 @@ angular.module('starter')
                                 TransaksiFac.SetTranskasi(value)
                                 .then(function(response)
                                 {
-                                    $scope.typeinv = 3 
-                                    var statusinventory = {};
-                                    statusinventory.statuscheck     = 'CHECKED';
-                                    statusinventory.tanggalcheck    = $scope.tglsekarang;
-                                    StorageService.set('InventoryStatus',statusinventory);
+                                    console.log(response);
                                 },
                                 function(error)
                                 {
-                                    var statusinventory = {};
-                                    statusinventory.statuscheck     = 'CHECKED';
-                                    statusinventory.tanggalcheck    = $scope.tglsekarang;
-                                    StorageService.set('InventoryStatus',statusinventory);
-                                    $scope.typeinv = 2;
-                                })
-                                .finally(function()
-                                {
-
+                                    console.log(error);
                                 });
                             });
                         }
@@ -190,20 +155,26 @@ angular.module('starter')
                     });
                 });
 
-                var barangpenjualan = [];
                 angular.forEach(datafromview,function(value,key)
                 {
-                    var datapenjualan       = {};
-                    datapenjualan.id        = value.ID;
-                    datapenjualan.ITEM_ID   = value.ITEM_ID;
-                    datapenjualan.nama      = value.ITEM_NM;
-                    datapenjualan.harga     = Number(value.ITEM_HARGA);
-                    datapenjualan.maksimal  = value.qtychecked;
-                    datapenjualan.gambar    = 'img/bika-ambon.jpg';
-                    datapenjualan.formula   = value.formula;
-                    barangpenjualan.push(datapenjualan);
+                    var databarangpenjualan             = {};
+                    databarangpenjualan.TGL_SAVE        = $filter('date')(new Date(),'yyyy-MM-dd')
+                    databarangpenjualan.ITEM_ID         = value.ITEM_ID;
+                    databarangpenjualan.ITEM_NM         = value.ITEM_NM;
+                    databarangpenjualan.ITEM_HARGA      = Number(value.ITEM_HARGA);
+                    databarangpenjualan.STOCK_MAX       = value.qtychecked;
+                    databarangpenjualan.GAMBAR          = 'img/bika-ambon.jpg';
+                    databarangpenjualan.FORMULA         = value.formula;
+                    BarangForSaleLiteFac.SetBarangForSale(databarangpenjualan)
+                    .then(function(response)
+                    {
+                        console.log(response);
+                    },
+                    function(error)
+                    {
+                        console.log(error);
+                    });
                 });
-                StorageService.set('barangpenjualan',barangpenjualan);
             }
         });    
     }

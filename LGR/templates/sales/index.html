@@ -15,20 +15,20 @@
       <div class="col col-25" ng-repeat="item in items track by $index" >
         <div class="list">
           <div class="item item-image" style="padding-right:3px">
-            <img class="box-shadow" ng-click="AddToCart(item)" ng-src="{{item.gambar}}" width="100%" />
+            <img class="box-shadow" ng-click="AddToCart(item)" ng-src="{{item.GAMBAR}}" width="100%" />
           </div>
 
           <a class="aitem item-icon-right">
           <p style="font-size: 12px;text-align:left;">
-            {{item.nama}} <br/>
-            <span style="font-weight: bold;color: black;">{{item.harga|number}}</span>
+            {{item.ITEM_NM}} <br/>
+            <span style="font-weight: bold;color: black;">{{item.ITEM_HARGA|number}}</span>
           </p>
           <i style="font-size: 35px; margin-right:0px;right:1px;"  ng-click="AddToCart(item)" class="icon ion-ios-cart">
-            <span class="badge badge-balanced icon-badge" ng-if="item.quantity > 0">{{item.quantity}}</span>
-            <span class="badge badge-positive icon-badge" ng-if="item.quantity == 0">{{item.quantity}}</span>
+            <span class="badge badge-balanced icon-badge" ng-if="item.QTY_INCART > 0">{{item.QTY_INCART|number}}</span>
+            <span class="badge badge-positive icon-badge" ng-if="item.QTY_INCART == 0">{{item.QTY_INCART|number}}</span>
           </i>
           </a>
-          <div class="ribbon"><span>{{item.maksimal}}</span></div>
+          <div class="ribbon"><span>{{item.STOCK_MAX|number}}</span></div>
         </div>
       </div>
     </div>

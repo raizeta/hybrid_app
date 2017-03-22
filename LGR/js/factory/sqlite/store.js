@@ -20,7 +20,7 @@ angular.module('starter')
         },
         function (error)
         {
-            deferred.rejected(error); 
+            deferred.reject(error); 
         });
         return deferred.promise;
     }

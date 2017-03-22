@@ -37,7 +37,7 @@ angular.module('starter')
         var UPDATE_AT       = datatosave.UPDATE_AT;
         var IMG64           = datatosave.IMG64;
 
-        var isitable        = [ITEM_ID,ITEM_NM,STATUS,CREATE_BY,UPDATE_BY,CREATE_AT,UPDATE_AT,IMG64]
+        var isitable        = [ITEM_ID,ITEM_NM,STATUS,CREATE_BY,UPDATE_BY,CREATE_AT,UPDATE_AT,IMG64];
         var queryinsertproduct = 'INSERT INTO Tbl_Product (ITEM_ID,ITEM_NM,STATUS,CREATE_BY,UPDATE_BY,CREATE_AT,UPDATE_AT,IMG64) VALUES (?,?,?,?,?,?,?,?)';
         $cordovaSQLite.execute($rootScope.db,queryinsertproduct,isitable)
         .then(function(result) 
@@ -110,8 +110,6 @@ angular.module('starter')
         return deferred.promise; 
     }
     
-    
-
     return{
             GetPureProducts:GetPureProducts,
             SetPureProduct:SetPureProduct,

@@ -1,5 +1,5 @@
 angular.module('starter')
-.factory('InventoryLiteFac',function($rootScope,$http, $q, $filter, $window,$cordovaSQLite)
+.factory('InventoryLiteFac',function($rootScope,$http, $q, $filter, $window,$cordovaSQLite,UtilService)
 {
     var GetInventory = function (tanggal_transaksi)
     {
@@ -8,7 +8,15 @@ angular.module('starter')
         $cordovaSQLite.execute($rootScope.db, queryselectinventory, [tanggal_transaksi])
         .then(function(result) 
         {
-            deferred.resolve(result);
+            if(result.rows.length > 0)
+            {
+                var response = UtilService.SqliteToArray(result);
+                deferred.resolve(response);
+            }
+            else
+            {
+                deferred.resolve([]);
+            }
         },
         function (error)
         {

@@ -1,5 +1,5 @@
 angular.module('starter')
-.factory('InvCheckLiteFac',function($rootScope,$http, $q, $filter, $window,$cordovaSQLite)
+.factory('InvCheckLiteFac',function($rootScope,$http, $q, $filter, $window,$cordovaSQLite,UtilService)
 {
     var GetInvChecks = function (TGL_CHECK,NAMA_INV)
     {
@@ -8,19 +8,20 @@ angular.module('starter')
         $cordovaSQLite.execute($rootScope.db,queryselectinvcheck,[TGL_CHECK,NAMA_INV])
         .then(function(result) 
         {
-            if(angular.isDefined(result.rowsAffected) && result.rowsAffected == 0)
+            if(result.rows.length > 0)
             {
-                deferred.resolve([]);
+                var response = UtilService.SqliteToArray(result);
+                deferred.resolve(response);
             }
             else
             {
-                deferred.resolve(result);   
+                deferred.resolve([]);
             }
             
         },
         function (error)
         {
-            deferred.rejected(error); 
+            deferred.reject(error); 
         });
         return deferred.promise;
     }
@@ -32,8 +33,9 @@ angular.module('starter')
         var DATETIME_CHECK      = datatosave.DATETIME_CHECK;
         var NAMA_INV            = datatosave.NAMA_INV;
         var STATUS_CHECK        = datatosave.STATUS_CHECK;
-       var queryinsertinvcheck  = 'INSERT INTO Tbl_InvCheck (TGL_CHECK,DATETIME_CHECK,NAMA_INV,STATUS_CHECK) VALUES (?,?,?,?)';
-        $cordovaSQLite.execute($rootScope.db,queryinsertinventory,datainventory)
+        var isitable            = [TGL_CHECK,DATETIME_CHECK,NAMA_INV,STATUS_CHECK];
+        var queryinsertinvcheck  = 'INSERT INTO Tbl_InvCheck (TGL_CHECK,DATETIME_CHECK,NAMA_INV,STATUS_CHECK) VALUES (?,?,?,?)';
+        $cordovaSQLite.execute($rootScope.db,queryinsertinvcheck,isitable)
         .then(function(result) 
         {
             deferred.resolve(result);

@@ -1,5 +1,5 @@
 angular.module('starter')
-.controller('CashierCtrl', function($scope,$filter,$state,$ionicLoading,$ionicPopup,$ionicModal,UtilService,StorageService,TransCustLiteFac) 
+.controller('CashierCtrl', function($scope,$filter,$state,$ionicLoading,$ionicPopup,$ionicModal,UtilService,StorageService,InvCheckLiteFac,TransCustLiteFac) 
 {
     $scope.profile      = StorageService.get('profile');
     $scope.lokasistore  = StorageService.get('LokasiStore');
@@ -11,99 +11,113 @@ angular.module('starter')
     {
         $scope.profile.gambar = "data:image/png;base64," + $scope.profile.gambar;
     }
-    var tglsekarang = $filter('date')(new Date(),'dd-MM-yyyy');
+    var tglsekarang = $filter('date')(new Date(),'yyyy-MM-dd');
 
     TransCustLiteFac.GetTransCustsByDateStatus(tglsekarang,'INCOMPLETE')
     .then(function(response)
     {
         $scope.transaks = response;
+    },
+    function(error)
+    {
+        console.log(error);
     });
 
     $scope.gotoitem = function(item)
     {
-        StorageService.set('TRANS-ACTIVE',item.MOMOR_TRANS);
+        StorageService.set('TRANS-ACTIVE',item.NOMOR_TRANS);
         $state.go('tab.sales');
     }
     
     $scope.tambahtransaksi = function()
-    {   var localbarangpenjualan = StorageService.get('barangpenjualan');
-        if(localbarangpenjualan)
+    {   
+        InvCheckLiteFac.GetInvChecks(tglsekarang,'RECEIVED')
+        .then(function(response)
         {
-            TransCustLiteFac.GetTransCustsByDate(tglsekarang)
-            .then(function(responselite)
+            if(angular.isArray(response) && response.length > 0)
             {
-                var datacustrans = {};
-                if(responselite.length > 0)
+                TransCustLiteFac.GetTransCustsByDate(tglsekarang)
+                .then(function(responselite)
                 {
-                    var lastbookingserialnumber     = responselite[responselite.length - 1].MOMOR_TRANS;
-                    var lastthree                   = lastbookingserialnumber.substr(lastbookingserialnumber.length - 3);
-                    var nomorurut                   = UtilService.StringPad(Number(lastthree) + 1,'000');
-                    datacustrans.TGL_TRANS          = $filter('date')(new Date(),'dd-MM-yyyy');
-                    datacustrans.DATETIME_TRANS     = $filter('date')(new Date(),'dd-MM-yyyy HH:mm:ss');
-                    datacustrans.MOMOR_TRANS        = 'LG.RS.KB.' + $filter('date')(new Date(),'dd.MM.yyyy') + '.' + nomorurut;
+                    var datacustrans = {};
+                    datacustrans.TGL_TRANS          = $filter('date')(new Date(),'yyyy-MM-dd');
+                    datacustrans.DATETIME_TRANS     = $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss');
                     datacustrans.STATUS_BUY         = 'INCOMPLETE';
-                }
-                else
-                {
-                    datacustrans.TGL_TRANS          = $filter('date')(new Date(),'dd-MM-yyyy');
-                    datacustrans.DATETIME_TRANS     = $filter('date')(new Date(),'dd-MM-yyyy HH:mm:ss');
-                    datacustrans.MOMOR_TRANS        = 'LG.SR.KB.' + $filter('date')(new Date(),'dd.MM.yyyy') + '.001';
-                    datacustrans.STATUS_BUY         = 'INCOMPLETE';
-                }
+                    if(responselite.length > 0)
+                    {
+                        var lastbookingserialnumber     = responselite[responselite.length - 1].NOMOR_TRANS;
+                        var lastthree                   = lastbookingserialnumber.substr(lastbookingserialnumber.length - 3);
+                        var nomorurut                   = UtilService.StringPad(Number(lastthree) + 1,'000');
+                        datacustrans.NOMOR_TRANS        = 'LG.RS.KB.' + $filter('date')(new Date(),'yyyy.MM.dd') + '.' + nomorurut; 
+                    }
+                    else
+                    {
+                        datacustrans.NOMOR_TRANS        = 'LG.SR.KB.' + $filter('date')(new Date(),'yyyy.MM.dd') + '.001';
+                    }
 
-                TransCustLiteFac.SetTransCusts(datacustrans)
-                .then(function(response)
-                {
-                    $scope.transaks.push(datacustrans);
+                    TransCustLiteFac.SetTransCusts(datacustrans)
+                    .then(function(response)
+                    {
+                        $scope.transaks.push(datacustrans);
+                    },
+                    function(error)
+                    {
+                        console.log(error);
+                    });
                 });
-            });
-            
-        }
-        else
-        {
-            alert("Anda Belum Melakukan Inventory Penjualan.Silahkan Lakukan Inventory Terlebih Dahulu!");
-        }
+            }
+            else
+            {
+                alert("Anda Belum Melakukan Inventory Penjualan.Silahkan Lakukan Inventory Terlebih Dahulu!");  
+            }
+        });
     }
 
 })
 
-.controller('SalesCtrl', function($scope,$state,$ionicLoading,$ionicPopup,$ionicModal,UtilService,StorageService) 
+.controller('SalesCtrl', function($scope,$state,$ionicLoading,$ionicPopup,$ionicModal,$filter,UtilService,StorageService,BarangForSaleLiteFac,ShopCartLiteFac) 
 {
-    var arrayasli   = StorageService.get('barangpenjualan');
-    var array       = angular.copy(arrayasli);
+    
     $scope.noresi   = StorageService.get('TRANS-ACTIVE');
-    var resi        = StorageService.get($scope.noresi);
-    angular.forEach(array,function(value,key)
+    ShopCartLiteFac.GetShopCartByNomorTrans($scope.noresi)
+    .then(function(response)
     {
-        value.quantity = 0;
+        if(angular.isArray(response) && response.length > 0)
+        {
+            $scope.itemincart = response;
+        }
+        else
+        {
+            $scope.itemincart = [];
+        }
+        $scope.banyakdicart = $scope.itemincart.length;
     });
 
-    if(resi)
+    BarangForSaleLiteFac.GetBarangForSaleByDate($filter('date')(new Date(),'yyyy-MM-dd'))
+    .then(function(response)
     {
-        angular.forEach(resi,function(value,key)
+        if(angular.isArray(response) && response.length > 0)
         {
-            var itemaddtocart = _.findIndex(array, {'id': value.id});
-            if(itemaddtocart != -1)
+            angular.forEach($scope.itemincart,function(value,key)
             {
-                array[itemaddtocart].quantity = value.quantity;
-            }
-        });
-    }
-    else
-    {
-        resi = [];
-    }
-    $scope.banyakdicart = resi.length;
-    $scope.datas = UtilService.ArrayChunk(array,4);
+                var itemaddtocart = _.findIndex(response, {'ITEM_ID': value.ITEM_ID});
+                if(itemaddtocart != -1)
+                {
+                    response[itemaddtocart].QTY_INCART = Number(value.QTY_INCART);
+                }
+            });
+            $scope.datas = UtilService.ArrayChunk(response,4);
+        }
+        else
+        {
+            $scope.datas = [];
+        }
+    });
+
     $scope.AddToCart = function(item) 
     {
-        var indexarrayasli = _.findIndex(arrayasli, {'id': item.id});
-        if(item.quantity == 0 && item.maksimal != 0)
-        {
-            item.quantity = 1;
-            item.maksimal = item.maksimal - 1;
-            arrayasli[indexarrayasli].maksimal = arrayasli[indexarrayasli].maksimal - 1;
-        }
+        $scope.itemasli     = angular.copy(item);
+        $scope.itemdecinc   = angular.copy(item);
         $ionicModal.fromTemplateUrl('templates/sales/addtocartmodal.html', 
         {
             scope: $scope,
@@ -116,90 +130,121 @@ angular.module('starter')
             $ionicLoading.show({template: 'Loading...',duration: 500});
             $scope.modal            = modal;
             $scope.modal.show();
+            if(!angular.isDefined(item.QTY_INCART))
+            {
+                item.QTY_INCART = 0;
+            }
             $scope.item = item;
-            StorageService.set('barangpenjualan',arrayasli);
         });  
     };
 
     $scope.closeModal = function() 
     {
-        var itemaddtocart = _.findIndex(resi, {'id': $scope.item.id});
-        if(itemaddtocart != -1)
+        ShopCartLiteFac.GetShopCartByItemAndNoTrans($scope.item.ITEM_ID,$scope.noresi)
+        .then(function(response)
         {
-            if($scope.item.quantity > 0)
-            {
-                resi[itemaddtocart]     = $scope.item; 
-            }
-            else
-            {
-                resi.splice(itemaddtocart,1);
-                $scope.banyakdicart  -= 1;
-            }
-        }
-        else
-        {
-            if($scope.item.quantity > 0)
-            {
-                resi.push($scope.item);
-                $scope.banyakdicart    += 1;  
-            }
-        }
-        StorageService.set( $scope.noresi,resi);
-        $scope.modal.remove();
-    };
+            var datatosave              = {};
+            datatosave.NOMOR_TRANS      = $scope.noresi;
+            datatosave.ITEM_ID          = $scope.item.ITEM_ID;
+            datatosave.ITEM_NM          = $scope.item.ITEM_NM;
+            datatosave.ITEM_HARGA       = $scope.item.ITEM_HARGA;
+            datatosave.QTY_INCART       = $scope.item.QTY_INCART;
+            datatosave.DISCOUNT         = 10;
 
-    $scope.incdec = function(data)
-    {
-        var indexarrayasli = _.findIndex(arrayasli, {'id': $scope.item.id});
-        if(data == 'inc')
-        {
-            if($scope.item.maksimal == 0)
+            if(angular.isArray(response) && response.length > 0)
             {
-                if($scope.item.quantity == 0)
+                if($scope.item.QTY_INCART > 0)
                 {
-                    alert("Barang Tidak Tersedia");
+                    ShopCartLiteFac.UpdateShopCartQty(datatosave)
+                    .then(function(response)
+                    {
+                        if($scope.item.QTY_INCART > $scope.itemasli.QTY_INCART)
+                        {
+                            var selisih = Number($scope.item.QTY_INCART) - Number($scope.itemasli.QTY_INCART);
+                            $scope.item.STOCK_MAX -= selisih;
+                        }
+                        else
+                        {
+                            var selisih = Number($scope.itemasli.QTY_INCART) - Number($scope.item.QTY_INCART);
+                            $scope.item.STOCK_MAX += selisih; 
+                        }
+                        BarangForSaleLiteFac.UpdateBarangForSaleByDateAndItem($scope.item)
+                        .then(function(response)
+                        {
+                            console.log(response);
+                        });
+                    });  
                 }
                 else
                 {
-                    alert("Barang Hanya Tersedia: " + $scope.item.quantity + " Item");    
+                    ShopCartLiteFac.DeleteShopCartByNoTransAndItemId(datatosave)
+                    .then(function(response)
+                    {
+                        $scope.banyakdicart     -= 1;
+                        $scope.item.STOCK_MAX    = $scope.itemasli.QTY_INCART + $scope.itemasli.STOCK_MAX;
+                        BarangForSaleLiteFac.UpdateBarangForSaleByDateAndItem($scope.item)
+                        .then(function(response)
+                        {
+                            console.log(response);
+                        });
+                    }); 
                 }
                 
             }
             else
             {
-                $scope.item.quantity +=1;
-                $scope.item.maksimal -=1;
-                arrayasli[indexarrayasli].maksimal = arrayasli[indexarrayasli].maksimal - 1;
+                if($scope.item.QTY_INCART > 0)
+                {
+                    ShopCartLiteFac.SetShopCart(datatosave)
+                    .then(function(response)
+                    {
+                        $scope.banyakdicart     += 1;
+                        $scope.item.STOCK_MAX   -= $scope.item.QTY_INCART;
+
+                        BarangForSaleLiteFac.UpdateBarangForSaleByDateAndItem($scope.item)
+                        .then(function(response)
+                        {
+                            console.log(response);
+                        });
+                    },
+                    function(error)
+                    {
+                        console.log(error);
+                    });  
+                }
             }
-        }
-        else if(data == 'dec')
+
+        });
+        $scope.modal.remove();
+    };
+
+    $scope.incdec = function(incdec)
+    {
+        if(incdec == 'inc')
         {
-            if($scope.item.quantity == 0)
+            $scope.itemdecinc.STOCK_MAX         -= 1;
+            if($scope.itemdecinc.STOCK_MAX >= 0) 
             {
-                alert("Tidak Boleh");
-            }
-            else
-            {
-                $scope.item.quantity -=1;
-                $scope.item.maksimal +=1;
-                arrayasli[indexarrayasli].maksimal = arrayasli[indexarrayasli].maksimal + 1;
-            }
+                $scope.item.QTY_INCART  += 1;
+            }    
         }
-        StorageService.set('barangpenjualan',arrayasli);
+        else if(incdec == 'dec')
+        {
+            if($scope.item.QTY_INCART > 0)
+            {
+                $scope.item.QTY_INCART -= 1;   
+            } 
+        }
     }
 
     $scope.clearquantity = function()
     {
-        $scope.item.maksimal = $scope.item.maksimal + $scope.item.quantity;
-        var indexarrayasli = _.findIndex(arrayasli, {'id': $scope.item.id});
-        arrayasli[indexarrayasli].maksimal = $scope.item.maksimal;
-        StorageService.set('barangpenjualan',arrayasli);
-        $scope.item.quantity = 0;
+        $scope.item.QTY_INCART = 0;
     }
 
     $scope.gotocart     = function()
     {
-        if(resi.length > 0)
+        if($scope.banyakdicart > 0)
         {
             $state.go('tab.cart');
         }
@@ -210,51 +255,122 @@ angular.module('starter')
     } 
 })
 
-.controller('CartCtrl', function($scope,$state,$ionicLoading,$ionicPopup,$ionicModal,$ionicHistory,$ionicNavBarDelegate,TransCustLiteFac,UtilService,StorageService) 
+.controller('CartCtrl', function($scope,$state,$filter,$ionicLoading,$ionicPopup,$ionicModal,$ionicHistory,$ionicNavBarDelegate,ShopCartLiteFac,BarangForSaleLiteFac,TransCustLiteFac,UtilService,StorageService) 
 {
     $scope.noresi   = StorageService.get('TRANS-ACTIVE');
-    var resi        = StorageService.get($scope.noresi);
-    $scope.datas    = resi;
-    
-
-    $scope.incdec = function(data,item)
+    ShopCartLiteFac.GetShopCartByNomorTrans($scope.noresi)
+    .then(function(response)
     {
-        if(data == 'inc')
+        if(angular.isArray(response) && response.length > 0)
         {
-            if(item.maksimal == 0)
+            $scope.datas = response;
+            $scope.total = UtilService.SumPriceWithQty($scope.datas,'ITEM_HARGA','QTY_INCART');
+        }
+
+    });
+    BarangForSaleLiteFac.GetBarangForSaleByDate($filter('date')(new Date(),'yyyy-MM-dd'))
+    .then(function(response)
+    {
+        if(angular.isArray(response) && response.length > 0)
+        {
+            angular.forEach(response,function(value,key)
             {
-                alert("Barang Hanya Tersedia: " + item.quantity + " Item");
+                var itemaddtocart = _.findIndex($scope.datas, {'ITEM_ID': value.ITEM_ID});
+                if(itemaddtocart != -1)
+                {
+                    $scope.datas[itemaddtocart].STOCK_MAX = Number(value.STOCK_MAX);
+                }
+            });
+        }
+    });
+    
+    $scope.incdec = function(incdec,item)
+    {
+        if(incdec == 'inc')
+        {
+            if(item.STOCK_MAX == 0)
+            {
+                alert("Barang Hanya Tersedia: " + item.QTY_INCART + " Item");
             }
             else
             {
-                item.quantity +=1;
-                item.maksimal -=1;
+                item.QTY_INCART +=1;
+                item.STOCK_MAX -=1;
+                item.TGL_SAVE   = $filter('date')(new Date(),'yyyy-MM-dd');
+
+                ShopCartLiteFac.UpdateShopCartQty(item)
+                .then(function(response)
+                {
+                    console.log(response);
+                });
+
+                BarangForSaleLiteFac.UpdateBarangForSaleByDateAndItem(item)
+                .then(function(response)
+                {
+                    console.log(response);
+                },
+                function(error)
+                {
+                    console.log(error);
+                });
             }
         }
-        else if(data == 'dec')
+        else if(incdec == 'dec')
         {
-            if(item.quantity < 2)
+            if(item.QTY_INCART != 0)
             {
-                var itemaddtocart = _.findIndex($scope.datas, {'id': item.id});
-                $scope.datas.splice(itemaddtocart,1);
+                item.QTY_INCART -=1;
+                item.STOCK_MAX  +=1;
+                item.TGL_SAVE    = $filter('date')(new Date(),'yyyy-MM-dd');
+                
+                ShopCartLiteFac.UpdateShopCartQty(item)
+                .then(function(response)
+                {
+                    console.log(response);
+                });
+
+                BarangForSaleLiteFac.UpdateBarangForSaleByDateAndItem(item)
+                .then(function(response)
+                {
+                    console.log(response);
+                },
+                function(error)
+                {
+                    console.log(error);
+                });
             }
-            else
-            {
-               item.quantity -=1;
-               item.maksimal +=1;
-            }
+
         }
-        $scope.total = UtilService.SumPriceWithQty($scope.datas,'harga','quantity');
-        StorageService.set($scope.noresi,$scope.datas);
+        $scope.total = UtilService.SumPriceWithQty($scope.datas,'ITEM_HARGA','QTY_INCART');
     }
+
     $scope.deleteone = function(item)
     {
-        var itemaddtocart = _.findIndex($scope.datas, {'id': item.id});
-        $scope.datas.splice(itemaddtocart,1);
-        $scope.total = UtilService.SumPriceWithQty($scope.datas,'harga','quantity');
-        StorageService.set($scope.noresi,$scope.datas);
+        BarangForSaleLiteFac.GetBarangForSaleByDateAndItemID($filter('date')(new Date(),'yyyy-MM-dd'),item.ITEM_ID)
+        .then(function(response)
+        {
+            var datatosave = {};
+            datatosave.STOCK_MAX    = response.STOCK_MAX + item.QTY_INCART;
+            datatosave.TGL_SAVE     = response.TGL_SAVE;
+            datatosave.ITEM_ID      = response.ITEM_ID;
+            datatosave.NOMOR_TRANS  = $scope.noresi;
+            BarangForSaleLiteFac.UpdateBarangForSaleByDateAndItem(datatosave) 
+            .then(function(response)
+            {
+                ShopCartLiteFac.DeleteShopCartByNoTransAndItemId(datatosave)
+                .then(function(response)
+                {
+                    var itemaddtocart = _.findIndex($scope.datas, {'ITEM_ID': item.ITEM_ID});
+                    $scope.datas.splice(itemaddtocart,1);
+                    $scope.total = UtilService.SumPriceWithQty($scope.datas,'ITEM_HARGA','QTY_INCART');
+                });
+
+            }); 
+        });
+        
     }
-    $scope.total = UtilService.SumPriceWithQty($scope.datas,'harga','quantity');
+
+    
     $scope.pembayaran = function(noresi)
     {
 

@@ -19,7 +19,7 @@
     </div>
     <ion-list>
       <ion-item ng-repeat="item in transaks track by $index" ng-if="item.STATUS_BUY == 'INCOMPLETE'" ng-click="gotoitem(item)">
-        {{item.MOMOR_TRANS}}
+        {{item.NOMOR_TRANS}}
       </ion-item>
       <ion-item ng-if="transaks.length == 0">
         Belum Ada Transaksi
