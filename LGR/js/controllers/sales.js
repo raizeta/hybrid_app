@@ -106,14 +106,14 @@ angular.module('starter')
                     response[itemaddtocart].QTY_INCART = Number(value.QTY_INCART);
                 }
             });
-            $scope.datas = UtilService.ArrayChunk(response,4);
+            $scope.datas = UtilService.ArrayChunk(response,3);
         }
         else
         {
             $scope.datas = [];
         }
     });
-
+    $scope.datastores = [{'OUTLET_NM':'Makananan'},{'OUTLET_NM':'Minuman'},{'OUTLET_NM':'Snack'}]
     $scope.AddToCart = function(item) 
     {
         $scope.itemasli     = angular.copy(item);
@@ -200,7 +200,7 @@ angular.module('starter')
                     {
                         $scope.banyakdicart     += 1;
                         $scope.item.STOCK_MAX   -= $scope.item.QTY_INCART;
-
+                        $scope.itemincart.push(datatosave);
                         BarangForSaleLiteFac.UpdateBarangForSaleByDateAndItem($scope.item)
                         .then(function(response)
                         {
@@ -370,7 +370,6 @@ angular.module('starter')
         
     }
 
-    
     $scope.pembayaran = function(noresi)
     {
 
@@ -397,5 +396,18 @@ angular.module('starter')
 
             } 
         });
+    }
+
+    $scope.add = function(value) 
+    {
+        console.log(value);
+        if($scope.expression === "" || $scope.expression === undefined) 
+        {
+            $scope.expression = value;
+        } 
+        else 
+        {
+            $scope.expression = $scope.expression + " " + value;
+        }
     }
 });

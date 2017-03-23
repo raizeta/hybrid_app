@@ -1,7 +1,7 @@
 angular.module('starter')
-.controller('LoginCtrl', function($scope, $state, $ionicPopup,$ionicLoading,SecuredFac,StoreCombFac,StorageService) 
+.controller('LoginCtrl', function($scope, $state, $ionicPopup,$ionicLoading,SecuredFac,StoreFac,StorageService) 
 {
-    StoreCombFac.GetPureStoreComb()
+    StoreFac.GetPureStores()
     .then(function(response)
     {
         $scope.datastore = response;

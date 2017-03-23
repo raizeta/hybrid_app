@@ -1,35 +1,97 @@
+
 <ion-view view-title="NO RESI: {{noresi}}">
   <ion-nav-buttons side="right">
       <button class="button button-icon icon ion-ios-cart"  ng-click="gotocart()">
           <span class="badge badge-assertive icon-badge">{{banyakdicart}}</span>
       </button>
   </ion-nav-buttons>  
-  <ion-content class="has-header" padding="false">
+  <ion-content class="has-header" padding="false" scroll="false">
     <label class = "item item-input item-select">
       <div class = "input-label">ITEM GROUP</div>
-      <select ng-model="store" ng-options="item.OUTLET_NM for item in stores" ng-change="selecttoko(store)"required>
+      <select ng-model="store" ng-options="item.OUTLET_NM for item in datastores" ng-change="selecttoko(store)"required>
           <option value="">Pilih Group</option>
       </select>
     </label>
-    <div class="row" ng-repeat="items in datas">
-      <div class="col col-25" ng-repeat="item in items track by $index" >
-        <div class="list">
-          <div class="item item-image" style="padding-right:3px">
-            <img class="box-shadow" ng-click="AddToCart(item)" ng-src="{{item.GAMBAR}}" width="100%" />
-          </div>
-
-          <a class="aitem item-icon-right">
-          <p style="font-size: 12px;text-align:left;">
-            {{item.ITEM_NM}} <br/>
-            <span style="font-weight: bold;color: black;">{{item.ITEM_HARGA|number}}</span>
-          </p>
-          <i style="font-size: 35px; margin-right:0px;right:1px;"  ng-click="AddToCart(item)" class="icon ion-ios-cart">
-            <span class="badge badge-balanced icon-badge" ng-if="item.QTY_INCART > 0">{{item.QTY_INCART|number}}</span>
-            <span class="badge badge-positive icon-badge" ng-if="item.QTY_INCART == 0">{{item.QTY_INCART|number}}</span>
-          </i>
-          </a>
-          <div class="ribbon"><span>{{item.STOCK_MAX|number}}</span></div>
+    <div class="row">
+      <div class="col col-33" >
+        <div class="header padding text-center">
+            <img src="img/logo.png" alt="Your logo here"/>
         </div>
+        <div class="row">
+          <div class ="col">
+              <h5>No.</h5>
+            </div>
+            <div class ="col">
+              <h5>NM</h5>
+            </div>
+            <div class ="col">
+              <h5>HARGA</h5>
+            </div>
+            <div class ="col">
+              <h5>QTY</h5>
+            </div>
+            <div class ="col">
+              <div style="float:right">
+                <h5>SUB</h5>
+              </div>
+            </div>
+        </div>
+        <div class="row" ng-repeat="item in itemincart track by $index">
+            <div class ="col">
+              {{$index + 1}}
+            </div>
+            <div class ="col">
+              {{item.ITEM_NM}}
+            </div>
+            <div class ="col">
+              {{item.ITEM_HARGA|number}}
+            </div>
+            <div class ="col">
+              {{item.QTY_INCART}}
+            </div>
+            <div class ="col">
+              <div style="float:right">
+                {{item.ITEM_HARGA*item.QTY_INCART|number}}
+              </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class ="col">
+              
+              <h5>Total</h5>
+              
+            </div>
+            <div class ="col">
+              <div style="float:right">
+                <h5>{{1200000|number}}</h5>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="col col-66">
+        <ion-scroll direction="y">
+          <div class="row" ng-repeat="items in datas">
+            <div class="col col-33" ng-repeat="item in items track by $index" >
+              <div class="list">
+                <div class="item item-image" style="padding-right:3px">
+                  <img class="box-shadow" ng-click="AddToCart(item)" ng-src="{{item.GAMBAR}}" width="100%" />
+                </div>
+
+                <a class="aitem item-icon-right">
+                <p style="font-size: 12px;text-align:left;">
+                  {{item.ITEM_NM}} <br/>
+                  <span style="font-weight: bold;color: black;">{{item.ITEM_HARGA|number}}</span>
+                </p>
+                <i style="font-size: 35px; margin-right:0px;right:1px;"  ng-click="AddToCart(item)" class="icon ion-ios-cart">
+                  <span class="badge badge-balanced icon-badge" ng-if="item.QTY_INCART > 0">{{item.QTY_INCART|number}}</span>
+                  <span class="badge badge-positive icon-badge" ng-if="item.QTY_INCART == 0">{{item.QTY_INCART|number}}</span>
+                </i>
+                </a>
+                <div class="ribbon"><span>{{item.STOCK_MAX|number}}</span></div>
+              </div>
+            </div>
+          </div>
+        </ion-scroll>
       </div>
     </div>
     <div class="row" ng-if="datas.length < 1">

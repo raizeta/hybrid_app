@@ -383,3 +383,13 @@ html, body,
   -ms-flex-align: center;
   align-items: center;
 }
+
+.pane.left-view {
+  left: 0;
+  width: 33%;
+}
+
+.pane.right-view {
+  left: 33%;
+  width: 67%;
+}
