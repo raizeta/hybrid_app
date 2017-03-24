@@ -5,7 +5,7 @@
           <span class="badge badge-assertive icon-badge">{{banyakdicart}}</span>
       </button>
   </ion-nav-buttons>  
-  <ion-content class="has-header" padding="false" scroll="false">
+  <ion-content class="has-header" padding="false" scroll="true">
     <label class = "item item-input item-select">
       <div class = "input-label">ITEM GROUP</div>
       <select ng-model="store" ng-options="item.OUTLET_NM for item in datastores" ng-change="selecttoko(store)"required>
@@ -13,68 +13,66 @@
       </select>
     </label>
     <div class="row">
-      <div class="col col-33" >
-        <div class="header padding text-center">
-            <img src="img/logo.png" alt="Your logo here"/>
-        </div>
-        <div class="row">
-          <div class ="col">
-              <h5>No.</h5>
-            </div>
-            <div class ="col">
-              <h5>NM</h5>
-            </div>
-            <div class ="col">
-              <h5>HARGA</h5>
-            </div>
-            <div class ="col">
-              <h5>QTY</h5>
-            </div>
-            <div class ="col">
-              <div style="float:right">
-                <h5>SUB</h5>
+      <div class="col col-33" style="border:thin solid green;margin-top:8px">
+          <div class="header padding text-center">
+              <img src="img/logo.png" alt="Your logo here"/>
+          </div>
+          <div class="row">
+              <div class="col" style="min-width:100px">
+                #.&nbsp;&nbsp;NAMA
               </div>
-            </div>
-        </div>
-        <div class="row" ng-repeat="item in itemincart track by $index">
-            <div class ="col">
-              {{$index + 1}}
-            </div>
-            <div class ="col">
-              {{item.ITEM_NM}}
-            </div>
-            <div class ="col">
-              {{item.ITEM_HARGA|number}}
-            </div>
-            <div class ="col">
-              {{item.QTY_INCART}}
-            </div>
-            <div class ="col">
-              <div style="float:right">
-                {{item.ITEM_HARGA*item.QTY_INCART|number}}
+              <div class ="col">
+                HARGA
               </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class ="col">
-              
-              <h5>Total</h5>
-              
-            </div>
-            <div class ="col">
-              <div style="float:right">
-                <h5>{{1200000|number}}</h5>
+              <div class ="col">
+                QTY
               </div>
-            </div>
-        </div>
+              <div class ="col">
+                <div style="float:right">
+                  SUB
+                </div>
+              </div>
+          </div>
+          <ion-scroll direction="y" overflow-scroll="false" style="position: relative !important;max-height:40%">
+          <div class="row" ng-repeat="item in itemincart track by $index">
+              <div class ="col" style="min-width:100px">
+                {{$index + 1}}.&nbsp;&nbsp;{{item.ITEM_NM}}
+              </div>
+              <div class ="col">
+                {{item.ITEM_HARGA|number}}
+              </div>
+              <div class ="col">
+                {{item.QTY_INCART}}
+              </div>
+              <div class ="col">
+                <div style="float:right">
+                  {{item.ITEM_HARGA*item.QTY_INCART|number}}
+                </div>
+              </div>
+          </div>
+          </ion-scroll>
+          <div class="row" >
+              <div class ="col">
+                
+                <h5>Total From {{itemincart.length}} Item</h5>
+                
+              </div>
+              <div class ="col">
+                <div style="float:right">
+                  <h5 ng-if="itemincart.length > 0">{{hitungtotal(itemincart)|number}}</h5>
+                  <h5 ng-if="itemincart.length == 0">0</h5>
+                </div>
+              </div>
+          </div>
       </div>
+
       <div class="col col-66">
-        <ion-scroll direction="y">
+        <ion-scroll direction="y" overflow-scroll="false" style="position: absolute !important;top: 50px !important;bottom: 0;right: 0 !important;width: 66%;">
           <div class="row" ng-repeat="items in datas">
             <div class="col col-33" ng-repeat="item in items track by $index" >
               <div class="list">
                 <div class="item item-image" style="padding-right:3px">
-                  <img class="box-shadow" ng-click="AddToCart(item)" ng-src="{{item.GAMBAR}}" width="100%" />
+                  <img class="box-shadow" ng-click="tambahqtyitem(item)" ng-src="{{item.GAMBAR}}" width="100%" />
                 </div>
 
                 <a class="aitem item-icon-right">

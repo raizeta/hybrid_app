@@ -5,6 +5,14 @@
 	-webkit-box-shadow: inset 0 0 10px #B3D0FC;
 	box-shadow:5px 5px 5px #B3D0FC;	
 }
+.box-shadow-cashier
+{
+    margin-bottom:10px;
+    margin-top: 7px;
+    -moz-box-shadow:inset 0 0 0 0 #000000;
+    -webkit-box-shadow: inset 0 0 0 0 #B3D0FC;
+    box-shadow:5px 5px 5px 5px #B3D0FC; 
+}
 .box-shadow-red
 {
     margin-bottom:10px;

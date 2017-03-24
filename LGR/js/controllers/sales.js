@@ -75,7 +75,7 @@ angular.module('starter')
 
 })
 
-.controller('SalesCtrl', function($scope,$state,$ionicLoading,$ionicPopup,$ionicModal,$filter,UtilService,StorageService,BarangForSaleLiteFac,ShopCartLiteFac) 
+.controller('SalesCtrl', function($scope,$state,$location,$ionicLoading,$ionicScrollDelegate,$ionicPopup,$ionicModal,$filter,UtilService,StorageService,BarangForSaleLiteFac,ShopCartLiteFac) 
 {
     
     $scope.noresi   = StorageService.get('TRANS-ACTIVE');
@@ -252,7 +252,85 @@ angular.module('starter')
         {
             alert("Belum Ada Item Yang Dipilih");
         } 
-    } 
+    }
+
+    $scope.hitungtotal = function(datahitung)
+    {
+        var total = UtilService.SumPriceWithQty(datahitung,'ITEM_HARGA','QTY_INCART');  
+        return total;
+    }
+
+    $scope.tambahqtyitem = function(item)
+    {
+        console.log(item);
+        $scope.audio = new Audio('img/beep-07.wav');
+        $scope.audio.play();
+        
+        ShopCartLiteFac.GetShopCartByItemAndNoTrans(item.ITEM_ID,$scope.noresi)
+        .then(function(response)
+        {
+            if(angular.isDefined(item.QTY_INCART))
+            {
+                item.QTY_INCART        += 1;   
+            }
+            else
+            {
+                item.QTY_INCART         = 1;
+            }
+            
+            item.STOCK_MAX             -= 1;
+
+            var datatosave              = {};
+            datatosave.NOMOR_TRANS      = $scope.noresi;
+            datatosave.ITEM_ID          = item.ITEM_ID;
+            datatosave.ITEM_NM          = item.ITEM_NM;
+            datatosave.ITEM_HARGA       = item.ITEM_HARGA;
+            datatosave.QTY_INCART       = item.QTY_INCART;
+            datatosave.STOCK_MAX        = item.STOCK_MAX;
+            datatosave.DISCOUNT         = 10;
+
+            if(angular.isArray(response) && response.length > 0)
+            {
+                var index = _.findIndex($scope.itemincart,{'ITEM_ID': item.ITEM_ID});
+                $scope.itemincart[index].QTY_INCART += 1;
+                ShopCartLiteFac.UpdateShopCartQty(datatosave)
+                .then(function(response)
+                {
+                    BarangForSaleLiteFac.UpdateBarangForSaleByDateAndItem(item)
+                    .then(function(response)
+                    {
+                        console.log(response);
+                    },
+                    function(error)
+                    {
+                        console.log(error);
+                    });
+                });  
+            }
+            else
+            {
+
+                ShopCartLiteFac.SetShopCart(datatosave)
+                .then(function(response)
+                {
+                    $scope.banyakdicart     += 1;
+                    $scope.itemincart.push(datatosave);
+                    BarangForSaleLiteFac.UpdateBarangForSaleByDateAndItem(item)
+                    .then(function(response)
+                    {
+                        console.log(response);
+                    });
+                },
+                function(error)
+                {
+                    console.log(error);
+                });
+            }
+        });
+
+        
+
+    }
 })
 
 .controller('CartCtrl', function($scope,$state,$filter,$ionicLoading,$ionicPopup,$ionicModal,$ionicHistory,$ionicNavBarDelegate,ShopCartLiteFac,BarangForSaleLiteFac,TransCustLiteFac,UtilService,StorageService) 
