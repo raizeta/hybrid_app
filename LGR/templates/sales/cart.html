@@ -2,33 +2,38 @@
   <ion-content>
     <ion-list>
     <div class="row">
-      <div class="col col-66">
+      <div class="col col-50">
         <div class="row" ng-repeat="item in datas track by $index">
-            <div class ="col col-20">
-              <button class="button button-stable button-small">{{item.ITEM_NM}} ({{item.STOCK_MAX}})</button>
+            <div class ="col">
+              {{item.ITEM_NM}} ({{item.STOCK_MAX}})
             </div>
-            <div class ="col col-20">
-              <button class="button button-stable button-small">{{item.ITEM_HARGA|number}}</button>
+            <div class ="col">
+              {{item.ITEM_HARGA|number}} x {{item.QTY_INCART}}
             </div>
-            <div class ="col col-20">
-              <button class="button button-calm button-small ion-minus" ng-click="incdec('dec',item)" ></button>
-              <button class="button button-stable button-small">{{item.QTY_INCART}}</button>
-              <button class="button button-positive button-small ion-plus" ng-click="incdec('inc',item)"></button>
-            </div>
-            <div class ="col col-20">
-              <button class="button button-stable button-small">
-                {{item.ITEM_HARGA*item.QTY_INCART|number}}</button>
-              </div>
-            <div>
-              <button class="button button-assertive button-small icon ion-trash-b" ng-click="deleteone(item)"></button>
+            <div class ="col">
+                {{item.ITEM_HARGA*item.QTY_INCART|number}}
             </div>
         </div>
       </div>
-      <div class="col col-33">
+      <div class="col col-50">
         <div class="row">
-          <div class="col col-33">{{total|number}}</div>
-          <div class="col col-33">{{expression}}</div>
-          <div class="col col-33">{{100000|number}}</div>
+          <div class="col col-100">
+              <div style="float:left"><h4>Total Belanja</h4></div>
+              <div style="float:right"><h4>{{total|number}}</h4></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col col-100">
+              <div style="float:left"><h4>Pembayaran</h4></div>
+              <div style="float:right"><h4>{{expression|number}}</h4></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col col-100">
+              <div style="float:left"><h4>Kembalian</h4></div>
+              <div style="float:right" ng-if="expression >= total"><h4>{{(expression -total)|number}}</h4></div>
+              <div style="float:right" ng-if="total > expression"><h4>{{(0)|number}}</h4></div>
+          </div>
         </div>
         <div class="row">
           <div class="col col-33"><button class="button button-calm button-large" ng-click="add(7)">7</button></div>
@@ -47,12 +52,11 @@
         </div>
         <div class="row">
           <div class="col col-33"><button class="button button-calm button-large" ng-click="add(0)">0</button></div>
-          <div class="col col-33"><button class="button button-assertive button-large">DEL</button></div>
-          <div class="col col-33"><button class="button button-balanced button-large">SAV</button></div>
+          <div class="col col-33"><button class="button button-assertive button-large" ng-click="delangka(expression)">DEL</button></div>
+          <div class="col col-33"><button class="button button-balanced button-large"  ng-click="pembayaran(noresi)">SAV</button></div>
         </div>
       </div>
     </div>
     </ion-list>
-    <button class="button button-positive button-outline button-block" ng-click="pembayaran(noresi)">Total Pay : Rp. {{total|number}}</button>
   </ion-content>
 </ion-view>

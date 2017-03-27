@@ -187,7 +187,11 @@ angular.module('starter')
                         {
                             console.log(response);
                         });
-                    }); 
+                    });
+                    var index = _.findIndex($scope.itemincart,{'ITEM_ID':$scope.itemdecinc.ITEM_ID});
+                    $scope.itemincart.splice(index,1);
+                    $scope.audio = new Audio('wav/recycle.wav');
+                    $scope.audio.play(); 
                 }
                 
             }
@@ -220,19 +224,27 @@ angular.module('starter')
 
     $scope.incdec = function(incdec)
     {
+        
+        var index = _.findIndex($scope.itemincart,{'ITEM_ID':$scope.itemdecinc.ITEM_ID});
         if(incdec == 'inc')
         {
+            $scope.audio = new Audio('img/beep-07.wav');
+            $scope.audio.play();
             $scope.itemdecinc.STOCK_MAX         -= 1;
             if($scope.itemdecinc.STOCK_MAX >= 0) 
             {
                 $scope.item.QTY_INCART  += 1;
+                $scope.itemincart[index].QTY_INCART += 1;
             }    
         }
         else if(incdec == 'dec')
         {
+            $scope.audio = new Audio('img/beep-5.wav');
+            $scope.audio.play();
             if($scope.item.QTY_INCART > 0)
             {
-                $scope.item.QTY_INCART -= 1;   
+                $scope.item.QTY_INCART -= 1; 
+                $scope.itemincart[index].QTY_INCART -= 1;  
             } 
         }
     }
@@ -262,74 +274,72 @@ angular.module('starter')
 
     $scope.tambahqtyitem = function(item)
     {
-        console.log(item);
         $scope.audio = new Audio('img/beep-07.wav');
         $scope.audio.play();
-        
-        ShopCartLiteFac.GetShopCartByItemAndNoTrans(item.ITEM_ID,$scope.noresi)
-        .then(function(response)
+        if(item.STOCK_MAX > 0)
         {
-            if(angular.isDefined(item.QTY_INCART))
+            ShopCartLiteFac.GetShopCartByItemAndNoTrans(item.ITEM_ID,$scope.noresi)
+            .then(function(response)
             {
-                item.QTY_INCART        += 1;   
-            }
-            else
-            {
-                item.QTY_INCART         = 1;
-            }
-            
-            item.STOCK_MAX             -= 1;
-
-            var datatosave              = {};
-            datatosave.NOMOR_TRANS      = $scope.noresi;
-            datatosave.ITEM_ID          = item.ITEM_ID;
-            datatosave.ITEM_NM          = item.ITEM_NM;
-            datatosave.ITEM_HARGA       = item.ITEM_HARGA;
-            datatosave.QTY_INCART       = item.QTY_INCART;
-            datatosave.STOCK_MAX        = item.STOCK_MAX;
-            datatosave.DISCOUNT         = 10;
-
-            if(angular.isArray(response) && response.length > 0)
-            {
-                var index = _.findIndex($scope.itemincart,{'ITEM_ID': item.ITEM_ID});
-                $scope.itemincart[index].QTY_INCART += 1;
-                ShopCartLiteFac.UpdateShopCartQty(datatosave)
-                .then(function(response)
+                if(angular.isDefined(item.QTY_INCART))
                 {
-                    BarangForSaleLiteFac.UpdateBarangForSaleByDateAndItem(item)
+                    item.QTY_INCART        += 1;   
+                }
+                else
+                {
+                    item.QTY_INCART         = 1;
+                }
+                
+                item.STOCK_MAX             -= 1;
+
+                var datatosave              = {};
+                datatosave.NOMOR_TRANS      = $scope.noresi;
+                datatosave.ITEM_ID          = item.ITEM_ID;
+                datatosave.ITEM_NM          = item.ITEM_NM;
+                datatosave.ITEM_HARGA       = item.ITEM_HARGA;
+                datatosave.QTY_INCART       = item.QTY_INCART;
+                datatosave.STOCK_MAX        = item.STOCK_MAX;
+                datatosave.DISCOUNT         = 10;
+
+                if(angular.isArray(response) && response.length > 0)
+                {
+                    var index = _.findIndex($scope.itemincart,{'ITEM_ID': item.ITEM_ID});
+                    $scope.itemincart[index].QTY_INCART += 1;
+                    ShopCartLiteFac.UpdateShopCartQty(datatosave)
                     .then(function(response)
                     {
-                        console.log(response);
+                        BarangForSaleLiteFac.UpdateBarangForSaleByDateAndItem(item)
+                        .then(function(response)
+                        {
+                            console.log(response);
+                        },
+                        function(error)
+                        {
+                            console.log(error);
+                        });
+                    });  
+                }
+                else
+                {
+
+                    ShopCartLiteFac.SetShopCart(datatosave)
+                    .then(function(response)
+                    {
+                        $scope.banyakdicart     += 1;
+                        $scope.itemincart.push(datatosave);
+                        BarangForSaleLiteFac.UpdateBarangForSaleByDateAndItem(item)
+                        .then(function(response)
+                        {
+                            console.log(response);
+                        });
                     },
                     function(error)
                     {
                         console.log(error);
                     });
-                });  
-            }
-            else
-            {
-
-                ShopCartLiteFac.SetShopCart(datatosave)
-                .then(function(response)
-                {
-                    $scope.banyakdicart     += 1;
-                    $scope.itemincart.push(datatosave);
-                    BarangForSaleLiteFac.UpdateBarangForSaleByDateAndItem(item)
-                    .then(function(response)
-                    {
-                        console.log(response);
-                    });
-                },
-                function(error)
-                {
-                    console.log(error);
-                });
-            }
-        });
-
-        
-
+                }
+            });
+        }
     }
 })
 
@@ -450,42 +460,60 @@ angular.module('starter')
 
     $scope.pembayaran = function(noresi)
     {
-
-        var confirmPopup = $ionicPopup.confirm(
-                                {
-                                    title: 'Pembayaran',
-                                    template: 'Are you sure to pay this cart?'
-                                });
-        confirmPopup.then(function(res) 
+        if($scope.expression >= $scope.total)
         {
-            if(res) 
+            var confirmPopup = $ionicPopup.confirm(
+                                    {
+                                        title: 'Pembayaran',
+                                        template: 'Are you sure to pay this cart?'
+                                    });
+            confirmPopup.then(function(res) 
             {
-                TransCustLiteFac.UpdateTransCusts(['COMPLETE',$scope.noresi])
-                .then(function(response)
+                if(res) 
                 {
-                    StorageService.destroy('TRANS-ACTIVE');
-                    $ionicHistory.nextViewOptions({disableAnimate: true, disableBack: true});
-                    $state.go('tab.cashier');
-                },
-                function(error)
-                {
-                    console.log(error);
-                });
+                    TransCustLiteFac.UpdateTransCusts(['COMPLETE',$scope.noresi])
+                    .then(function(response)
+                    {
+                        StorageService.destroy('TRANS-ACTIVE');
+                        $ionicHistory.nextViewOptions({disableAnimate: true, disableBack: true});
+                        $state.go('tab.cashier');
+                    },
+                    function(error)
+                    {
+                        console.log(error);
+                    });
 
-            } 
-        });
+                } 
+            });
+        }
+        else
+        {
+            alert("Uang Yang Disetor Belum Mencukupi Untuk Melakukan Pembayaran");
+        }
     }
 
+    $scope.expression = 0;
     $scope.add = function(value) 
     {
-        console.log(value);
+        $scope.audio = new Audio('img/beep-07.wav');
+        $scope.audio.play();
         if($scope.expression === "" || $scope.expression === undefined) 
         {
             $scope.expression = value;
         } 
         else 
         {
-            $scope.expression = $scope.expression + " " + value;
+            $scope.expression = $scope.expression + "" + value;
         }
+        var xxx = angular.copy($scope.expression);
+        $scope.expression = xxx;
+    }
+
+    $scope.delangka = function(stringval)
+    {
+        $scope.audio = new Audio('img/beep-5.wav');
+        $scope.audio.play();
+        var newStr = stringval.substring(0, stringval.length-1);
+        $scope.expression = newStr;
     }
 });

@@ -65,6 +65,7 @@ angular.module('starter')
         });
         return deferred.promise; 
     }
+    
     var GetShopCartByNomorTrans = function (NOMOR_TRANS)
     {
         var deferred = $q.defer();

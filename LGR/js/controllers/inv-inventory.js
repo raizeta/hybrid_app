@@ -16,7 +16,6 @@ angular.module('starter')
     InvCheckLiteFac.GetInvChecks($scope.tglsekarang,'RECEIVED')
     .then(function(response)
     {
-        console.log(response);
         if(angular.isArray(response) && response.length > 0)
         {
             $scope.typeinv  = 2;
@@ -36,10 +35,12 @@ angular.module('starter')
             {
                 console.log(err);
             });
+            $scope.sudahdicheck = true;
         }
         else
         {
-            $scope.typeinv  = 2;
+            $scope.typeinv      = 2;
+            $scope.sudahdicheck = false;
             TransaksiFac.GetTransaksis(lokasistore.OUTLET_BARCODE,$scope.tglsekarang,$scope.typeinv)
             .then(function(response)
             {
@@ -94,6 +95,7 @@ angular.module('starter')
         {
             if(res) 
             {
+                $scope.sudahdicheck = true;
                 var datainvstatus = {};
                 datainvstatus.TGL_CHECK         = $filter('date')(new Date(),'yyyy-MM-dd');
                 datainvstatus.DATETIME_CHECK    = $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss');

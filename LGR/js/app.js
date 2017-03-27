@@ -1,4 +1,4 @@
-angular.module('starter', ['ionic','ngCordova'])
+angular.module('starter', ['ionic','ngCordova','ionic-table'])
 .run(function($ionicPlatform,$rootScope,$cordovaSQLite) 
 {
     $ionicPlatform.ready(function() 
