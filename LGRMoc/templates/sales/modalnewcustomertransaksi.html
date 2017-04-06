@@ -1,0 +1,32 @@
+<ion-modal-view class="mymodalcustnewtransaksi">
+  <ion-header-bar class="bar bar-header bar-assertive">
+    <h1 class="title">CUSTOMER LIST</h1>
+    <button class="button button-clear left" ng-click="ModalNewCustomerTransaksiClose()">
+      <i class="icon ion-backspace"></i>
+    </button>
+    <button class="button button-clear right" ng-click="ModalNewCustomerTransaksiClose()">
+      <i class="icon ion-android-checkbox-outline"></i>
+    </button>
+  </ion-header-bar>
+  <ion-content>
+    <div class="list card">
+      <div class="item item-body">
+        <div class="list">
+          <label class="item item-input item-floating-label">
+              <span class="input-label">Nama Lengkap</span>
+              <input type="text" ng-model="dataselected.namaLengkap" class="form-control" placeholder="Nama Lengkap" required>
+          </label>
+          <label class="item item-input item-floating-label">
+            <span class="input-label">Your Email</span>
+              <input type="text" ng-model="dataselected.noTelp" class="form-control" placeholder="Email Anda" required>
+          </label>
+          <label class="item item-input item-floating-label">
+            <span class="input-label">Your Telp</span>
+              <input type="email" ng-model="dataselected.email" class="form-control" placeholder="No Telp" required>
+          </label>
+        </div>
+        <div ui-grid="gridOptions" ui-grid-selection class="grid"></div>
+      </div>
+    </div>
+  </ion-content>
+</ion-modal-view>

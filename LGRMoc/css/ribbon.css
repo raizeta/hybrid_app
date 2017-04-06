@@ -1,0 +1,29 @@
+.ribbon {
+   position: absolute;
+   right: -45px; 
+   top: 0px;
+   z-index: 9999;
+   overflow: hidden;
+   width: 75px; height: 75px; 
+   text-align: left;
+
+}
+.ribbon span {
+   font-size: 12px;
+   color: #fff; 
+   text-transform: uppercase; 
+   text-align: center;
+   font-weight: bold; 
+   line-height: 20px;
+   transform: rotate(0deg);
+   -webkit-transform: rotate(0deg); /* Needed for Safari */
+   width: 30px;
+   height: 20px; 
+   display: block;
+   background: #2BC0E4; /* fallback for old browsers */
+   background: -webkit-linear-gradient(to left, #2BC0E4 , #EAECC6); /* Chrome 10-25, Safari 5.1-6 */
+   background: linear-gradient(to left, #2BC0E4 , #EAECC6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+   box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+   position: absolute;
+
+}
