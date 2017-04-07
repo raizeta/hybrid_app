@@ -13,7 +13,7 @@ angular.module('starter')
         var QTY_INCART          = datatosave.QTY_INCART;
         var DISCOUNT            = datatosave.DISCOUNT;
         var isitable            = [TGL_ADDTOCART,DATETIME_ADDTOCART,NOMOR_TRANS,ITEM_ID,ITEM_NM,ITEM_HARGA,QTY_INCART,DISCOUNT];
-        var queryinsertshopcart  = 'INSERT INTO Tbl_ShopCart (TGL_ADDTOCART,DATETIME_ADDTOCART,NOMOR_TRANS,ITEM_ID,ITEM_NM,ITEM_HARGA,QTY_INCART,DISCOUNT) VALUES (?,?,?,?,?,?,?,?)';
+        var queryinsertshopcart = 'INSERT INTO Tbl_ShopCart (TGL_ADDTOCART,DATETIME_ADDTOCART,NOMOR_TRANS,ITEM_ID,ITEM_NM,ITEM_HARGA,QTY_INCART,DISCOUNT) VALUES (?,?,?,?,?,?,?,?)';
         $cordovaSQLite.execute($rootScope.db,queryinsertshopcart,isitable)
         .then(function(result) 
         {
@@ -89,6 +89,7 @@ angular.module('starter')
         });
         return deferred.promise; 
     }
+    
     var GetShopCartByItemAndNoTrans = function (ITEM_ID,NOMOR_TRANS)
     {
         var deferred = $q.defer();

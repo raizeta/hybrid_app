@@ -1,33 +1,17 @@
 <ion-modal-view class="mymodalpembayaran">
-<form name="loginForm" ng-submit="login(users)" novalidate="">
-  <ion-header-bar class="bar bar-header bar-assertive">
+  <ion-header-bar class="bar bar-header bar-dark">
     <h1 class="title">METODE PEMBAYARAN</h1>
-    <button type="submit" class="button button-assertive left" ng-click="ModalPembayaranClose()">
-      CANCEL
+    <button type="submit" class="button button-outline button-assertive left" ng-click="ModalPembayaranCancel()">
+      Cancel
     </button>
-    <button type="submit" class="button button-balanced right" ng-click="ModalPembayaranClose()" ng-disabled="loginForm.$invalid">
-      SAVE
+    <button class="button button-outline button-positive right" ng-click="lakukanpembayarannotifikasi()">
+      Charge
     </button>
   </ion-header-bar>
   <ion-content>
-    <div class="list card">
-      <div style="min-height: 10px;" class="item item-divider  bar-assertive">
-      	RADUMT SITEPU
-      </div>
-      <div class="item item-body">
-          <div class="list">
-            <label class="item item-input item-floating-label">
-                <span class="input-label">Your Username</span>
-                <input type="text" ng-model="users.username" class="form-control" placeholder="username" required>
-            </label>
-            <label class="item item-input item-floating-label">
-              <span class="input-label">Your Password</span>
-                <input type="password" ng-model="users.password" class="form-control" placeholder="password" required>
-            </label>
-          </div>
-          
-      </div>
-    </div>
+
   </ion-content>
-</form>
+  <div class="bar bar-footer bar-dark">
+     <h1 class="title">Terimakasih Atas Kunjungan Anda</h1>
+  </div
 </ion-modal-view>

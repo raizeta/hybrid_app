@@ -42,7 +42,7 @@
               </div>
           </div>
           <ion-scroll direction="y" overflow-scroll="true" delegate-handle="scrolltobottom" style="position: relative !important;max-height:60%;overflow-y: scroll;">
-            <div class="row" ng-repeat="item in itemincart track by $index">
+            <div class="row" ng-repeat="item in itemincart track by $index" >
                 <div class="my-col" style="min-width:130px">
                   {{$index + 1}}.&nbsp;&nbsp;{{item.ITEM_NM}}
                 </div>
@@ -64,7 +64,10 @@
                 <h5>Total </h5>
               </div>
               <div class="my-col">
-              <div style="float:right">From {{itemincart.length}} Item</div></div>
+                <div style="float:right">
+                  <h5>From {{itemincart.length}} Item</h5>
+                </div>
+              </div>
               <div class="my-col">
                 <div style="float:right">
                   <h5 ng-if="itemincart.length > 0">{{hitungtotal(itemincart)|number}}</h5>
@@ -111,6 +114,8 @@
     <div class="row" ng-if="datas.length < 1">
       Belum Ada Product Yang Akan Dijual
     </div>
-    
   </ion-content>
+  <button class="button button-tambahitem" ng-click="TambahItemProduct()">
+    <i class="icon ion-plus"></i>
+  </button>
 </ion-view>

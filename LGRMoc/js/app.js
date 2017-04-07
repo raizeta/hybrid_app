@@ -12,6 +12,7 @@ angular.module('starter', ['ionic','ngCordova','ui.grid', 'ui.grid.selection'])
         // $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_InvCheck (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_CHECK TEXT,DATETIME_CHECK TEXT,NAMA_INV TEXT,STATUS_CHECK TEXT)');
         // $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_BarangPenjualan (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_SAVE TEXT,ITEM_ID TEXT,ITEM_NM TEXT,ITEM_HARGA INTEGER,STOCK_MAX INTEGER,GAMBAR TEXT,FORMULA TEXT)');
         // $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_ShopCart (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_ADDTOCART TEXT,DATETIME_ADDTOCART TEXT,NOMOR_TRANS TEXT,ITEM_ID TEXT,ITEM_NM TEXT,ITEM_HARGA INTEGER,QTY_INCART INTEGER,DISCOUNT TEXT)');
+        // $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_SaveBill (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_SAVE TEXT,NOMOR_TRANS TEXT,ALIAS_TRANS TEXT)');
         if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) 
         {
             cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -41,7 +42,7 @@ angular.module('starter', ['ionic','ngCordova','ui.grid', 'ui.grid.selection'])
     $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_InvCheck (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_CHECK TEXT,DATETIME_CHECK TEXT,NAMA_INV TEXT,STATUS_CHECK TEXT)');
     $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_BarangPenjualan (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_SAVE TEXT,ITEM_ID TEXT,ITEM_NM TEXT,ITEM_HARGA INTEGER,STOCK_MAX INTEGER,GAMBAR TEXT,FORMULA TEXT)');
     $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_ShopCart (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_ADDTOCART TEXT,DATETIME_ADDTOCART TEXT,NOMOR_TRANS TEXT,ITEM_ID TEXT,ITEM_NM TEXT,ITEM_HARGA INTEGER,QTY_INCART INTEGER,DISCOUNT TEXT)');
-    
+    $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_SaveBill (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_SAVE TEXT,NOMOR_TRANS TEXT,ALIAS_TRANS TEXT)');
     $rootScope.getCameraOptions = function()
     {
         
