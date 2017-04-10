@@ -1,113 +1,6 @@
 angular.module('starter')
-.controller('SalesCtrl', function($ionicHistory,$timeout,$ionicPosition,$scope,$state,$location,$ionicLoading,$ionicScrollDelegate,$ionicPopup,$ionicModal,$filter,UtilService,StorageService,BarangForSaleLiteFac,ShopCartLiteFac,TransCustLiteFac,SaveToBillLiteFac,CloseBookLiteFac,uiGridConstants) 
+.controller('SalesCtrl', function($timeout,$ionicPosition,$scope,$state,$location,$ionicLoading,$ionicScrollDelegate,$ionicPopup,$ionicModal,$filter,UtilService,StorageService,BarangForSaleLiteFac,ShopCartLiteFac,TransCustLiteFac,SaveToBillLiteFac,uiGridConstants) 
 {
-    console.log($scope.profile.username);
-    CloseBookLiteFac.GetCloseBookByUsername($scope.profile.username)
-    .then(function(responseclosebook)
-    {
-        if(responseclosebook.length == 0)
-        {
-            $ionicModal.fromTemplateUrl('templates/sales/modalopenbook.html', 
-            {
-                scope: $scope,
-                animation: 'fade-in-scale',
-                backdropClickToClose: false,
-                hardwareBackButtonClose: false
-            })
-            .then(function(modal) 
-            {
-                $ionicLoading.show({template: 'Loading...',duration: 500});
-                $scope.openbook  = modal;
-                $scope.openbook.show();
-            });
-        }
-        else if (responseclosebook.length > 1)
-        {
-            if(responseclosebook[responseclosebook.length - 1].NAMA_TYPE == 'CLOSEBOOK')
-            {
-                $ionicModal.fromTemplateUrl('templates/sales/modalopenbookclosed.html', 
-                {
-                    scope: $scope,
-                    animation: 'fade-in-scale',
-                    backdropClickToClose: false,
-                    hardwareBackButtonClose: false
-                })
-                .then(function(modal) 
-                {
-                    $ionicLoading.show({template: 'Loading...',duration: 500});
-                    $scope.closebook  = modal;
-                    $scope.closebook.show();
-                });
-            }
-        }
-    },
-    function(error)
-    {
-        console.log(error);
-    });
-    $scope.checkin = function()
-    {
-        var datatosave = {};
-        datatosave.USERNAME     = $scope.profile.username;
-        datatosave.USER_ID      = $scope.profile.id;
-        datatosave.NAMA_TYPE    = 'OPENBOOK';
-        CloseBookLiteFac.SetCloseBook(datatosave)
-        .then(function(responseclosebook)
-        {
-            $scope.openbook.remove();
-        },
-        function(error)
-        {
-            console.log(error);
-        }); 
-    }
-    $scope.checkout = function()
-    {
-        var confirmPopup =  $ionicPopup.confirm(
-                            {
-                                title: 'Close Book',
-                                template: 'Are you sure to close this book?'
-                            });
-        confirmPopup.then(function(res) 
-        {
-            if(res) 
-            {
-                var datatosave = {};
-                datatosave.USERNAME     = $scope.profile.username;
-                datatosave.USER_ID      = $scope.profile.id;
-                datatosave.NAMA_TYPE    = 'CLOSEBOOK';
-                CloseBookLiteFac.SetCloseBook(datatosave)
-                .then(function(responseclosebook)
-                {
-                    $ionicModal.fromTemplateUrl('templates/sales/modalopenbookclosed.html', 
-                    {
-                        scope: $scope,
-                        animation: 'fade-in-scale',
-                        backdropClickToClose: false,
-                        hardwareBackButtonClose: false
-                    })
-                    .then(function(modal) 
-                    {
-                        $ionicLoading.show({template: 'Loading...',duration: 500});
-                        $scope.openbook  = modal;
-                        $scope.openbook.show();
-                    });
-                },
-                function(error)
-                {
-                    console.log(error);
-                });
-            } 
-        });     
-    }
-
-    $scope.gotologout = function()
-    {
-        $scope.closebook.remove();
-        $ionicHistory.nextViewOptions({disableAnimate: true, disableBack: true});
-        $state.go('tab.account');
-    }
-
     $scope.noresi   = StorageService.get('TRANS-ACTIVE');
     var tglsekarang = $filter('date')(new Date(),'yyyy-MM-dd');
     if($scope.noresi)
@@ -175,7 +68,7 @@ angular.module('starter')
                     response[itemaddtocart].QTY_INCART = Number(value.QTY_INCART);
                 }
             });
-            $scope.datas = response;
+            $scope.datas = UtilService.ArrayChunk(response,5);
         }
         else
         {
@@ -565,7 +458,7 @@ angular.module('starter')
                             response[itemaddtocart].QTY_INCART = null;
                         }
                     });
-                    $scope.datas = response;
+                    $scope.datas = UtilService.ArrayChunk(response,5);
                 }
                 else
                 {
@@ -633,12 +526,13 @@ angular.module('starter')
                                 response[itemaddtocart].QTY_INCART = value.QTY_INCART;
                             }
                         });
-                        $scope.datas = response;
+                        $scope.datas = UtilService.ArrayChunk(response,5);
                     }
                     else
                     {
                         $scope.datas = [];
                     }
+                    console.log($scope.datas);
                 });
             }
             else
@@ -699,7 +593,7 @@ angular.module('starter')
                         response[itemaddtocart].QTY_INCART = null;
                     }
                 });
-                $scope.datas = response;
+                $scope.datas = UtilService.ArrayChunk(response,5);
             }
             else
             {
@@ -792,7 +686,8 @@ angular.module('starter')
     $scope.ModalTambahItemProductClose = function() 
     {
         $scope.newproduct.ITEM_ID = "0001.0010";
-        $scope.datas.push($scope.newproduct);
+        $scope.dataasli.push($scope.newproduct);
+        $scope.datas = UtilService.ArrayChunk($scope.dataasli,5);
         $scope.tambahitemproduct.remove();
     };
 

@@ -1,11 +1,11 @@
 <ion-modal-view class="mymodalsavetobill">
-  <form name="customerForm" ng-submit="submitForm(roadsalesman)">
+  <form name="customerForm" ng-submit="ModalTambahItemProductClose()">
   <ion-header-bar class="bar bar-header bar-assertive">
     <h1 class="title">TAMBAH PRODUCT</h1>
-    <button class="button button-clear right" ng-click="ModalTambahItemProductClose()">
+    <button class="button button-clear right" ng-click="ModalTambahItemProductCancel()">
       <i class="icon ion-ios-close-outline"></i>
     </button>
-    <button class="button button-clear left"  type="submit" ng-disabled="customerForm.$invalid" ng-click="ModalTambahItemProductClose()">
+    <button class="button button-clear left"  type="submit" ng-disabled="customerForm.$invalid">
       <i class="icon ion-android-checkbox-outline"></i>
     </button>
   </ion-header-bar>
@@ -13,22 +13,26 @@
     <div class="list">
       <label class="item item-input item-stacked-label">
        <span class="input-label">Nama Product</span>
-        <input type="text" placeholder="Nama Product" ng-model="roadsalesman.JUDUL">
+        <input type="text" placeholder="Nama Product" ng-model="newproduct.ITEM_NM" required>
       </label>
       <label class="item item-input item-stacked-label">
        <span class="input-label">Harga Product</span>
-        <input type="text" placeholder="Harga Product" ng-model="roadsalesman.CUSTOMER">
+        <input type="text" placeholder="Harga" ng-model="newproduct.ITEM_HARGA" required>
+      </label>
+      <label class="item item-input item-stacked-label">
+       <span class="input-label">Jumlah Product</span>
+        <input type="text" placeholder="Jumlah" ng-model="newproduct.STOCK_MAX" required>
       </label>
       <label class="item item-input item-stacked-label">
        <span class="input-label">Gambar Product</span>
         <div class="col col-33">
-          <img ng-src="img/save-image.png" width="100%" src="img/bika-ambon.jpg">
+          <img id="myImage" ng-src="{{newproduct.GAMBAR}}" width="100%">
         </div>
       </label>
-      <label class="item item-input item-stacked-label">
+<!--       <label class="item item-input item-stacked-label">
        <span class="input-label">Kategori Product</span>
-        <input type="text" placeholder="Harga Product" ng-model="roadsalesman.CUSTOMER">
-      </label>
+        <input type="text" placeholder="Harga Product" ng-model="newproduct.category" required>
+      </label> -->
     </div>
   </ion-content>
   </form>

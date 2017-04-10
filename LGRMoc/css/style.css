@@ -426,6 +426,14 @@ html, body,
      bottom: 1px;
      overflow: hidden;
   }
+  .mymodaladdtocart 
+  {  
+     width: 30%; 
+     height: 5%; 
+/*     top: 50%;*/ 
+	overflow: none;
+     left: 35%; 
+  }
 
   .mymodalcustnewtransaksi 
   {  

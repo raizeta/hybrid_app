@@ -4,6 +4,9 @@
       <!-- <button class="button button-icon icon ion-ios-cart"  ng-click="gotocart()">
           <span class="badge badge-assertive icon-badge">{{banyakdicart}}</span>
       </button> -->
+      <button class="button button-assertive" ng-click="checkout()">
+        CLOSE BOOK
+      </button>
   </ion-nav-buttons>  
   <ion-content class="has-header" padding="false" scroll="true">
 <!--     <label class = "item item-input item-select">
@@ -87,8 +90,8 @@
       </div>
       <div class="col col-66">
         <ion-scroll direction="y" overflow-scroll="false" style="position: absolute;top:1px;right: 0;width: 66%;">
-          <div class="row" ng-repeat="items in datas">
-            <div class="col col-20" ng-repeat="item in items track by $index" >
+          <div class="row" style="flex-wrap: wrap;">
+            <div class="col col-20" ng-repeat="item in datas track by $index" >
               <div class="list">
                 <div class="item item-image" style="padding-right:3px">
                   <img class="box-shadow" ng-click="tambahqtyitem(item)" ng-src="{{item.GAMBAR}}" width="100%" />

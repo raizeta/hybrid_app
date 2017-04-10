@@ -39,19 +39,6 @@ angular.module('starter')
       }
   })
 
-  .state('tab.settings', 
-  {
-      url: '/settings',
-      views: 
-      {
-        'view-content': 
-        {
-          templateUrl: 'templates/secured/tab-account.html',
-          controller: 'AccountCtrl'
-        }
-      }
-  })
-
   $urlRouterProvider.otherwise('/tab/sales');
   $ionicConfigProvider.tabs.position('bottom');
   $ionicConfigProvider.navBar.alignTitle('center');

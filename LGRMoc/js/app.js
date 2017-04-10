@@ -43,6 +43,7 @@ angular.module('starter', ['ionic','ngCordova','ui.grid', 'ui.grid.selection'])
     $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_BarangPenjualan (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_SAVE TEXT,ITEM_ID TEXT,ITEM_NM TEXT,ITEM_HARGA INTEGER,STOCK_MAX INTEGER,GAMBAR TEXT,FORMULA TEXT)');
     $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_ShopCart (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_ADDTOCART TEXT,DATETIME_ADDTOCART TEXT,NOMOR_TRANS TEXT,ITEM_ID TEXT,ITEM_NM TEXT,ITEM_HARGA INTEGER,QTY_INCART INTEGER,DISCOUNT TEXT)');
     $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_SaveBill (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_SAVE TEXT,NOMOR_TRANS TEXT,ALIAS_TRANS TEXT)');
+    $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_CloseBook (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_CLOSE TEXT,USER_ID TEXT,USERNAME TEXT,NAMA_TYPE TEXT)');
     $rootScope.getCameraOptions = function()
     {
         
@@ -75,8 +76,29 @@ angular.module('starter', ['ionic','ngCordova','ui.grid', 'ui.grid.selection'])
 
 
   $scope.groups = [
-                    {name: 'Check Store','icons':'ion-funnel',items: [{child:'RCVD',path:'#/tab/checkstore-inventory'},{child:'BOOK',path:'#/tab/checkstore-booking'},{child:'SYNC',path:'#/tab/checkstore-sync'}]},
-                    {name: 'Check HO','icons':'ion-shuffle',items: [{child:'BOOK',path:'#/tab/ho-inventory'}]}
+                    {
+                      name: 'Check Store','icons':'ion-funnel',
+                      items: [
+                                {child:'RCVD',path:'#/tab/checkstore-inventory'},
+                                {child:'BOOK',path:'#/tab/checkstore-booking'},
+                                {child:'SYNC',path:'#/tab/checkstore-sync'}
+                              ]
+                    },
+                    {
+                      name: 'Check HO','icons':'ion-shuffle',
+                      items: [
+                                {child:'BOOK',path:'#/tab/ho-inventory'}
+                              ]
+                    },
+                    {
+                      name: 'Accounting','icons':'ion-cash',
+                      items: [
+                                {child:'SUMMARY',path:'#/tab/accounting-summary'},
+                                {child:'TRANSACTION',path:'#/tab/accounting-transaksi'},
+                                {child:'INCOME',path:'#/tab/accounting-income'},
+                                {child:'OUTCOME',path:'#/tab/accounting-outcome'}
+                              ]
+                    }
                   ];
 
 
