@@ -37,7 +37,7 @@ angular.module('starter', ['ionic','ngCordova','ui.grid', 'ui.grid.selection'])
     $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_Store (id INTEGER PRIMARY KEY AUTOINCREMENT,OUTLET_BARCODE TEXT,OUTLET_NM TEXT,LOCATE INTEGER,LOCATE_NAME TEXT,LOCATE_SUB INTEGER,LOCATE_SUB_NAME TEXT,ALAMAT TEXT,PIC TEXT,TLP TEXT,STATUS INTEGER,CREATE_BY TEXT,UPDATE_BY TEXT,CREATE_AT TEXT,UPDATE_AT TEXT)');
     $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_Product (id INTEGER PRIMARY KEY AUTOINCREMENT,ITEM_ID TEXT,ITEM_NM TEXT,STATUS INTEGER,CREATE_BY TEXT,UPDATE_BY TEXT,CREATE_AT TEXT,UPDATE_AT TEXT,IMG64 TEXT)');
     $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_ItemGroup (id INTEGER PRIMARY KEY AUTOINCREMENT,OUTLET_ID,StoreNm TEXT,LocateNm TEXT,LocatesubNm TEXT,ITEM_BARCODE TEXT,ItemNm TEXT,GRP_DISPLAY TEXT,HPP TEXT,PERSEN_MARGIN TEXT,STATUS INTEGER,CREATE_AT TEXT,UPDATE_AT TEXT,CREATE_BY TEXT,UPDATE_BY TEXT,FORMULA_ID TEXT,FORMULA)');
-    $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_CustBuyTrans (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_TRANS TEXT,DATETIME_TRANS TEXT,NOMOR_TRANS TEXT,STATUS_BUY TEXT)');
+    $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_CustBuyTrans (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_TRANS TEXT,DATETIME_TRANS TEXT,NOMOR_TRANS TEXT,CASHIER_ID TEXT,CASHIER_NAME TEXT,BUYER_ID TEXT,BUYER_NAME TEXT,STATUS_BUY TEXT)');
     $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_CustBuyDetail (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_BUYTRANS TEXT,DATETIME_BUYTRANS TEXT,NOMOR_TRANS TEXT,ITEM_ID TEXT,ITEM_NAMA TEXT,HARGA_ITEM TEXT,QTY_BUY INTEGER,DISCOUNT_ITEM TEXT)');
     $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_InvCheck (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_CHECK TEXT,DATETIME_CHECK TEXT,NAMA_INV TEXT,STATUS_CHECK TEXT)');
     $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_BarangPenjualan (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_SAVE TEXT,ITEM_ID TEXT,ITEM_NM TEXT,ITEM_HARGA INTEGER,STOCK_MAX INTEGER,GAMBAR TEXT,FORMULA TEXT)');
@@ -94,9 +94,9 @@ angular.module('starter', ['ionic','ngCordova','ui.grid', 'ui.grid.selection'])
                       name: 'Accounting','icons':'ion-cash',
                       items: [
                                 {child:'SUMMARY',path:'#/tab/accounting-summary'},
-                                {child:'TRANSACTION',path:'#/tab/accounting-transaksi'},
-                                {child:'INCOME',path:'#/tab/accounting-income'},
-                                {child:'OUTCOME',path:'#/tab/accounting-outcome'}
+                                {child:'TRANSACTION',path:'#/tab/accounting-transaksi'}
+                                // {child:'INCOME',path:'#/tab/accounting-income'},
+                                // {child:'OUTCOME',path:'#/tab/accounting-outcome'}
                               ]
                     }
                   ];

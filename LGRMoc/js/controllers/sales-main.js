@@ -134,6 +134,8 @@ angular.module('starter')
         {
             var datacustrans = {};
             datacustrans.TGL_TRANS          = $filter('date')(new Date(),'yyyy-MM-dd');
+            datacustrans.CASHIER_ID         = $scope.profile.id;
+            datacustrans.CASHIER_NAME       = $scope.profile.username;
             datacustrans.DATETIME_TRANS     = $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss');
             datacustrans.STATUS_BUY         = 'INCOMPLETE';
             if(responselite.length > 0)
@@ -484,6 +486,20 @@ angular.module('starter')
 
     $scope.ModalNewCustomerTransaksiClose = function() 
     {
+        if($scope.dataselected)
+        {
+            var datatosave = [$scope.dataselected.id,$scope.dataselected.namaLengkap,$scope.noresi];
+            TransCustLiteFac.UpdateBuyerTransCusts(datatosave)
+            .then(function(response)
+            {
+                console.log(response);
+                
+            },
+            function(error)
+            {
+                console.log(error)
+            });
+        }
         $scope.modalcustomernewtransaksi.remove();
     };
 
@@ -579,6 +595,8 @@ angular.module('starter')
                 var datacustrans = {};
                 datacustrans.TGL_TRANS          = $filter('date')(new Date(),'yyyy-MM-dd');
                 datacustrans.DATETIME_TRANS     = $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss');
+                datacustrans.CASHIER_ID         = $scope.profile.id;
+                datacustrans.CASHIER_NAME       = $scope.profile.username;
                 datacustrans.STATUS_BUY         = 'INCOMPLETE';
                 if(responselite.length > 0)
                 {
@@ -716,6 +734,8 @@ angular.module('starter')
                 var datacustrans = {};
                 datacustrans.TGL_TRANS          = $filter('date')(new Date(),'yyyy-MM-dd');
                 datacustrans.DATETIME_TRANS     = $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss');
+                datacustrans.CASHIER_ID         = $scope.profile.id;
+                datacustrans.CASHIER_NAME       = $scope.profile.username;
                 datacustrans.STATUS_BUY         = 'INCOMPLETE';
                 if(responselite.length > 0)
                 {
@@ -791,7 +811,11 @@ angular.module('starter')
 
     $scope.ModalTambahItemProductClose = function() 
     {
-        $scope.newproduct.ITEM_ID = "0001.0010";
+        var xxx                         = _.sortBy($scope.datas, 'ITEM_ID');
+        var last                        = xxx[xxx.length - 1].ITEM_ID;
+        var lastthree                   = last.substr(last.length - 4);
+        var nomorurut                   = UtilService.StringPad(Number(lastthree) + 1,'0000');
+        $scope.newproduct.ITEM_ID = "0001." + nomorurut;
         $scope.datas.push($scope.newproduct);
         $scope.tambahitemproduct.remove();
     };

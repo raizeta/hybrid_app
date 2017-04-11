@@ -1,5 +1,29 @@
 <ion-view view-title="SUMMARY">
 	<ion-content>
+	<div class="row" style="flex-wrap: wrap;">
+        <div class="col col-20">
+            Jlh Transaksi Complete
+            <p>{{jlhcomplete}}</p>
+        </div>
+        <div class="col col-20">
+            Jlh Transaksi InComplete
+            <p>{{jlhincomplete}}</p>
+        </div>
+        <div class="col col-20">
+            Total Pendapatan
+            <p>Rp. {{totalpendapatan|number}}</p>
+        </div>
+        <div class="col col-20">
+            <div class="item item-image" style="padding-right:3px">
+              <img ng-click="tambahqtyitem(item)" ng-src="img/404.jpg" width="100%" />
+            </div>
+        </div>
+        <div class="col col-20">
+            <div class="item item-image" style="padding-right:3px">
+              <img ng-click="tambahqtyitem(item)" ng-src="img/404.jpg" width="100%" />
+            </div>
+        </div>
+      </div>
 	</ion-content>
 </ion-view>
 

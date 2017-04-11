@@ -1,7 +1,30 @@
 angular.module('starter')
-.controller('SummaryCtrl', function($window,$scope,$state,$location,$timeout,$ionicLoading,$ionicHistory,StorageService) 
+.controller('SummaryCtrl', function($window,$scope,$state,$location,$timeout,$ionicLoading,$ionicHistory,StorageService,SummaryLiteFac,UtilService) 
 {
+    SummaryLiteFac.CountTransaksiComplete()
+    .then(function(response)
+    {
+        if(angular.isArray(response) && response.length > 0)
+        {
+            $scope.jlhcomplete = response[0].jlhcomplete;
+            console.log($scope.jlhcomplete);
+        }
+    });
+    SummaryLiteFac.CountTransaksiInComplete()
+    .then(function(response)
+    {
+        if(angular.isArray(response) && response.length > 0)
+        {
+            $scope.jlhincomplete = response[0].jlhincomplete;
+            console.log($scope.jlhincomplete);
+        }
+    });
 
+    SummaryLiteFac.JoinTransWithShopCart()
+    .then(function(response)
+    {
+        $scope.totalpendapatan = UtilService.SumPriceWithQty(response,'ITEM_HARGA','QTY_INCART');
+    });
     
 })
 

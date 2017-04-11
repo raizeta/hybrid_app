@@ -53,10 +53,12 @@ angular.module('starter')
         var TGL_TRANS       = datatosave.TGL_TRANS;
         var DATETIME_TRANS  = datatosave.DATETIME_TRANS;
         var NOMOR_TRANS     = datatosave.NOMOR_TRANS;
+        var CASHIER_ID      = datatosave.CASHIER_ID;
+        var CASHIER_NAME    = datatosave.CASHIER_NAME;
         var STATUS_BUY      = datatosave.STATUS_BUY;
 
-        var isitable                = [TGL_TRANS,DATETIME_TRANS,NOMOR_TRANS,STATUS_BUY]
-        var queryinserttranscust    = 'INSERT INTO Tbl_CustBuyTrans (TGL_TRANS,DATETIME_TRANS,NOMOR_TRANS,STATUS_BUY) VALUES (?,?,?,?)';
+        var isitable                = [TGL_TRANS,DATETIME_TRANS,NOMOR_TRANS,CASHIER_ID,CASHIER_NAME,STATUS_BUY]
+        var queryinserttranscust    = 'INSERT INTO Tbl_CustBuyTrans (TGL_TRANS,DATETIME_TRANS,NOMOR_TRANS,CASHIER_ID,CASHIER_NAME,STATUS_BUY) VALUES (?,?,?,?,?,?)';
         $cordovaSQLite.execute($rootScope.db,queryinserttranscust,isitable)
         .then(function(result) 
         {
@@ -73,6 +75,23 @@ angular.module('starter')
     {
         var deferred        = $q.defer();
         var updatestatusbuy = 'UPDATE Tbl_CustBuyTrans SET STATUS_BUY = ? WHERE NOMOR_TRANS = ?';
+        $cordovaSQLite.execute($rootScope.db,updatestatusbuy,datatoupdate)
+        .then(function(result) 
+        {
+            deferred.resolve(result);
+        },
+        function(error) 
+        {
+            deferred.reject(error);
+        });
+        return deferred.promise; 
+    }
+
+    var UpdateBuyerTransCusts = function (datatoupdate)
+    {
+        console.log(datatoupdate);
+        var deferred        = $q.defer();
+        var updatestatusbuy = 'UPDATE Tbl_CustBuyTrans SET BUYER_ID = ?,BUYER_NAME = ? WHERE NOMOR_TRANS = ?';
         $cordovaSQLite.execute($rootScope.db,updatestatusbuy,datatoupdate)
         .then(function(result) 
         {
@@ -116,6 +135,7 @@ angular.module('starter')
             GetTransCustsByDateStatus:GetTransCustsByDateStatus,
             SetTransCusts:SetTransCusts,
             UpdateTransCusts:UpdateTransCusts,
+            UpdateBuyerTransCusts:UpdateBuyerTransCusts,
             SetTransCustsDetail:SetTransCustsDetail
         }
 });
