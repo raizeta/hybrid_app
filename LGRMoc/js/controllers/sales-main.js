@@ -1,7 +1,6 @@
 angular.module('starter')
-.controller('SalesCtrl', function($ionicHistory,$timeout,$ionicPosition,$scope,$state,$location,$ionicLoading,$ionicScrollDelegate,$ionicPopup,$ionicModal,$filter,UtilService,StorageService,BarangForSaleLiteFac,ShopCartLiteFac,TransCustLiteFac,SaveToBillLiteFac,CloseBookLiteFac,uiGridConstants) 
+.controller('SalesCtrl', function($ionicHistory,$timeout,$ionicPosition,$scope,$state,$location,$ionicLoading,$ionicScrollDelegate,$ionicPopup,$ionicModal,$filter,UtilService,StorageService,BarangForSaleLiteFac,ShopCartLiteFac,TransCustLiteFac,SaveToBillLiteFac,CloseBookLiteFac,uiGridConstants,SummaryLiteFac) 
 {
-    console.log($scope.profile.username);
     CloseBookLiteFac.GetCloseBookByUsername($scope.profile.username)
     .then(function(responseclosebook)
     {
@@ -16,6 +15,7 @@ angular.module('starter')
             })
             .then(function(modal) 
             {
+                $scope.openbookdata = {'CASHINDRAWER':0,'status':'true','CHECKCASH':null,'ADDCASH':0,'SELLCASH':0,'TOTALCASH':0,'WITHDRAW':0}
                 $ionicLoading.show({template: 'Loading...',duration: 500});
                 $scope.openbook  = modal;
                 $scope.openbook.show();
@@ -25,7 +25,7 @@ angular.module('starter')
         {
             if(responseclosebook[responseclosebook.length - 1].NAMA_TYPE == 'CLOSEBOOK')
             {
-                $ionicModal.fromTemplateUrl('templates/sales/modalopenbookclosed.html', 
+                $ionicModal.fromTemplateUrl('templates/sales/modaclosebooknotifikasi.html', 
                 {
                     scope: $scope,
                     animation: 'fade-in-scale',
@@ -35,8 +35,8 @@ angular.module('starter')
                 .then(function(modal) 
                 {
                     $ionicLoading.show({template: 'Loading...',duration: 500});
-                    $scope.closebook  = modal;
-                    $scope.closebook.show();
+                    $scope.notifikasiclosebook  = modal;
+                    $scope.notifikasiclosebook.show();
                 });
             }
         }
@@ -45,12 +45,27 @@ angular.module('starter')
     {
         console.log(error);
     });
-    $scope.checkin = function()
+    $scope.OpenBook = function(openbookdata)
     {
+        if(openbookdata.status == 'true')
+        {
+        	openbookdata.CHECKCASH = openbookdata.CASHINDRAWER;
+        }
+        else
+        {
+        	openbookdata.CHECKCASH = Number(openbookdata.CHECKCASH);
+        }
+
         var datatosave = {};
         datatosave.USERNAME     = $scope.profile.username;
         datatosave.USER_ID      = $scope.profile.id;
         datatosave.NAMA_TYPE    = 'OPENBOOK';
+        datatosave.CASHINDRAWER = openbookdata.CASHINDRAWER;
+        datatosave.CHECKCASH    = openbookdata.CHECKCASH;
+        datatosave.ADDCASH      = openbookdata.ADDCASH;
+        datatosave.SELLCASH     = openbookdata.SELLCASH;
+        datatosave.TOTALCASH    = openbookdata.TOTALCASH;
+        datatosave.WITHDRAW     = openbookdata.WITHDRAW;
         CloseBookLiteFac.SetCloseBook(datatosave)
         .then(function(responseclosebook)
         {
@@ -72,13 +87,7 @@ angular.module('starter')
         {
             if(res) 
             {
-                var datatosave = {};
-                datatosave.USERNAME     = $scope.profile.username;
-                datatosave.USER_ID      = $scope.profile.id;
-                datatosave.NAMA_TYPE    = 'CLOSEBOOK';
-                CloseBookLiteFac.SetCloseBook(datatosave)
-                .then(function(responseclosebook)
-                {
+                
                     $ionicModal.fromTemplateUrl('templates/sales/modalopenbookclosed.html', 
                     {
                         scope: $scope,
@@ -88,24 +97,87 @@ angular.module('starter')
                     })
                     .then(function(modal) 
                     {
+                        $scope.dataclosebook = {'modalawal':1200000,'withdraw':null,'totalpendapatan':0,'grandtotal':0}
+                        CloseBookLiteFac.GetOpenBookByUsername($scope.profile.username)
+                        .then(function(responseopenbook)
+                        {
+                            var datawal = responseopenbook[responseopenbook.length - 1];
+                            $scope.dataclosebook.modalawal = Number(datawal.CHECKCASH) + Number(datawal.ADDCASH);
+                        },
+                        function(error)
+                        {
+                            console.log(error);
+                        });
+                        SummaryLiteFac.JoinTransWithShopCart()
+					    .then(function(response)
+					    {
+					        var totalpendapatan = UtilService.SumPriceWithQty(response,'ITEM_HARGA','QTY_INCART');
+					        var grandtotal 	   = $scope.dataclosebook.modalawal + totalpendapatan;
+					        $scope.dataclosebook.totalpendapatan 	= totalpendapatan;
+					        $scope.dataclosebook.grandtotal 		= grandtotal
+					    });
                         $ionicLoading.show({template: 'Loading...',duration: 500});
-                        $scope.openbook  = modal;
-                        $scope.openbook.show();
+                        $scope.closebook  = modal;
+                        $scope.closebook.show();
                     });
-                },
-                function(error)
-                {
-                    console.log(error);
-                });
+                
             } 
         });     
     }
 
-    $scope.gotologout = function()
+    $scope.submitclosebook = function()
     {
-        $scope.closebook.remove();
-        $ionicHistory.nextViewOptions({disableAnimate: true, disableBack: true});
-        $state.go('tab.account');
+    	console.log($scope.dataclosebook);
+    	var datatosave = {};
+        datatosave.USERNAME     = $scope.profile.username;
+        datatosave.USER_ID      = $scope.profile.id;
+        datatosave.NAMA_TYPE    = 'CLOSEBOOK';
+        datatosave.SELLCASH     = $scope.dataclosebook.totalpendapatan;
+        datatosave.TOTALCASH    = Number($scope.dataclosebook.totalpendapatan) + Number($scope.dataclosebook.modalawal);
+        datatosave.WITHDRAW     = Number($scope.dataclosebook.withdraw);
+        datatosave.CHECKCASH    = 0;
+        datatosave.ADDCASH      = 0;
+        datatosave.CASHINDRAWER = Number(datatosave.TOTALCASH) - Number(datatosave.WITHDRAW);
+        CloseBookLiteFac.SetCloseBook(datatosave)
+        .then(function(responseclosebook)
+        {
+    		$ionicModal.fromTemplateUrl('templates/sales/modaclosebooknotifikasi.html', 
+            {
+                scope: $scope,
+                animation: 'fade-in-scale',
+                backdropClickToClose: false,
+                hardwareBackButtonClose: false
+            })
+            .then(function(modal) 
+            {
+                $ionicLoading.show({template: 'Loading...',duration: 500});
+                $scope.notifikasiclosebook  = modal;
+                $scope.notifikasiclosebook.show();
+            });
+    	},
+        function(error)
+        {
+            console.log(error);
+        });
+    }
+
+    $scope.cancelclosebook = function()
+    {
+    	$scope.closebook.remove();
+    }
+
+    $scope.tutupnotifikasiclosebook = function()
+    {
+    	if($scope.closebook)
+        {
+            $scope.closebook.remove();  
+        }
+        $scope.notifikasiclosebook.remove();
+    	$timeout(function() 
+		{
+			$ionicHistory.nextViewOptions({disableAnimate: true, disableBack: true});
+			$state.go('tab.account');	
+		}, 10);
     }
 
     $scope.noresi   = StorageService.get('TRANS-ACTIVE');
