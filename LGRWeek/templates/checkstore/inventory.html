@@ -1,0 +1,35 @@
+<ion-view view-title="INVENTORY {{tglsekarang}}">
+  <ion-content>
+      <ion-list>
+        <div class="row" ng-repeat="items in datas">
+          <div class ="col">
+            <button class="button button-stable small_button">
+              {{items.ITEM_NM|capitalize}}
+            </button>
+          </div>
+          <div class ="col">
+            <button class="button button-balanced small_button">{{items.ITEM_QTY}}</button>
+            <button class="button button-positive small_button">{{items.ITEM_QTY}}</button>
+          </div>
+          <div class ="col">
+            <button class="button button-calm small_button ion-minus" ng-click="incdec('dec',items)" ></button>
+            <button class="button button-stable small_button" ng-if="typeinv == 2">{{items.qtychecked}}</button>
+            <button class="button button-balanced small_button" ng-if="typeinv == 3">{{items.qtychecked}}</button>
+            <button class="button button-positive small_button ion-plus" ng-click="incdec('inc',items)"></button>
+          </div>
+          <div class ="col">
+            <div style="float:right">
+              <button class="button button-positive small_button  ion-checkmark-circled"  
+                ng-hide="sudahdicheck" ng-click="rechecked(items)">
+              </button>
+              <button class="button button-balanced small_button  ion-checkmark-circled"  
+                ng-show="sudahdicheck" ng-click="rechecked(items)">
+              </button>
+            </div>
+          </div>
+        </div>
+        <button class="button button-dark button-block" ng-click="submitinventory(datas)" ng-hide="sudahdicheck">Submit</button>
+      </ion-list>
+      <ion-list style="padding:10px"></ion-list>
+  </ion-content>
+</ion-view>

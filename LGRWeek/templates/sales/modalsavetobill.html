@@ -1,0 +1,35 @@
+<ion-modal-view class="mymodalsavetobill">
+  <ion-header-bar class="bar bar-header bar-dark">
+    <h1 class="title">SAVE BILL</h1>
+    <button type="submit" class="button button-dark left" ng-click="ModalSaveToBillCancel()">
+      <i class="icon ion-backspace"></i>
+    </button>
+    <button type="submit" class="button button-dark right" ng-click="ModalSaveToBillClose()">
+      <i class="icon ion-android-checkbox-outline"></i>
+    </button>
+  </ion-header-bar>
+  <form name="loginForm" ng-submit="ModalSaveToBillClose()" novalidate="">
+  <ion-content>
+      <label class="item item-input">
+        <span class="input-label">BILL IDENTITY</span>
+        <input type="text" placeholder="INPUT IDENTITY" ng-model="billidentity" required>
+      </label>
+    <div class="list card">
+      
+<!--       <div style="min-height: 10px;margin-top:10px" class="item item-divider  bar-assertive" ng-repeat="itembill in listbill| orderBy:'-NOMOR_TRANS'" ng-click="loadfrombill(itembill)" on-hold="deletecart()">
+      	 {{itembill.NOMOR_TRANS}}
+      </div> -->
+      <a class="item item-icon-left" href="#" ng-repeat="itembill in listbill| orderBy:'-NOMOR_TRANS'" ng-click="loadfrombill(itembill)" on-hold="deletecart()">
+        <i class="icon ion-checkmark-round" ng-if="itembill.NOMOR_TRANS == billidentity"></i>
+        {{itembill.NOMOR_TRANS}}
+      </a>
+    </div>
+  </ion-content>
+  <div class="bar bar-footer bar-dark">
+   <button class="button">PRINT BILL</button>
+   <button class="button" type="submit" ng-disabled="loginForm.$invalid">
+    SAVE BILL
+    </button>
+   </form>
+</div>
+</ion-modal-view>

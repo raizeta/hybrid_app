@@ -1,0 +1,82 @@
+<ion-modal-view class="mymodalpembayaran">
+  <ion-header-bar class="bar bar-header bar-dark">
+    <h1 class="title">METODE PEMBAYARAN</h1>
+    <button type="submit" class="button button-stable left" ng-click="ModalPembayaranCancel()">
+      Cancel
+    </button>
+    <button class="button button-positive right" ng-click="ModalPembayaranClose()">
+      Charge
+    </button>
+  </ion-header-bar>
+  <ion-content>
+    <div class="row responsive-md">
+      <div class="col col-75 col-offset-10">
+        <div class="row">
+            <div class="col col-25">
+            <h4 class="padding left">Cash</h4>
+            </div>
+            <div class="col col-75">      
+              <div class="button-bar padding">
+                <a grouped-radio="yangdibayarkan.yangdibayar" ng-model="pembayaran.uang" ng-change='radiochange("cash")' ng-repeat="yangdibayarkan in yangdibayarkan">
+                  {{yangdibayarkan.yangdibayar|number}}
+                </a>
+              </div>
+              <div class="padding">
+                <label  class="item item-input">
+                  <input type="text" placeholder="Nilai Lain" format="number" ng-model="pembayaran.uang" ng-change="radiochange('cash')">
+                </label>
+              </div>
+            </div>
+        </div>
+<!--         <div style="padding: 10px 20px 10px 20px;">
+          <div style="border-bottom:1px solid rgba(1, 1, 1, 0.1);"></div>
+        </div>
+        <div class="row">
+            <div class="col col-25">
+            <h4 class="padding left">Card</h4>
+            </div>
+            <div class="col col-75">      
+              <div class="padding">
+                <label  class="item item-input">
+                <style>
+                i.icon.ion-card {
+                    font-size: 36px;
+                    padding-right: 50px
+                  }
+                  </style>
+                  <i class="icon ion-card placeholder-icon"></i>
+                  <input type="text" placeholder="Search">
+                </label>
+              </div>
+            </div>
+        </div> -->
+        <div style="padding: 10px 20px 10px 20px;">
+          <div style="border-bottom:1px solid rgba(1, 1, 1, 0.1);"></div>
+        </div>
+        <div class="row">
+            <div class="col col-25">
+            <h4 class="padding left">Other</h4>
+            </div>
+            <div class="col col-75">      
+              <div class="button-bar padding">
+                <a grouped-radio="'edc'" ng-model="pembayaran.other" ng-change='radiochange("other")'>
+                  EDC
+                </a>
+                <a grouped-radio="'giftcard'" ng-model="pembayaran.other" ng-change='radiochange("other")'>GIFT CARD</a>
+                <a grouped-radio="'othercard'" ng-model="pembayaran.other" ng-change='radiochange("other")'>OTHER</a>
+              </div>
+              <div class="padding">
+                <label  class="item item-input">
+                  <input type="text" placeholder="Optional Note">
+                </label>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="col col-10"></div>
+    </div>
+  </ion-content>
+  <div class="bar bar-footer bar-dark">
+     <h1 class="title">Terimakasih Atas Kunjungan Anda</h1>
+  </div>
+</ion-modal-view>
