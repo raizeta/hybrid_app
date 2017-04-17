@@ -1,6 +1,8 @@
 angular.module('starter')
-.controller('SalesCtrl', function($ionicHistory,$timeout,$ionicPosition,$scope,$state,$location,$ionicLoading,$ionicScrollDelegate,$ionicPopup,$ionicModal,$filter,UtilService,StorageService,BarangForSaleLiteFac,ShopCartLiteFac,TransCustLiteFac,SaveToBillLiteFac,CloseBookLiteFac,uiGridConstants,SummaryLiteFac) 
+.controller('SalesCtrl', function($ionicHistory,$timeout,$ionicPosition,$scope,$state,$location,$ionicLoading,$ionicScrollDelegate,$ionicPopup,$ionicModal,$filter,UtilService,StorageService,BarangForSaleLiteFac,ShopCartLiteFac,TransCustLiteFac,SaveToBillLiteFac,CloseBookLiteFac,CustomerLiteFac,uiGridConstants,SummaryLiteFac) 
 {
+    $scope.namacustomer = 'NEW CUSTOMER';
+
     CloseBookLiteFac.GetCloseBookByUsername($scope.profile.username)
     .then(function(responseclosebook)
     {
@@ -195,6 +197,7 @@ angular.module('starter')
         ShopCartLiteFac.GetShopCartByNomorTrans($scope.noresi)
         .then(function(response)
         {
+            console.log(response);
             if(angular.isArray(response) && response.length > 0)
             {
                 $scope.itemincart = response;
@@ -205,10 +208,22 @@ angular.module('starter')
             }
             $scope.banyakdicart = $scope.itemincart.length;
         });
+
+        TransCustLiteFac.GetNomorTransWhere($scope.noresi)
+        .then(function(responsenomortrans)
+        {
+            if(responsenomortrans.length > 0)
+            {
+                $scope.namacustomer = responsenomortrans[0].BUYER_NAME;   
+            }
+        },
+        function(error)
+        {
+            console.log(error);
+        });
     }
     else
     {
-        
         TransCustLiteFac.GetTransCustsByDate(tglsekarang)
         .then(function(responselite)
         {
@@ -230,11 +245,10 @@ angular.module('starter')
                 datacustrans.NOMOR_TRANS        = 'LG.SR.KB.' + $filter('date')(new Date(),'yyyy.MM.dd') + '.001';
             }
             StorageService.set('TRANS-ACTIVE',datacustrans.NOMOR_TRANS);
-            console.log(StorageService.get('TRANS-ACTIVE'));
             TransCustLiteFac.SetTransCusts(datacustrans)
             .then(function(response)
             {
-                $scope.transaks.push(datacustrans);
+                console.log();
             },
             function(error)
             {
@@ -512,63 +526,121 @@ angular.module('starter')
                 enableSelectAll: false,
                 selectionRowHeaderWidth: 35,
                 rowHeight: 35,
-                multiSelect :false
+                multiSelect :false,
+                enableFiltering: false,
+                columnDefs: [{ field: 'NAMA_CUST' },{ field: 'EMAIL_CUST' },{ field: 'NO_TELP' }]
             };
 
-            $scope.myData = 
-            [
-                {
-                    "id":1,
-                    "namaLengkap": "Radumta Sitepu",
-                    "noTelp": "081260014478",
-                    "email": "radumta@gmail.com"
-                },
-                {
-                    "id":2,
-                    "namaLengkap": "Piter Novian",
-                    "noTelp": "081260014478",
-                    "email": "piternov@gmail.com"
-                }
-            ];
-            
             $scope.gridOptions.onRegisterApi = function( gridApi ) 
             {
                 $scope.gridApi = gridApi;
+                $scope.gridApi.grid.registerRowsProcessor($scope.singleFilter, 200 );
                 gridApi.selection.on.rowSelectionChanged($scope,function(row)
                 {
+                    console.log(row);
                     if(row.isSelected)
                     {
-                        $scope.dataselected = row.entity;
-                        $scope.editform     = true;    
+                        $scope.dataselected = row.entity;   
                     }
                     else
                     {
                         $scope.dataselected = null;
-                        $scope.editform     = false;  
                     } 
                 });
             };
 
-            $scope.gridOptions.data = $scope.myData;
-            $scope.modalcustomernewtransaksi  = modal;
-            $scope.modalcustomernewtransaksi.show();
-            if($scope.dataselected)
+            $scope.filterValue = '';
+            $scope.singleFilter = function( renderableRows )
             {
-                $timeout(function() 
+                var matcher = new RegExp($scope.filterValue);
+                renderableRows.forEach( function( row ) 
                 {
-                    var index = _.findIndex($scope.myData,{'id':$scope.dataselected.id});
-                    $scope.gridApi.selection.selectRow($scope.gridOptions.data[index]);
-                });  
-            }
-            
+                      var match = false;
+                      [ 'NAMA_CUST', 'EMAIL_CUST'].forEach(function( field )
+                      {
+                        if ( row.entity[field].match(matcher) )
+                        {
+                          match = true;
+                        }
+                      });
+                      if ( !match )
+                      {
+                        row.visible = false;
+                      }
+                });
+                return renderableRows;
+            };
+
+            CustomerLiteFac.GetCustomer()
+            .then(function(responsecustomer)
+            {
+                $scope.openbookdata ={'exist':'true'};
+                $scope.myData = responsecustomer;
+                
+
+                $scope.gridOptions.data = $scope.myData;
+                $scope.datanew          = {'NAMA_CUST':null,'EMAIL_CUST':null,'NO_TELP':null}
+                $scope.modalcustomernewtransaksi  = modal;
+                $scope.modalcustomernewtransaksi.show();
+                TransCustLiteFac.GetNomorTransWhere($scope.noresi)
+                .then(function(responsenomortrans)
+                {
+                    if(responsenomortrans.length > 0)
+                    {
+                        $scope.namacustomer = responsenomortrans[0].BUYER_NAME;
+                        $timeout(function() 
+                        {
+                            var index = _.findIndex($scope.gridOptions.data,{id:Number(responsenomortrans[0].BUYER_ID)})
+                            $scope.gridApi.selection.selectRow($scope.gridOptions.data[index]);
+                        });   
+                    }
+                },
+                function(error)
+                {
+                    console.log(error);
+                });
+
+            },
+            function(error)
+            {
+                console.log(error);
+            });
         });
     }
+    
+
+    $scope.filtertable = function(filterValue) 
+    {
+        $scope.filterValue = filterValue;
+        $scope.gridApi.grid.refresh();
+    };
 
     $scope.ModalNewCustomerTransaksiClose = function() 
     {
+        console.log($scope.dataselected);
+        if($scope.openbookdata.exist == 'false')
+        {
+            var namacustomer = $scope.datanew.NAMA_CUST;
+            CustomerLiteFac.SetCustomer($scope.datanew)
+            .then(function(responsesetcustomer)
+            {
+                var datatosave = [responsesetcustomer.insertId,$scope.datanew.NAMA_CUST,$scope.noresi];
+                TransCustLiteFac.UpdateBuyerTransCusts(datatosave)
+                .then(function(response)
+                {
+                    console.log(response);    
+                });
+            },
+            function(error)
+            {
+                console.log(error);
+            });
+                
+        }
+
         if($scope.dataselected)
         {
-            var datatosave = [$scope.dataselected.id,$scope.dataselected.namaLengkap,$scope.noresi];
+            var datatosave = [$scope.dataselected.id,$scope.dataselected.NAMA_CUST,$scope.noresi];
             TransCustLiteFac.UpdateBuyerTransCusts(datatosave)
             .then(function(response)
             {
@@ -579,10 +651,16 @@ angular.module('starter')
             {
                 console.log(error)
             });
+            var namacustomer = $scope.dataselected.NAMA_CUST;
         }
+        $scope.namacustomer = namacustomer;
         $scope.modalcustomernewtransaksi.remove();
     };
 
+    $scope.ModalNewCustomerTransaksiCancel = function()
+    {
+        $scope.modalcustomernewtransaksi.remove();
+    }
     $scope.savetobill     = function()
     {
         $ionicModal.fromTemplateUrl('templates/sales/modalsavetobill.html', 

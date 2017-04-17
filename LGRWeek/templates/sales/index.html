@@ -21,8 +21,7 @@
           <ion-item class="item-assertive">
             <div class="item-icon-left" ng-click="newcustomertransaksi()">
               <i class="icon ion-person-add"></i>
-              <h2 ng-if="!dataselected">{{'New Customers'|uppercase}}</h2>
-              <h2 ng-if="dataselected">{{dataselected.namaLengkap}}
+              <h2>{{namacustomer|uppercase}}</h2>
             </div>
             <div class="item-icon-right" ng-click="savetobill()">
                 <i class="icon ion-ios-keypad"></i>

@@ -1,6 +1,29 @@
 angular.module('starter')
 .factory('TransCustLiteFac',function($rootScope,$http, $q, $filter, $window,$cordovaSQLite,UtilService)
 {
+    var GetNomorTransWhere = function (NOMOR_TRANS)
+    {
+        var deferred = $q.defer();
+        var queryselecttranscust = 'SELECT * FROM Tbl_CustBuyTrans WHERE NOMOR_TRANS = ?';
+        $cordovaSQLite.execute($rootScope.db, queryselecttranscust,[NOMOR_TRANS])
+        .then(function(result) 
+        {
+            if(result.rows.length > 0)
+            {
+                var response = UtilService.SqliteToArray(result);
+                deferred.resolve(response);
+            }
+            else
+            {
+                deferred.resolve([]);
+            }
+        },
+        function (error)
+        {
+            deferred.reject(error); 
+        });
+        return deferred.promise;
+    }
     var GetTransCustsByDate = function (TGL_TRANS)
     {
         var deferred = $q.defer();
@@ -89,7 +112,6 @@ angular.module('starter')
 
     var UpdateBuyerTransCusts = function (datatoupdate)
     {
-        console.log(datatoupdate);
         var deferred        = $q.defer();
         var updatestatusbuy = 'UPDATE Tbl_CustBuyTrans SET BUYER_ID = ?,BUYER_NAME = ? WHERE NOMOR_TRANS = ?';
         $cordovaSQLite.execute($rootScope.db,updatestatusbuy,datatoupdate)
@@ -131,6 +153,7 @@ angular.module('starter')
     }
 
     return{
+            GetNomorTransWhere:GetNomorTransWhere,
             GetTransCustsByDate:GetTransCustsByDate,
             GetTransCustsByDateStatus:GetTransCustsByDateStatus,
             SetTransCusts:SetTransCusts,

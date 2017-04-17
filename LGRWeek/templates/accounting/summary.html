@@ -17,19 +17,6 @@
         <div class="col col-25">
             <div class="list card" >
               <div class="item item-devider" style="background-color: bisque">
-                <h2 style="text-align: center;">Transaksi InComplete</h2>
-              </div>
-
-              <div class="item item-body" style="min-height: 50px">
-                <h1>
-                    {{jlhincomplete}}
-                </h1>
-              </div>
-            </div>  
-        </div>
-        <div class="col col-25">
-            <div class="list card" >
-              <div class="item item-devider" style="background-color: bisque">
                 <h2 style="text-align: center;">BAYAR CASH</h2>
               </div>
 
@@ -49,6 +36,19 @@
               <div class="item item-body" style="min-height: 50px">
                 <h1  >
                     Rp. {{bayaredc|number}}
+                </h1>
+              </div>
+            </div>  
+        </div>
+        <div class="col col-25">
+            <div class="list card" >
+              <div class="item item-devider" style="background-color: bisque">
+                <h2 style="text-align: center;">Total Transaksi</h2>
+              </div>
+
+              <div class="item item-body" style="min-height: 50px">
+                <h1>
+                    {{(bayarcash + bayaredc)|number}}
                 </h1>
               </div>
             </div>  
@@ -76,7 +76,7 @@
 
               <div class="item item-body" style="min-height: 50px">
                 <h1>
-                    {{checkcash}}
+                    {{checkcash|number}}
                 </h1>
               </div>
             </div>  

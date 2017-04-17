@@ -50,7 +50,7 @@ angular.module('starter')
             $scope.findindrawer += responseopenbook[responseopenbook.length - 1].CASHINDRAWER;
             $scope.addedcash    += responseopenbook[responseopenbook.length - 1].ADDCASH;
             $scope.checkcash    += responseopenbook[responseopenbook.length - 1].CHECKCASH;
-            $scope.saldoawal    += responseopenbook[responseopenbook.length - 1].TOTALCASH;
+            $scope.saldoawal    += $scope.checkcash + $scope.addedcash;
         }
     },
     function(error)
