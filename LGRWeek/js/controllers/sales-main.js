@@ -1,8 +1,12 @@
 angular.module('starter')
 .controller('SalesCtrl', function($ionicHistory,$timeout,$ionicPosition,$scope,$state,$location,$ionicLoading,$ionicScrollDelegate,$ionicPopup,$ionicModal,$filter,UtilService,StorageService,BarangForSaleLiteFac,ShopCartLiteFac,TransCustLiteFac,SaveToBillLiteFac,CloseBookLiteFac,CustomerLiteFac,uiGridConstants,SummaryLiteFac) 
 {
-    $scope.namacustomer = 'NEW CUSTOMER';
-
+    $scope.gridornot        = {grid: false};
+    $scope.namacustomer     = 'NEW CUSTOMER';
+    $scope.changefilter = function(valeu)
+    {
+        $scope.filterproduct = valeu;
+    }
     CloseBookLiteFac.GetCloseBookByUsername($scope.profile.username)
     .then(function(responseclosebook)
     {
