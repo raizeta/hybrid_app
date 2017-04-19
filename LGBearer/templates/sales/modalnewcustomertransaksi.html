@@ -1,0 +1,48 @@
+<ion-modal-view class="mymodalcustnewtransaksi">
+<form name="closebookForm" novalidate="">
+  <ion-header-bar class="bar bar-header bar-assertive">
+    <h1 class="title">CUSTOMER LIST</h1>
+    <button class="button button-clear left" ng-click="ModalNewCustomerTransaksiCancel()">
+      <i class="icon ion-backspace"></i>
+    </button>
+    <button class="button button-clear right" type="submit" ng-disabled="closebookForm.$invalid" ng-click="ModalNewCustomerTransaksiClose()">
+      <i class="icon ion-android-checkbox-outline"></i>
+    </button>
+  </ion-header-bar>
+  <ion-content>
+    <div class="row">
+        <div class="col col-25">
+        <h4 class="padding left">Choose Customer</h4>
+        </div>
+        <div class="col col-75">
+          <div class="button-bar padding">
+            <a grouped-radio="'true'" ng-model="openbookdata.exist" ng-value="true">Exist Customer</a>
+            <a grouped-radio="'false'" ng-model="openbookdata.exist">New Customer</a>
+          </div>
+          <div class="padding" ng-show="openbookdata.exist == 'true'">
+            <label class="item item-input">
+              <input type="text" ng-model="filterValue" placeholder="Cari Customer" ng-change='filtertable(filterValue)'>
+            </label>
+          </div>      
+          <div class="padding" ng-show="openbookdata.exist == 'false'">
+            <label class="item item-input item-floating-label">
+              <span class="input-label">Nama Lengkap</span>
+              <input type="text" ng-model="datanew.NAMA_CUST" class="form-control" placeholder="Nama Lengkap" ng-required="openbookdata.exist == 'false'">
+            </label>
+            <label class="item item-input item-floating-label">
+              <span class="input-label">Your Email</span>
+                <input type="email" ng-model="datanew.EMAIL_CUST" class="form-control" placeholder="Email Anda" ng-required="openbookdata.exist == 'false'">
+            </label>
+            <label class="item item-input item-floating-label">
+              <span class="input-label">Your Telp</span>
+                <input type="text" ng-model="datanew.NO_TELP" class="form-control" placeholder="No Telp" ng-required="openbookdata.exist == 'false'">
+            </label>
+          </div>
+        </div>
+    </div>
+    <div class="list card" ng-show="openbookdata.exist == 'true'">
+        <div ui-grid="gridOptions" ui-grid-selection class="grid"></div>
+    </div>
+  </ion-content>
+</form>
+</ion-modal-view>

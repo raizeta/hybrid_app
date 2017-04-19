@@ -1,0 +1,33 @@
+<ion-view id="inventory-tidakkosong" view-title="CASHIER {{lokasistore.OUTLET_NM|uppercase}}">
+  <ion-content>
+  
+<!--     <ion-list>
+      <ion-item class="profile-item">
+        <div class="profile-picture big-profile-picture" style="background:#93C178">
+          <img data-ng-src="img/C.png" width="100%" height="100%">
+        </div>
+        <h5 class="profile-name dark">{{'HOLD TRANSACTIONS  '|uppercase}}</h5>
+      </ion-item>
+    </ion-list> -->
+    <div class="row responsive-md">
+      <div class="col col-50 col-offset-25">
+        <div class="header padding text-center">
+            <img src="img/logo.png" alt="Your logo here"/>
+            <h5 class="profile-name dark">{{'HOLD TRANSACTIONS  '|uppercase}}</h5>
+        </div>
+      </div>
+    </div>
+    <ion-list>
+      <ion-item ng-repeat="item in transaks track by $index" ng-if="item.STATUS_BUY == 'INCOMPLETE'" ng-click="gotoitem(item)">
+        {{item.NOMOR_TRANS}}
+      </ion-item>
+      <ion-item ng-if="transaks.length == 0">
+        Belum Ada Transaksi
+      </ion-item>
+    </ion-list>
+    <ion-list style="padding:10px"></ion-list>
+  </ion-content>
+  <button class="button button-float" ng-click="tambahtransaksi()">
+    <i class="icon ion-plus"></i>
+  </button>
+</ion-view>

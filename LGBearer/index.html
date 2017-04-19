@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+
+    <link rel="manifest" href="manifest.json">
+
+    
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/timeline.css" rel="stylesheet">
+    <link href="css/item-shadow.css" rel="stylesheet">
+    <link href="css/button.css" rel="stylesheet">
+    <link href="css/ribbon.css" rel="stylesheet">
+    <link href="css/custom-item.css" rel="stylesheet">
+    <link href="css/addtocart.css" rel="stylesheet">
+    <link href="css/summary.css" rel="stylesheet">
+    <link href="css/searchbar.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="lib/angular-ui-grid/ui-grid.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+    <script src="lib/underscore/underscore.js"></script>
+    <script src="lib/ngCordova/dist/ng-cordova.js"></script>
+    <script src="lib/angular-ui-grid/ui-grid.min.js"></script>
+    <script src="js/ionic-table.js"></script>
+    <script src="cordova.js"></script>
+
+    
+   
+
+    <script src="js/app.js"></script>
+    <script src="js/routing/main.js"></script>
+    <script src="js/routing/secured.js"></script>
+    <script src="js/routing/sales.js"></script>
+    <script src="js/routing/inventory.js"></script>
+    <script src="js/routing/gaaction.js"></script>
+    <script src="js/routing/accounting.js"></script>
+    <script src="js/routing/settings.js"></script>
+    
+    <script src="js/controllers/sales-main.js"></script>
+    <script src="js/controllers/sales.js"></script>
+    <script src="js/controllers/secured.js"></script>
+    <script src="js/controllers/inv-inventory.js"></script>
+    <script src="js/controllers/inv-booking.js"></script>
+    <script src="js/controllers/inv-sync.js"></script>
+    <script src="js/controllers/ga-action.js"></script>
+    <script src="js/controllers/accounting.js"></script>
+    <script src="js/controllers/settings.js"></script>
+
+    <script src="js/factory/server/secured.js"></script>
+    <script src="js/factory/server/product.js"></script>
+    <script src="js/factory/server/transaksi-header.js"></script>
+    <script src="js/factory/server/transaksi.js"></script>
+    <script src="js/factory/server/store.js"></script>
+    <script src="js/factory/server/httpinceptor.js"></script>
+
+    <script src="js/factory/sqlite/product.js"></script>
+    <script src="js/factory/sqlite/store.js"></script>
+    <script src="js/factory/sqlite/transaksi-customer.js"></script>
+    <script src="js/factory/sqlite/inv-check.js"></script>
+    <script src="js/factory/sqlite/barangforsale.js"></script>
+    <script src="js/factory/sqlite/shopcart.js"></script>
+    <script src="js/factory/sqlite/savetobill.js"></script>
+    <script src="js/factory/sqlite/closebook.js"></script>
+    <script src="js/factory/sqlite/summary.js"></script>
+    <script src="js/factory/sqlite/customer.js"></script>
+
+    <script src="js/factory/comb/product.js"></script>
+    <script src="js/factory/comb/store.js"></script>
+
+    <script src="js/services/util.js"></script>
+    <script src="js/services/storage.js"></script>
+
+    <script src="js/filter/capitalize.js"></script>
+    <script src="js/filter/highlight.js"></script>
+    <script src="js/filter/cut-text.js"></script>
+
+    <script src="js/directives/groupradio.js"></script>
+    <script src="js/directives/format.js"></script>
+    <script src="js/directives/searchbar.js"></script>
+
+
+
+  </head>
+  <body ng-app="starter">
+    <ion-nav-bar class="bar-dark">
+        <ion-nav-back-button></ion-nav-back-button>
+    </ion-nav-bar>
+    <ion-nav-view></ion-nav-view>
+  </body>
+</html>
