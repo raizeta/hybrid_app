@@ -1,0 +1,113 @@
+<ion-view view-title="SUMMARY">
+	<ion-content>
+    <div class="row" style="flex-wrap: wrap;">
+        <div class="col col-25">
+            <div class="list card" >
+              <div class="item item-devider" style="background-color: bisque">
+                <h2 style="text-align: center;">Transaksi Complete</h2>
+              </div>
+
+              <div class="item item-body" style="min-height: 50px">
+                <h1>
+                    {{jlhcomplete}}
+                </h1>
+              </div>
+            </div>  
+        </div>
+        <div class="col col-25">
+            <div class="list card" >
+              <div class="item item-devider" style="background-color: bisque">
+                <h2 style="text-align: center;">BAYAR CASH</h2>
+              </div>
+
+              <div class="item item-body" style="min-height: 50px">
+                <h1>
+                    Rp. {{bayarcash|number}}
+                </h1>
+              </div>
+            </div>  
+        </div>
+        <div class="col col-25">
+            <div class="list card" >
+              <div class="item item-devider" style="background-color: bisque">
+                <h2 style="text-align: center;">BAYAR BY EDC</h2>
+              </div>
+
+              <div class="item item-body" style="min-height: 50px">
+                <h1  >
+                    Rp. {{bayaredc|number}}
+                </h1>
+              </div>
+            </div>  
+        </div>
+        <div class="col col-25">
+            <div class="list card" >
+              <div class="item item-devider" style="background-color: bisque">
+                <h2 style="text-align: center;">Total Transaksi</h2>
+              </div>
+
+              <div class="item item-body" style="min-height: 50px">
+                <h1>
+                    {{(bayarcash + bayaredc)|number}}
+                </h1>
+              </div>
+            </div>  
+        </div>
+    </div>
+    <div class="row" style="flex-wrap: wrap;">
+        <div class="col col-25">
+            <div class="list card" >
+              <div class="item item-devider" style="background-color: bisque">
+                <h2 style="text-align: center;">FIND IN DRAWER</h2>
+              </div>
+
+              <div class="item item-body" style="min-height: 50px">
+                <h1>
+                    Rp. {{findindrawer|number}}
+                </h1>
+              </div>
+            </div>  
+        </div>
+        <div class="col col-25">
+            <div class="list card" >
+              <div class="item item-devider" style="background-color: bisque">
+                <h2 style="text-align: center;">CASH CHECKED</h2>
+              </div>
+
+              <div class="item item-body" style="min-height: 50px">
+                <h1>
+                    {{checkcash|number}}
+                </h1>
+              </div>
+            </div>  
+        </div>
+        <div class="col col-25">
+            <div class="list card" >
+              <div class="item item-devider" style="background-color: bisque">
+                <h2 style="text-align: center;">ADDED CASH</h2>
+              </div>
+
+              <div class="item item-body" style="min-height: 50px">
+                <h1>
+                    Rp. {{addedcash|number}}
+                </h1>
+              </div>
+            </div>  
+        </div>
+        <div class="col col-25">
+            <div class="list card" >
+              <div class="item item-devider" style="background-color: bisque">
+                <h2 style="text-align: center;">SALDO AWAL</h2>
+              </div>
+
+              <div class="item item-body" style="min-height: 50px">
+                <h1>
+                    Rp. {{saldoawal|number}}
+                </h1>
+              </div>
+            </div>  
+        </div>
+    </div>
+	</ion-content>
+</ion-view>
+
