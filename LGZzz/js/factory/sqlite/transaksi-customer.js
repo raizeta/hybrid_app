@@ -98,7 +98,7 @@ angular.module('starter')
     var UpdateTransCusts = function (datatoupdate)
     {
         var deferred        = $q.defer();
-        var updatestatusbuy = 'UPDATE Tbl_CustBuyTrans SET STATUS_BUY = ?,TOTAL_SPENT = ?,METHOD_PEMBAYARAN = ?,TOTAL_ITEM = ? WHERE NOMOR_TRANS = ?';
+        var updatestatusbuy = 'UPDATE Tbl_CustBuyTrans SET STATUS_BUY = ?,TOTAL_SPENT = ?,METHOD_PEMBAYARAN = ?,TOTAL_ITEM = ?, MERCHANT_NM = ?, MERCHANT_NO = ? WHERE NOMOR_TRANS = ?';
         $cordovaSQLite.execute($rootScope.db,updatestatusbuy,datatoupdate)
         .then(function(result) 
         {
@@ -114,7 +114,7 @@ angular.module('starter')
     var UpdateBuyerTransCusts = function (datatoupdate)
     {
         var deferred        = $q.defer();
-        var updatestatusbuy = 'UPDATE Tbl_CustBuyTrans SET BUYER_ID = ?,BUYER_NAME = ? WHERE NOMOR_TRANS = ?';
+        var updatestatusbuy = 'UPDATE Tbl_CustBuyTrans SET BUYER_ID = ?,BUYER_NAME = ?,BUYER_EMAIL = ?,BUYER_PHONE = ? WHERE NOMOR_TRANS = ?';
         $cordovaSQLite.execute($rootScope.db,updatestatusbuy,datatoupdate)
         .then(function(result) 
         {

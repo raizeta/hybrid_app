@@ -63,15 +63,34 @@
                   EDC
                 </a>
                 <a grouped-radio="'acc'" ng-model="pembayaran.other" ng-change='radiochange("other")'>
-                  CREDIT CARD CARD
+                  CREDIT CARD
                 </a>
               </div>
-              <div class="list list-inset" ng-show="pembayaran.other == 'edc'">
+              <div class="list list-inset" ng-show="pembayaran.other == 'edc' || pembayaran.other == 'acc' ">
                 <label  class="item item-input item-select">
+                  <div class="input-label">
+                    PILIH MERCHANT
+                  </div>
                   <!-- <input type="text" placeholder="Optional Note" ng-required="pembayaran.other == 'edc'"> -->
-                  <select ng-model="namaaccount" ng-options="item.OUTLET_NM for item in datastore" ng-required="pembayaran.other == 'edc'">>
+                  <select ng-model="pembayaran.merchant" ng-options="item.MERCHANT_NM for item in datastores" ng-required="pembayaran.other == 'edc'">
                     <option value="">-- Pilih Account --</option>
                   </select>
+                </label>
+              </div>
+              <div class="list list-inset" ng-show="pembayaran.merchant.MERCHANT_NM != undefined">
+                <label  class="item item-input " style="background-color: #f8f8f8">
+                  <div class="input-label">
+                    NOMOR REKENING
+                  </div>
+                  <input style="text-align:right;" type="text" placeholder="Optional Note" ng-model="pembayaran.merchant.NOREK" readonly="true">
+                </label>
+              </div>
+              <div class="list list-inset" ng-show="pembayaran.merchant.MERCHANT_NM != undefined">
+                <label  class="item item-input " style="background-color: #f8f8f8">
+                  <div class="input-label">
+                    PEMILIK REKENING
+                  </div>
+                  <input style="text-align:right;" type="text" placeholder="Optional Note" ng-model="pembayaran.merchant.OWNER" readonly="true">
                 </label>
               </div>
             </div>

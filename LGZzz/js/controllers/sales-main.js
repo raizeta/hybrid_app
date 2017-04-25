@@ -488,7 +488,7 @@ angular.module('starter')
             CustomerLiteFac.SetCustomer($scope.datanew)
             .then(function(responsesetcustomer)
             {
-                var datatosave = [responsesetcustomer.insertId,$scope.datanew.NAMA_CUST,$scope.noresi];
+                var datatosave = [responsesetcustomer.insertId,$scope.datanew.NAMA_CUST,$scope.datanew.EMAIL_CUST,$scope.datanew.NO_TELP,$scope.noresi];
                 TransCustLiteFac.UpdateBuyerTransCusts(datatosave)
                 .then(function(response)
                 {
@@ -504,7 +504,7 @@ angular.module('starter')
 
         if($scope.dataselected)
         {
-            var datatosave = [$scope.dataselected.id,$scope.dataselected.NAMA_CUST,$scope.noresi];
+            var datatosave = [$scope.dataselected.id,$scope.dataselected.NAMA_CUST,$scope.dataselected.EMAIL_CUST,$scope.dataselected.NO_TELP,$scope.noresi];
             TransCustLiteFac.UpdateBuyerTransCusts(datatosave)
             .then(function(response)
             {
@@ -741,8 +741,10 @@ angular.module('starter')
         {
             $ionicLoading.show({template: 'Loading...',duration: 500});
             $scope.pembayaran   = {'uang':$scope.totalpembayaran,'other':null};
-            $scope.datastores   = [{'OUTLET_NM':'MANDIRI'},{'OUTLET_NM':'BANK BCA'}];
-            $scope.namaaccount  = null;
+            $scope.datastores   = [
+                                    {'MERCHANT_NM':'MANDIRI','NOREK':'12345','OWNER':'PITER NOVIAN'},
+                                    {'MERCHANT_NM':'BANK BCA','NOREK':'67890','OWNER':'RADUMTA SITEPU'}
+                                  ];
             $scope.modalpembayaran  = modal;
             $scope.modalpembayaran.show();
         });
@@ -755,6 +757,8 @@ angular.module('starter')
 
     $scope.ModalPembayaranClose = function() 
     {
+        $scope.namabank     = null;
+        $scope.nomorrek     = null;
         if($scope.pembayaran.uang)
         {
             $scope.methodpembayaran = 'CASH';
@@ -770,7 +774,17 @@ angular.module('starter')
         else
         {
             $scope.methodpembayaran = $filter('uppercase')($scope.pembayaran.other);
-            $scope.isEnough = true;
+            if($scope.pembayaran.merchant)
+            {
+                $scope.isEnough     = true;
+                $scope.namabank     = $scope.pembayaran.merchant.MERCHANT_NM;
+                $scope.nomorrek     = $scope.pembayaran.merchant.NOREK;
+            }
+            else
+            {
+                $scope.isEnough = false;
+            }
+            
         }
         if($scope.isEnough)
         {
@@ -806,7 +820,7 @@ angular.module('starter')
             });
             var TOTAL_ITEM = $scope.itemincart.length;
             var OLD_NORESI = $scope.noresi;
-            TransCustLiteFac.UpdateTransCusts(['COMPLETE',$scope.totalpembayaran,$scope.methodpembayaran,TOTAL_ITEM,$scope.noresi])
+            TransCustLiteFac.UpdateTransCusts(['COMPLETE',$scope.totalpembayaran,$scope.methodpembayaran,TOTAL_ITEM,$scope.namabank,$scope.nomorrek,$scope.noresi])
             .then(function(response)
             {
                 TransCustLiteFac.GetTransCustsByDate(tglsekarang)
@@ -849,7 +863,15 @@ angular.module('starter')
         }
         else
         {
-            alert("Uang Yang Anda Masukkan Belum Mencukupi.Terima Kasih.");
+            if(!$scope.pembayaran.merchant)
+            {
+                alert("Merchant Pembayaran Tidak Boleh Kosong");
+            }
+            else
+            {
+                alert("Uang Yang Anda Masukkan Belum Mencukupi.Terima Kasih.");     
+            }
+            
         }
     };
 
@@ -918,7 +940,6 @@ angular.module('starter')
                         var len             = dataxxx.length;
                         for(var i = len - 1;i >= 0;i--)
                         {
-                            console.log("I " + i);
                             var datadetailsaveserver    = {};
                             datadetailsaveserver.TRANS_ID           = TRANS_ID;
                             datadetailsaveserver.ACCESS_UNIX        = $scope.profile.ACCESS_UNIX;
@@ -942,7 +963,6 @@ angular.module('starter')
                                 var datatosavedetailisonserver = {};
                                 datatosavedetailisonserver.NOMOR_TRANS  = $scope.oldnoresi;
                                 datatosavedetailisonserver.ITEM_ID      = responsesavedetail.ITEM_ID;
-                                console.log(datatosavedetailisonserver);
                                 ShopCartLiteFac.UpdateIsOnServer(datatosavedetailisonserver)
                                 .then(function(responseupdatestatusisonserver)
                                 {
@@ -963,8 +983,11 @@ angular.module('starter')
                                     datasendtoserver.TOTAL_ITEM         = responsenomortrans[0].TOTAL_ITEM;   
                                     datasendtoserver.TOTAL_HARGA        = responsenomortrans[0].TOTAL_SPENT;
                                     datasendtoserver.CONSUMER_NM        = responsenomortrans[0].BUYER_NAME;
-                                    datasendtoserver.CONSUMER_EMAIL     = responsenomortrans[0].BUYER_NAME;
-                                    datasendtoserver.CONSUMER_PHONE     = responsenomortrans[0].BUYER_NAME;
+                                    datasendtoserver.CONSUMER_EMAIL     = responsenomortrans[0].BUYER_EMAIL;
+                                    datasendtoserver.CONSUMER_PHONE     = responsenomortrans[0].BUYER_PHONE;
+                                    datasendtoserver.TYPE_PAY           = responsenomortrans[0].METHOD_PEMBAYARAN;
+                                    datasendtoserver.BANK_NM            = responsenomortrans[0].MERCHANT_NM;
+                                    datasendtoserver.BANK_NO            = responsenomortrans[0].MERCHANT_NO;
                                     datasendtoserver.STATUS             = 1;
                                     datasendtoserver.CREATE_AT          = responsenomortrans[0].DATETIME_TRANS;
                                     datasendtoserver.CREATE_BY          = $scope.profile.ACCESS_UNIX;
