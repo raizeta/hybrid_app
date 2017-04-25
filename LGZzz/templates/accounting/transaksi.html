@@ -1,0 +1,41 @@
+<ion-view view-title="SYNC PENJUALAN {{tglsekarang}}">
+<ion-nav-buttons side="right">
+      <!-- <button class="button"  ng-click="data.showDelete = false; data.showReorder = !data.showReorder">
+          SYNC
+      </button> -->
+  </ion-nav-buttons>
+  <ion-content class="has-header" padding="false" scroll="true">
+    <ion-list show-reorder="data.showReorder">
+      <div ng-repeat="items in datas">
+        <!-- <ion-item class="item-stable item-icon-left"
+                    ng-click="toggleGroup(items)"
+                    ng-class="{active: isGroupShown(items)}" item="item" item-type="item item-icon-left">
+              <i class="icon" ng-class="isGroupShown(items) ? 'ion-minus' : 'ion-plus'"></i>
+
+            &nbsp;
+            {{items.NOMOR_TRANS}}
+            <ion-reorder-button class="ion-navicon" ng-click="synctoserver(items,$index)"></ion-reorder-button>
+          </ion-item> -->
+        <ion-item ng-class="{active: isGroupShown(items)}">
+          <div class="item-icon-left" style="padding-left:34px" ng-click="toggleGroup(items)">
+              <i class="icon" ng-class="isGroupShown(items) ? 'ion-minus' : 'ion-plus'"></i>
+              <span style="font-size: 12px;text-align:left;">
+                {{items.NOMOR_TRANS}}
+              </span>
+          </div>
+          <div class="item-icon-right" ng-click="AddToCart(item)">
+            <i style="color:green;" class="icon ion-checkmark" ng-if="items.IS_ONSERVER == 1"></i>
+            <i class="icon ion-navicon" ng-if="items.IS_ONSERVER == 0" ng-click="synctoserver(items,$index)"></i>
+          </div>
+        </ion-item>
+        <div class="row" ng-repeat="item in items.datayangdibeli" ng-show="isGroupShown(items)">
+            <div class='col'>{{$index + 1}}. {{item.ITEM_NM}}</div>
+            <div class='col'>{{item.ITEM_HARGA|number}}</div>
+            <div class='col'>{{item.QTY_INCART}}</div>
+            <div class='col'>{{((item.QTY_INCART)*(item.ITEM_HARGA))|number}}</div>
+        </div>
+      </div>
+    </ion-list>
+    <ion-list style="padding:30px"></ion-list>
+  </ion-content>
+</ion-view>

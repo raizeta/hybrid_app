@@ -1,0 +1,62 @@
+<ion-view view-title="CHECK-OUT: {{noresi}}">
+  <ion-content>
+    <ion-list>
+    <div class="row">
+      <div class="col col-50">
+        <div class="row" ng-repeat="item in datas track by $index">
+            <div class ="col">
+              {{item.ITEM_NM}} ({{item.STOCK_MAX}})
+            </div>
+            <div class ="col">
+              {{item.ITEM_HARGA|number}} x {{item.QTY_INCART}}
+            </div>
+            <div class ="col">
+                {{item.ITEM_HARGA*item.QTY_INCART|number}}
+            </div>
+        </div>
+      </div>
+      <div class="col col-50">
+        <div class="row">
+          <div class="col col-100">
+              <div style="float:left"><h4>Total Belanja</h4></div>
+              <div style="float:right"><h4>{{total|number}}</h4></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col col-100">
+              <div style="float:left"><h4>Pembayaran</h4></div>
+              <div style="float:right"><h4>{{expression|number}}</h4></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col col-100">
+              <div style="float:left"><h4>Kembalian</h4></div>
+              <div style="float:right" ng-if="expression >= total"><h4>{{(expression -total)|number}}</h4></div>
+              <div style="float:right" ng-if="total > expression"><h4>{{(0)|number}}</h4></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col col-33"><button class="button button-calm button-large" ng-click="add(7)">7</button></div>
+          <div class="col col-33"><button class="button button-calm button-large" ng-click="add(8)">8</button></div>
+          <div class="col col-33"><button class="button button-calm button-large" ng-click="add(9)">9</button></div>
+        </div>
+        <div class="row">
+          <div class="col col-33"><button class="button button-calm button-large" ng-click="add(4)">4</button></div>
+          <div class="col col-33"><button class="button button-calm button-large" ng-click="add(5)">5</button></div>
+          <div class="col col-33"><button class="button button-calm button-large" ng-click="add(6)">6</button></div>
+        </div>
+        <div class="row">
+          <div class="col col-33"><button class="button button-calm button-large" ng-click="add(1)">1</button></div>
+          <div class="col col-33"><button class="button button-calm button-large" ng-click="add(2)">2</button></div>
+          <div class="col col-33"><button class="button button-calm button-large" ng-click="add(3)">3</button></div>
+        </div>
+        <div class="row">
+          <div class="col col-33"><button class="button button-calm button-large" ng-click="add(0)">0</button></div>
+          <div class="col col-33"><button class="button button-assertive button-large" ng-click="delangka(expression)">DEL</button></div>
+          <div class="col col-33"><button class="button button-balanced button-large"  ng-click="pembayaran(noresi)">SAV</button></div>
+        </div>
+      </div>
+    </div>
+    </ion-list>
+  </ion-content>
+</ion-view>
