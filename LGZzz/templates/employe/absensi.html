@@ -1,23 +1,21 @@
 <ion-view view-title="ABSENSI">
-	<ion-content>
-	  <ion-list>
-	    	<ion-item class="profile-item">
-		      <div class="clock-picture">
-	            <ds-widget-clock theme="blue-light"></ds-widget-clock>
-		      </div>
-		      <h5 class="profile-name dark">{{profile.username|capitalize}}</h5>
-	    	</ion-item>
-	  	</ion-list>
-      	<div class="row responsive-md">
-          <div class="col col-50 col-offset-25">
-              <button class="button button-block button-positive" ng-click="funcabsensi('MASUK')" ng-disabled="disablemasuk">
-                	ABSEN MASUK
-              </button>
-              <button class="button button-block button-balanced" ng-click="funcabsensi('KELUAR')" ng-disabled="disablekeluar">
-                	ABSEN KELUAR
-              </button>
-            </div>
-        </div>	
-    </ion-content>
+<ion-nav-buttons side="right">
+  </ion-nav-buttons>
+  <ion-content class="has-header" padding="false" scroll="true">
+    <ion-list>
+        <ion-item ng-class="active" ng-repeat="item in dataemploye" ng-click="openmodalabsensi(item)">
+          <div class="item-icon-left" style="padding-left:34px">
+              <i class="icon ion-person-stalker"></i>
+              <span style="font-size: 12px;text-align:left;">
+                {{item.NAME}}
+              </span>
+          </div>
+          <div class="item-icon-right">
+            <i style="color:green;" class="icon ion-ios-arrow-right"></i>
+          </div>
+        </ion-item>
+      </div>
+    </ion-list>
+    <ion-list style="padding:30px"></ion-list>
+  </ion-content>
 </ion-view>
-

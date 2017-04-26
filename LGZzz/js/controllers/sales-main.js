@@ -57,6 +57,9 @@ angular.module('starter')
     var tglsekarang = $filter('date')(new Date(),'yyyy-MM-dd');
     if($scope.noresi)
     {
+        var x = $scope.noresi.split('.');
+        var y = $filter('date')(new Date(),'dd');
+        
         ShopCartLiteFac.GetShopCartByNomorTrans($scope.noresi)
         .then(function(response)
         {
@@ -84,7 +87,7 @@ angular.module('starter')
         {
             console.log(error);
         });
-    }
+    }          
     else
     {
         $scope.itemincart = [];
@@ -436,9 +439,11 @@ angular.module('starter')
                 return renderableRows;
             };
 
-            CustomerLiteFac.GetCustomer()
+            
+            CustomerLiteFac.GetCustomer($scope.stores.OUTLET_CODE)
             .then(function(responsecustomer)
             {
+                console.log(responsecustomer);
                 $scope.openbookdata ={'exist':'true'};
                 $scope.myData = responsecustomer;
                 
@@ -481,10 +486,13 @@ angular.module('starter')
 
     $scope.ModalNewCustomerTransaksiClose = function() 
     {
-        console.log($scope.dataselected);
         if($scope.openbookdata.exist == 'false')
         {
-            var namacustomer = $scope.datanew.NAMA_CUST;
+            
+            var namacustomer            = $scope.datanew.NAMA_CUST;
+            $scope.datanew.TGL_SAVE     = $filter('date')(new Date(),'yyyy-MM-dd');
+            $scope.datanew.OUTLET_CODE  = $scope.stores.OUTLET_CODE;
+            $scope.datanew.IS_ONSERVER  = 0;
             CustomerLiteFac.SetCustomer($scope.datanew)
             .then(function(responsesetcustomer)
             {
@@ -693,42 +701,8 @@ angular.module('starter')
 
     $scope.lakukanpembayaran = function(noresi,totalpembayaran)
     {
-        var totalpembayaran     = totalpembayaran;
-        $scope.totalpembayaran  = totalpembayaran;
-        var prediksi
-        $scope.yangdibayarkan   = [
-                                    {'yangdibayar':$scope.totalpembayaran}
-                                 ]
-
-        var berapakalidibagi1        = Math.floor(totalpembayaran / 1000);
-        var berapakalidibagi2        = Math.floor(totalpembayaran / 2000);
-        var berapakalidibagi3        = Math.floor(totalpembayaran / 5000);
-
-        var sisabagi1               = Math.floor(totalpembayaran % 1000);
-        var sisabagi2               = Math.floor(totalpembayaran % 2000);
-        var sisabagi3               = Math.floor(totalpembayaran % 5000);
-
-        var hasilbagi1              = (berapakalidibagi1 + 1) * 1000;
-        var hasilbagi2              = (berapakalidibagi2 + 1) * 2000;
-        var hasilbagi3              = (berapakalidibagi3 + 1) * 5000;
-
-        var indexhasilbagi1         = _.findIndex($scope.yangdibayarkan,{'yangdibayar':hasilbagi1});
-        
-    
-        if(indexhasilbagi1 == -1)
-        {
-            $scope.yangdibayarkan.push({'yangdibayar': hasilbagi1});    
-        }
-        var indexhasilbagi2         = _.findIndex($scope.yangdibayarkan,{'yangdibayar':hasilbagi2});
-        if(indexhasilbagi2 == -1)
-        {
-            $scope.yangdibayarkan.push({'yangdibayar': hasilbagi2});    
-        }
-        var indexhasilbagi3         = _.findIndex($scope.yangdibayarkan,{'yangdibayar':hasilbagi3});
-        if(indexhasilbagi3 == -1)
-        {
-            $scope.yangdibayarkan.push({'yangdibayar': hasilbagi3});    
-        }
+        $scope.totalpembayaran  = totalpembayaran;        
+        $scope.yangdibayarkan = UtilService.PembayaranFunc($scope.totalpembayaran);
 
         $ionicModal.fromTemplateUrl('templates/sales/modalpembayaran.html', 
         {
@@ -741,10 +715,7 @@ angular.module('starter')
         {
             $ionicLoading.show({template: 'Loading...',duration: 500});
             $scope.pembayaran   = {'uang':$scope.totalpembayaran,'other':null};
-            $scope.datastores   = [
-                                    {'MERCHANT_NM':'MANDIRI','NOREK':'12345','OWNER':'PITER NOVIAN'},
-                                    {'MERCHANT_NM':'BANK BCA','NOREK':'67890','OWNER':'RADUMTA SITEPU'}
-                                  ];
+            $scope.datamerchant = $scope.appmerchant;
             $scope.modalpembayaran  = modal;
             $scope.modalpembayaran.show();
         });
@@ -778,7 +749,7 @@ angular.module('starter')
             {
                 $scope.isEnough     = true;
                 $scope.namabank     = $scope.pembayaran.merchant.MERCHANT_NM;
-                $scope.nomorrek     = $scope.pembayaran.merchant.NOREK;
+                $scope.nomorrek     = $scope.pembayaran.merchant.MERCHANT_NO;
             }
             else
             {
@@ -925,11 +896,11 @@ angular.module('starter')
         {
             if(responsenomortrans.length > 0)
             {
-                var stores      = StorageService.get('LokasiStore');
+                
                 var lastthree   = $scope.oldnoresi.substr($scope.oldnoresi.length - 3);
-                var TRANS_ID    = $scope.profile.ACCESS_UNIX + '.' + stores.OUTLET_CODE + '.' + $filter('date')(new Date(),'yyyyMMdd') + (Number(lastthree));
-                var OUTLET_ID   = stores.OUTLET_CODE;
-                var OUTLET_NM   = stores.OUTLET_NM;
+                var TRANS_ID    = $scope.profile.ACCESS_UNIX + '.' + $scope.stores.OUTLET_CODE + '.' + $filter('date')(new Date(),'yyyyMMdd') + (Number(lastthree));
+                var OUTLET_ID   = $scope.stores.OUTLET_CODE;
+                var OUTLET_NM   = $scope.stores.OUTLET_NM;
 
                 ShopCartLiteFac.GetShopCartByNomorTrans($scope.oldnoresi)
                 .then(function(responsedetail)
@@ -1027,6 +998,7 @@ angular.module('starter')
         {
             console.log(error);
         });
+        $scope.namacustomer = null;
         $scope.modalpembayaran.remove();
         $scope.notifikasipembayaran.remove();
     };
@@ -1057,7 +1029,7 @@ angular.module('starter')
         var nomorurut                   = UtilService.StringPad(Number(lastthree) + 1,'0000');
         $scope.newproduct.ITEM_ID = nomorurut;
         $scope.datas.push($scope.newproduct);
-        var stores              = StorageService.get('LokasiStore');
+        
         var databarangtosave    = {};
         databarangtosave.TGL_SAVE     = $filter('date')(new Date(),'yyyy-MM-dd');
         databarangtosave.ITEM_ID      = nomorurut;
@@ -1066,7 +1038,7 @@ angular.module('starter')
         databarangtosave.STOCK_MAX    = $scope.newproduct.STOCK_MAX;
         databarangtosave.GAMBAR       = $scope.newproduct.GAMBAR;
         databarangtosave.FORMULA      = null;
-        databarangtosave.OUTLET_CODE  = stores.OUTLET_CODE;
+        databarangtosave.OUTLET_CODE  = $scope.stores.OUTLET_CODE;
         databarangtosave.SATUAN       = $scope.newproduct.SATUAN;
         databarangtosave.STATUS       = 1;
         databarangtosave.IS_ONSERVER  = 0;
@@ -1104,8 +1076,7 @@ angular.module('starter')
         });
     }
 
-    // var stores     = StorageService.get('LokasiStore');
-    // HargaLiteFac.GetHarga(stores.OUTLET_CODE,'2017-04-23','2017-04-24')
+    // HargaLiteFac.GetHarga($scope.stores.OUTLET_CODE,'2017-04-23','2017-04-24')
     // .then(function(responseharga)
     // {
     //     $scope.harga    = responseharga;

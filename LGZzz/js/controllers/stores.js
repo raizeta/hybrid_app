@@ -1,5 +1,5 @@
-angular.module('starter').controller('StoresCtrl', function($ionicHistory,$scope,$timeout,$state,$filter,StorageService,SecuredFac,StoreFac,BarangForSaleLiteFac,HargaLiteFac,DiskonLiteFac,StoreLiteFac) 
-
+angular.module('starter')
+.controller('StoresCtrl', function($ionicHistory,$scope,$timeout,$state,$filter,StorageService,SecuredFac,StoreFac,BarangForSaleLiteFac,HargaLiteFac,DiskonLiteFac,StoreLiteFac) 
 {
 	var profile = StorageService.get('profile');
 	SecuredFac.UserProfile(profile.username,profile.access_token)
@@ -136,7 +136,7 @@ angular.module('starter').controller('StoresCtrl', function($ionicHistory,$scope
 		{
 			$ionicHistory.nextViewOptions({disableAnimate: true, disableBack: true});
 			StorageService.set('LokasiStore',stores.lokasistore);
-			$state.go('tab.openbook');
+			$state.go('tab.sales');
 		}, 50);
 		
 			

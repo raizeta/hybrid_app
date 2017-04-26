@@ -1,0 +1,31 @@
+<ion-modal-view class="mymodalpembayarannotifikasi">
+  <ion-header-bar class="bar bar-header bar-assertive">
+    <h1 class="title">BOOK HAS CLOSED</h1>
+    <button class="button button-balanced right" ng-click="closemodalabsensi()">
+      CLOSE
+    </button>
+  </ion-header-bar>
+  <ion-content>
+    <ion-list>
+      <ion-item class="profile-item">
+        <div class="clock-picture">
+            <ds-widget-clock theme="blue-light"></ds-widget-clock>
+        </div>
+        <h5 class="profile-name dark">{{profile.username|capitalize}}</h5>
+      </ion-item>
+    </ion-list>
+    <div class="row responsive-md">
+      <div class="col col-50 col-offset-25">
+          <button class="button button-block button-positive" ng-click="funcabsensi('MASUK')" ng-disabled="disablemasuk">
+              ABSEN MASUK
+          </button>
+          <button class="button button-block button-balanced" ng-click="funcabsensi('KELUAR')" ng-disabled="disablekeluar">
+              ABSEN KELUAR
+          </button>
+        </div>
+    </div>  
+  </ion-content>
+  <div class="bar bar-footer bar-assertive">
+     <h1 class="title">Silahkan Pilih Menu Lain</h1>
+  </div>
+</ion-modal-view>

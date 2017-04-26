@@ -26,6 +26,18 @@ angular.module('starter')
           }
       }
   });
+  $stateProvider.state('tab.absensi-detail', 
+  {
+      url: "/absensi/:id",
+      views: 
+      {
+          'view-content': 
+          {
+            templateUrl: 'templates/employe/absensi-detail.html',
+            controller: 'AbsensiDetailCtrl'
+        }
+      }
+  });
 
 
 });

@@ -25,7 +25,7 @@ angular.module('starter')
                 var userInfo = SecuredFac.getUserInfo();
                 if(userInfo)
                 {
-                    $location.path("/tab/stores");
+                    $location.path("/init/stores");
                     $apply();
                 }
             }

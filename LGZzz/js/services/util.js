@@ -204,6 +204,59 @@ angular.module('starter')
         var ans = pad.substring(0, pad.length - stringtopad.length) + stringtopad;
         return ans;
     };
+
+    var CameraOptions = function()
+    {
+        
+        var options = {};
+        options.quality             = 50;
+        options.destinationType     = Camera.DestinationType.DATA_URL;
+        options.sourceType          = Camera.PictureSourceType.CAMERA;
+        options.allowEdit           = false;
+        options.encodingType        = Camera.EncodingType.JPEG;
+        options.targetWidth         = 500;
+        options.targetHeight        = 500;
+        options.popoverOptions      = CameraPopoverOptions;
+        options.saveToPhotoAlbum    = false;
+        options.correctOrientation  = true;
+        return options;
+    }
+
+    var PembayaranFunc = function(totalpembayaran)
+    {
+        var yangdibayarkan      = [{'yangdibayar':totalpembayaran}]
+        var berapakalidibagi1   = Math.floor(totalpembayaran / 1000);
+        var berapakalidibagi2   = Math.floor(totalpembayaran / 2000);
+        var berapakalidibagi3   = Math.floor(totalpembayaran / 5000);
+
+        var sisabagi1           = Math.floor(totalpembayaran % 1000);
+        var sisabagi2           = Math.floor(totalpembayaran % 2000);
+        var sisabagi3           = Math.floor(totalpembayaran % 5000);
+
+        var hasilbagi1          = (berapakalidibagi1 + 1) * 1000;
+        var hasilbagi2          = (berapakalidibagi2 + 1) * 2000;
+        var hasilbagi3          = (berapakalidibagi3 + 1) * 5000;
+
+        var indexhasilbagi1         = _.findIndex(yangdibayarkan,{'yangdibayar':hasilbagi1});
+        
+    
+        if(indexhasilbagi1 == -1)
+        {
+            yangdibayarkan.push({'yangdibayar': hasilbagi1});    
+        }
+        var indexhasilbagi2         = _.findIndex(yangdibayarkan,{'yangdibayar':hasilbagi2});
+        if(indexhasilbagi2 == -1)
+        {
+            yangdibayarkan.push({'yangdibayar': hasilbagi2});    
+        }
+        var indexhasilbagi3         = _.findIndex(yangdibayarkan,{'yangdibayar':hasilbagi3});
+        if(indexhasilbagi3 == -1)
+        {
+            yangdibayarkan.push({'yangdibayar': hasilbagi3});    
+        }
+        return yangdibayarkan;
+    }
+    
     return {
       ArrayChunk:ArrayChunk,
       ApiUrl:ApiUrl,
@@ -216,6 +269,8 @@ angular.module('starter')
       SqliteToArray:SqliteToArray,
       SetGambarCheckinCheckout:SetGambarCheckinCheckout,
       DiffTwoDateTime:DiffTwoDateTime,
-      StringPad:StringPad
+      StringPad:StringPad,
+      CameraOptions:CameraOptions,
+      PembayaranFunc:PembayaranFunc
     };
 });

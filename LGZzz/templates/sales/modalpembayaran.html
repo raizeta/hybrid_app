@@ -55,7 +55,7 @@
         </div>
         <div class="row">
             <div class="col col-25">
-            <h4 class="padding left">Other</h4>
+            <h4 class="padding left">Card</h4>
             </div>
             <div class="col col-75">      
               <div class="button-bar padding">
@@ -72,7 +72,7 @@
                     PILIH MERCHANT
                   </div>
                   <!-- <input type="text" placeholder="Optional Note" ng-required="pembayaran.other == 'edc'"> -->
-                  <select ng-model="pembayaran.merchant" ng-options="item.MERCHANT_NM for item in datastores" ng-required="pembayaran.other == 'edc'">
+                  <select ng-model="pembayaran.merchant" ng-options="item.MERCHANT_NM for item in datamerchant" ng-required="pembayaran.other == 'edc'">
                     <option value="">-- Pilih Account --</option>
                   </select>
                 </label>
@@ -82,7 +82,7 @@
                   <div class="input-label">
                     NOMOR REKENING
                   </div>
-                  <input style="text-align:right;" type="text" placeholder="Optional Note" ng-model="pembayaran.merchant.NOREK" readonly="true">
+                  <input style="text-align:right;" type="text" placeholder="Optional Note" ng-model="pembayaran.merchant.MERCHANT_NO" readonly="true">
                 </label>
               </div>
               <div class="list list-inset" ng-show="pembayaran.merchant.MERCHANT_NM != undefined">
@@ -90,7 +90,7 @@
                   <div class="input-label">
                     PEMILIK REKENING
                   </div>
-                  <input style="text-align:right;" type="text" placeholder="Optional Note" ng-model="pembayaran.merchant.OWNER" readonly="true">
+                  <input style="text-align:right;" type="text" placeholder="Optional Note" ng-model="pembayaran.merchant.MERCHANT_OWNER" readonly="true">
                 </label>
               </div>
             </div>

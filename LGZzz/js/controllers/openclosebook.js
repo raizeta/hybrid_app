@@ -15,7 +15,7 @@ angular.module('starter')
                 $timeout(function() 
                 {
                     $ionicHistory.nextViewOptions({disableAnimate: true, disableBack: true});
-                    $state.go('tab.absensi'); 
+                    $state.go('tab.sales'); 
                 });
             }
         }
@@ -66,7 +66,7 @@ angular.module('starter')
                 $scope.$apply(function () 
                 {
                     $ionicHistory.nextViewOptions({disableAnimate: true, disableBack: true});
-                    $state.go('tab.absensi');
+                    $state.go('tab.sales');
                 });
             }, 500);
          	console.log(responseclosebook);

@@ -13,11 +13,10 @@
     <ion-header-bar class="bar-assertive">
       <h1 class="title">PT.LUKISON GROUP</h1>
     </ion-header-bar>
-    <ion-content class="has-header" style="background: url('img/login_bg.jpg'); background-size: cover;">
-      <div class="item item-avatar">
-        <img data-ng-src="{{profile.gambar}}">
+    <ion-content class="has-header" style="background-color: #B0BEC5;background: url('img/login_bg.jpg'); background-size: cover;">
+      <div class="item item-avatar" style="background-color: #444;">
+        <img data-ng-src="img/adam.jpg">
         <h2>{{profile.username|capitalize}}</h2>
-        <h2>Administrator</h2>
       </div>
       <ion-list>
         <ion-item class="item-stable" nav-clear menu-close href="#/tab/sales">
@@ -42,15 +41,15 @@
         </div>
         <ion-item class="item-stable" nav-clear menu-close href="#/tab/settings">
           <div class="item-icon-left">
-              <i class="icon ion-gear-a"></i>
-              <h2>{{'Settings'|uppercase}}</h2>
-            </div>
+            <i class="icon ion-gear-a"></i>
+            <h2>{{'Settings'|uppercase}}</h2>
+          </div>
         </ion-item>
         <ion-item class="item-stable" nav-clear menu-close href="#/tab/account">
           <div class="item-icon-left">
-              <i class="icon ion-log-out"></i>
-              <h2>{{'Account'|uppercase}}</h2>
-            </div>
+            <i class="icon ion-log-out"></i>
+            <h2>{{'Account'|uppercase}}</h2>
+          </div>
         </ion-item>
       </ion-list>
     </ion-content>

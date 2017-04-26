@@ -39,7 +39,7 @@ angular.module('starter')
       }
   })
 
-  $urlRouterProvider.otherwise('/tab/stores');
+  $urlRouterProvider.otherwise('/init/stores');
   $ionicConfigProvider.tabs.position('bottom');
   $ionicConfigProvider.navBar.alignTitle('center');
   $ionicConfigProvider.views.maxCache(0);

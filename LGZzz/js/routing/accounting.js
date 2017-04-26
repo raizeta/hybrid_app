@@ -26,6 +26,18 @@ angular.module('starter')
               }
           },
     });
+    $stateProvider.state('tab.accounting-setoran', 
+    {
+          url: "/accounting-setoran",
+          views: 
+          {
+              'view-content': 
+              {
+                  templateUrl: "templates/accounting/setoran.html",
+                  controller:'OutcomeCtrl'
+              }
+          },
+    });
 
     $stateProvider.state('tab.accounting-income', 
     {

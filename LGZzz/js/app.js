@@ -16,7 +16,7 @@ angular.module('starter', ['ionic','ngCordova','ui.grid', 'ui.grid.selection','d
         if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) 
         {
             cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-            cordova.plugins.Keyboard.disableScroll(true);
+            cordova.plugins.Keyboard.disableScroll(false);
         }
         if (window.StatusBar) 
         {
@@ -44,39 +44,63 @@ angular.module('starter', ['ionic','ngCordova','ui.grid', 'ui.grid.selection','d
     $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_ShopCart (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_ADDTOCART TEXT,DATETIME_ADDTOCART TEXT,NOMOR_TRANS TEXT,ITEM_ID TEXT,ITEM_NM TEXT,ITEM_HARGA INTEGER,QTY_INCART INTEGER,DISCOUNT TEXT,IS_ONSERVER INT)');
     $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_SaveBill (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_SAVE TEXT,NOMOR_TRANS TEXT,ALIAS_TRANS TEXT)');
     $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_CloseBook (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_CLOSE TEXT,USER_ID TEXT,USERNAME TEXT,NAMA_TYPE TEXT,CASHINDRAWER INT,CHECKCASH INT,ADDCASH INT,SELLCASH INT,TOTALCASH INT,WITHDRAW INT)');
-    $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_Customer (id INTEGER PRIMARY KEY AUTOINCREMENT,NAMA_CUST TEXT,EMAIL_CUST TEXT,NO_TELP TEXT)');
+    $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_Customer (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_SAVE TEXT,NAMA_CUST TEXT,EMAIL_CUST TEXT,NO_TELP TEXT,OUTLET_CODE TEXT,IS_ONSERVER INT)');
     $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_Harga (id INTEGER PRIMARY KEY AUTOINCREMENT,ITEM_ID TEXT,OUTLET_CODE TEXT,ITEM_HARGA INTEGER,PERIODE_TGL1 TEXT,PERIODE_TGL2 TEXT,START_TIME TEXT,DCRIPT TEXT)');
     $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_Diskon (id INTEGER PRIMARY KEY AUTOINCREMENT,ITEM_ID TEXT,OUTLET_CODE TEXT,DISCOUNT_PERCENT TEXT,MAX_DISCOUNT TEXT,PERIODE_TGL1 TEXT,PERIODE_TGL2 TEXT,PERIODE_TIME1 TEXT,PERIODE_TIME2 TEXT,STATUS INT,DCRIPT TEXT)');
-    $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_Absensi (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_SAVE TEXT,WAKTU_ABSENSI TEXT,TYPE_ABSENSI TEXT,OUTLET_CODE TEXT,USERNAME TEXT,ACCESS_UNIX TEXT,IMG_ABSENSI TEXT,LAT_POST TEXT,LNG_POST TEXT,IS_ONSERVER INT)');
+    $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_Absensi (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_SAVE TEXT,WAKTU_ABSENSI TEXT,TYPE_ABSENSI TEXT,OUTLET_CODE TEXT,EMP_ID TEXT,USERNAME TEXT,ACCESS_UNIX TEXT,IMG_ABSENSI TEXT,LAT_POST TEXT,LNG_POST TEXT,IS_ONSERVER INT)');
     $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_StoreCheck (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_SAVE TEXT,OUTLET_CODE TEXT,USERNAME TEXT,ACCESS_UNIX TEXT,STATUS_CHECK INT)');
+    $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_Merchant (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_SAVE TEXT,OUTLET_CODE TEXT,MERCHANT_NO TEXT,MERCHANT_NM TEXT,MERCHANT_OWNER TEXT,STATUS_DISPLAY INT,IS_ONSERVER INT)');
     
-    $rootScope.getCameraOptions = function()
-    {
-        
-        var options = {
-                quality: 50,
-                destinationType: Camera.DestinationType.DATA_URL,
-                sourceType: Camera.PictureSourceType.CAMERA,
-                allowEdit: false,
-                encodingType: Camera.EncodingType.JPEG,
-                targetWidth: 500,
-                targetHeight: 500,
-                popoverOptions: CameraPopoverOptions,
-                saveToPhotoAlbum: false,
-                correctOrientation:true
-              };
-        return options;
-    }
+    
 })
 .config(function ($httpProvider) 
 {
     // $httpProvider.interceptors.push('authInterceptor');
     // $httpProvider.defaults.headers.common['Authorization'] = 'Bearer 7VfRncAwITfZrY2THUGkNq9JZOyExS5u';
 })
-.controller('AppCtrl', function($rootScope,$scope, $state,StorageService) 
+.controller('AppCtrl', function($rootScope,$scope,$filter,$state,StorageService,MerchantLiteFac) 
 {
   var profile       = StorageService.get('profile');
   $scope.profile    = profile;
+  var stores        = StorageService.get('LokasiStore');
+  $scope.stores     = stores;
+  $scope.tglskrg    = $filter('date')(new Date(),'yyyy-MM-dd');
+
+  MerchantLiteFac.GetMerchant(stores.OUTLET_CODE,1)
+  .then(function(responsegetmerchant)
+  {
+    if(angular.isArray(responsegetmerchant) && responsegetmerchant.length > 0)
+    {
+        $scope.appmerchant        = responsegetmerchant;
+    }
+    else
+    {
+        $scope.appmerchant        = [];
+        var datatosave            = {};
+        datatosave.TGL_SAVE       = $scope.tglskrg;
+        datatosave.OUTLET_CODE    = stores.OUTLET_CODE; 
+        datatosave.MERCHANT_NO    = '12345';
+        datatosave.MERCHANT_NM    = 'BANK MANDIRI';
+        datatosave.MERCHANT_OWNER = 'PITER NOVIAN';
+        datatosave.STATUS_DISPLAY = 1;
+        datatosave.IS_ONSERVER    = 0;
+        MerchantLiteFac.SetMerchant(datatosave)
+        .then(function(responsesetmerchat)
+        {
+          datatosave.id   = responsesetmerchat.insertId;
+          $scope.appmerchant.push(datatosave)
+        },
+        function(errorsetmerchant)
+        {
+          console.log(errorsetmerchant);
+        });
+    }
+  },
+  function(errorgetmerchant)
+  {
+    console.log(errorgetmerchant);
+  });
+
   $scope.logout = function() 
   {
       StorageService.destroy('profile');
@@ -104,8 +128,8 @@ angular.module('starter', ['ionic','ngCordova','ui.grid', 'ui.grid.selection','d
                       name: 'Accounting','icons':'ion-cash',
                       items: [
                                 {child:'SUMMARY',path:'#/tab/accounting-summary'},
-                                {child:'TRANSACTION',path:'#/tab/accounting-transaksi'}
-                                // {child:'INCOME',path:'#/tab/accounting-income'},
+                                {child:'TRANSACTION',path:'#/tab/accounting-transaksi'},
+                                {child:'SETORAN',path:'#/tab/accounting-setoran'}
                                 // {child:'OUTCOME',path:'#/tab/accounting-outcome'}
                               ]
                     },
@@ -113,6 +137,13 @@ angular.module('starter', ['ionic','ngCordova','ui.grid', 'ui.grid.selection','d
                       name: 'Employe','icons':'ion-person-stalker',
                       items: [
                                 {child:'ABSENSI',path:'#/tab/absensi'}
+                              ]
+                    },
+                    {
+                      name: 'Book','icons':'ion-person-stalker',
+                      items: [
+                                {child:'OPEN',path:'#/tab/openbook'},
+                                {child:'CLOSE',path:'#/tab/closebook'}
                               ]
                     }
                   ];

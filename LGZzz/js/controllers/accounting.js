@@ -36,6 +36,12 @@ angular.module('starter')
         $scope.bayaredc = UtilService.SumJustPriceOrQty(response,'TOTAL_SPENT');
         console.log($scope.bayaredc);
     });
+    SummaryLiteFac.BayarCash('COMPLETE',tanggalsekarang,$scope.profile.username,'ACC')
+    .then(function(response)
+    {
+        $scope.bayaracc = UtilService.SumJustPriceOrQty(response,'TOTAL_SPENT');
+        console.log($scope.bayaracc);
+    });
 
     CloseBookLiteFac.GetOpenBookByUsername($scope.profile.username)
     .then(function(responseopenbook)

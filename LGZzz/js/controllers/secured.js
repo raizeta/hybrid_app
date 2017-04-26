@@ -36,7 +36,7 @@ angular.module('starter')
             }
             else
             {
-                $state.go('tab.stores', {}, {reload: true});
+                $state.go('init.stores', {}, {reload: true});
             }   
         }, 
         function (err) 
