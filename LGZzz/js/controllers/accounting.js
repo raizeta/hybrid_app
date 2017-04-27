@@ -70,8 +70,6 @@ angular.module('starter')
 function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,StorageService,TransCustLiteFac,ShopCartLiteFac,TransaksiFac) 
 {
     $scope.tglsekarang      = $filter('date')(new Date(),'yyyy-MM-dd');
-    var barangpenjualan 	= StorageService.get('BrgPenjualan');
-    var lokasistore         = StorageService.get('LokasiStore');
 
     TransCustLiteFac.GetTransCustsByDateStatus($scope.tglsekarang,'COMPLETE')
     .then(function(response)
@@ -110,8 +108,8 @@ function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,Storag
                 .then(function()
                 {
                     
-                    var itemyangdibeli  = items.datayangdibeli;
-                    var len             = items.datayangdibeli.length;
+                    var itemyangdibeli  = angular.copy(items.datayangdibeli);
+                    var len             = itemyangdibeli.length;
                     for(var i = len - 1;i >= 0;i--)
                     {
                         var datatosave  = {};
@@ -122,19 +120,41 @@ function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,Storag
                         datatosave.CREATE_AT   = $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss');;
                         datatosave.CREATE_BY   = $scope.profile.id;
                         datatosave.USER_ID     = $scope.profile.id;
-                        datatosave.OUTLET_ID   = lokasistore.OUTLET_BARCODE;
-                        datatosave.OUTLET_NM   = lokasistore.OUTLET_NM;
-                        var lastthree = nomortransaksi.substr(nomortransaksi.length - 3); // => "Tabs1"
-                        datatosave.TRANS_ID    = '4.' + lokasistore.OUTLET_BARCODE +'.'+ $filter('date')(new Date(),'yyyy.MM.dd') +'.0000' + (Number(lastthree));
+                        datatosave.OUTLET_ID   = $scope.stores.OUTLET_CODE;
+                        datatosave.OUTLET_NM   = $scope.stores.OUTLET_NM;
+                        var lastthree          = nomortransaksi.substr(nomortransaksi.length - 3); // => "Tabs1"
+                        datatosave.TRANS_ID    = $scope.profile.ACCESS_UNIX + '.' + $scope.stores.OUTLET_CODE + '.' + $filter('date')(new Date(),'yyyyMMdd') + (Number(lastthree));
                         datatosave.STATUS      = 1;
 
                         TransaksiFac.SetTranskasi(datatosave)
                         .then(function(response)
                         {
+                            var datatosavedetailisonserver = {};
+                            datatosavedetailisonserver.NOMOR_TRANS  = nomortransaksi;
+                            datatosavedetailisonserver.ITEM_ID      = response.ITEM_ID;
+                            ShopCartLiteFac.UpdateIsOnServer(datatosavedetailisonserver)
+                            .then(function(responseupdatestatusisonserver)
+                            {
+                                console.log("Update Status Detail Ke Local Sukses");
+                            },
+                            function(errorupdatestatusinonserver)
+                            {
+                                console.log("Update Status Detail Ke Local Gagal");
+                            });
+
                             itemyangdibeli.splice(i,1);
                             if(itemyangdibeli.length == 0)
                             {
-                               $scope.datas.splice($index,1);
+                               $scope.datas[$index].IS_ONSERVER = 1;
+                               TransCustLiteFac.UpdateIsOnServer(nomortransaksi)
+                                .then(function(responseheaderinonserver)
+                                {
+                                    console.log("Sukses Update Status Is On Server Di Local");
+                                },
+                                function(errorupdateisonserver)
+                                {
+                                    console.log("Gagal Update Is On Server Di Local");
+                                });
                                $ionicLoading.show({template: 'Loading...',duration: 500});
                                alert("Sync Data Ke Server Berhasil Dilakukan.Terima Kasih")
                             }

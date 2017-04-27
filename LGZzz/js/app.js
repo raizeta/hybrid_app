@@ -60,11 +60,12 @@ angular.module('starter', ['ionic','ngCordova','ui.grid', 'ui.grid.selection','d
 })
 .controller('AppCtrl', function($rootScope,$scope,$filter,$state,StorageService,MerchantLiteFac) 
 {
-  var profile       = StorageService.get('profile');
-  $scope.profile    = profile;
-  var stores        = StorageService.get('LokasiStore');
-  $scope.stores     = stores;
-  $scope.tglskrg    = $filter('date')(new Date(),'yyyy-MM-dd');
+  var profile               = StorageService.get('profile');
+  $scope.profile            = profile;
+  var stores                = StorageService.get('LokasiStore');
+  $scope.stores             = stores;
+  $scope.tglskrg            = $filter('date')(new Date(),'yyyy-MM-dd');
+  $scope.appnamaperusahaan  = 'KONTROL GAMPANG';
 
   MerchantLiteFac.GetMerchant(stores.OUTLET_CODE,1)
   .then(function(responsegetmerchant)

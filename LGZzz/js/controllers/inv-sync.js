@@ -56,17 +56,27 @@ function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,Storag
                         datatosave.USER_ID     = $scope.profile.id;
                         datatosave.OUTLET_ID   = lokasistore.OUTLET_BARCODE;
                         datatosave.OUTLET_NM   = lokasistore.OUTLET_NM;
-                        var lastthree = nomortransaksi.substr(nomortransaksi.length - 3); // => "Tabs1"
-                        datatosave.TRANS_ID    = '4.' + lokasistore.OUTLET_BARCODE +'.'+ $filter('date')(new Date(),'yyyy.MM.dd') +'.0000' + (Number(lastthree));
+                        var lastthree          = nomortransaksi.substr(nomortransaksi.length - 3); // => "Tabs1"
+                        datatosave.TRANS_ID    = $scope.profile.ACCESS_UNIX + '.' + $scope.stores.OUTLET_CODE + '.' + $filter('date')(new Date(),'yyyyMMdd') + (Number(lastthree));
                         datatosave.STATUS      = 1;
 
                         TransaksiFac.SetTranskasi(datatosave)
                         .then(function(response)
                         {
+                            console.log(response);
                             itemyangdibeli.splice(i,1);
                             if(itemyangdibeli.length == 0)
                             {
-                               $scope.datas.splice($index,1);
+                               $scope.datas[$index].IS_ONSERVER = 1;
+                               TransCustLiteFac.UpdateIsOnServer(nomortransaksi)
+                                .then(function(responseheaderinonserver)
+                                {
+                                    console.log("Sukses Update Status Is On Server Di Local");
+                                },
+                                function(errorupdateisonserver)
+                                {
+                                    console.log("Gagal Update Is On Server Di Local");
+                                });
                                $ionicLoading.show({template: 'Loading...',duration: 500});
                                alert("Sync Data Ke Server Berhasil Dilakukan.Terima Kasih")
                             }
