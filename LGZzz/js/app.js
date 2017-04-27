@@ -24,14 +24,14 @@ angular.module('starter', ['ionic','ngCordova','ui.grid', 'ui.grid.selection','d
             return StatusBar.hide();
         }
 
-        // var notificationOpenedCallback = function(jsonData) 
-        // {
-        //   console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
-        // };
+        var notificationOpenedCallback = function(jsonData) 
+        {
+          console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+        };
 
-        // window.plugins.OneSignal.startInit("a291df49-653d-41ff-858d-e36513440760", "943983549601")
-        //               .handleNotificationOpened(notificationOpenedCallback)
-        //               .endInit();
+        window.plugins.OneSignal.startInit("a291df49-653d-41ff-858d-e36513440760", "943983549601")
+                      .handleNotificationOpened(notificationOpenedCallback)
+                      .endInit();
     });
     $rootScope.db = window.openDatabase("rasasayang.db", "1.0", "Your App", 200000);
     $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_Store (id INTEGER PRIMARY KEY AUTOINCREMENT,OUTLET_BARCODE TEXT,OUTLET_NM TEXT,LOCATE INTEGER,LOCATE_NAME TEXT,LOCATE_SUB INTEGER,LOCATE_SUB_NAME TEXT,ALAMAT TEXT,PIC TEXT,TLP TEXT,STATUS INTEGER,CREATE_BY TEXT,UPDATE_BY TEXT,CREATE_AT TEXT,UPDATE_AT TEXT)');
@@ -140,7 +140,7 @@ angular.module('starter', ['ionic','ngCordova','ui.grid', 'ui.grid.selection','d
                               ]
                     },
                     {
-                      name: 'Book','icons':'ion-person-stalker',
+                      name: 'Book','icons':'ion-umbrella',
                       items: [
                                 {child:'OPEN',path:'#/tab/openbook'},
                                 {child:'CLOSE',path:'#/tab/closebook'}

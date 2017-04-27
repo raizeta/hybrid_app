@@ -53,7 +53,7 @@ angular.module('starter')
     {
         var deferred            = $q.defer();
         var globalurl           = UtilService.ApiUrl();      
-        var url                 = globalurl + "efenbi-rasasayang/transaksi-closings";
+        var url                 = "http://api.lukisongroup.com/kontrolgampang-transaksi/penjualan-closing-buktis";
 
         var result              = UtilService.SerializeObject(data);
         var serialized          = result.serialized;

@@ -34,32 +34,7 @@ angular.module('starter')
               'view-content': 
               {
                   templateUrl: "templates/accounting/setoran.html",
-                  controller:'OutcomeCtrl'
-              }
-          },
-    });
-
-    $stateProvider.state('tab.accounting-income', 
-    {
-          url: "/accounting-income",
-          views: 
-          {
-              'view-content': 
-              {
-                  templateUrl: "templates/accounting/income.html",
-                  controller:'IncomeCtrl'
-              }
-          },
-    });
-    $stateProvider.state('tab.accounting-outcome', 
-    {
-          url: "/accounting-outcome",
-          views: 
-          {
-              'view-content': 
-              {
-                  templateUrl: "templates/accounting/outcome.html",
-                  controller:'OutcomeCtrl'
+                  controller:'SetoranCtrl'
               }
           },
     });

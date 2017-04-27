@@ -184,14 +184,57 @@ function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,Storag
     $scope.data = {showReorder:false};
 })
 
-.controller('IncomeCtrl', function($window,$scope,$state,$location,$timeout,$ionicLoading,$ionicHistory,StorageService) 
+.controller('SetoranCtrl', function($filter,$ionicLoading,$ionicHistory,$ionicModal,$timeout,$scope,$state,$cordovaCamera,UtilService,CloseBookLiteFac,SummaryLiteFac,TransaksiFac)
 {
+    CloseBookLiteFac.GetCloseBookByUsername($scope.profile.username)
+    .then(function(responseclosebook)
+    {
+        if (responseclosebook.length > 1)
+        {
+            if(responseclosebook[responseclosebook.length - 1].NAMA_TYPE == 'CLOSEBOOK')
+            {
+                $scope.setoran = responseclosebook[responseclosebook.length - 1];
+                $scope.gambarbukti = 'img/save-image.png';
+            }  
+        }
+    },
+    function(error)
+    {
+        console.log(error);
+    });
+    $scope.fotobuktisetoran = function()
+    {
+        document.addEventListener("deviceready", function () 
+        {
+            var options = UtilService.CameraOptions();
+            $cordovaCamera.getPicture(options)
+            .then(function (imageData) 
+            {
+                $scope.gambarbukti   = 'data:image/jpeg;base64,' + imageData;
+            });
+        }, false);
+    }
 
-    
-})
-
-.controller('OutcomeCtrl', function($window,$scope,$state,$location,$timeout,$ionicLoading,$ionicHistory,StorageService) 
-{
-
+    $scope.submitsetoran = function()
+    {
+        
+        var datatoserver    = {};
+        datatoserver.CLOSING_ID     = '13.13.13';
+        datatoserver.ACCESS_UNIX    = $scope.profile.ACCESS_UNIX;
+        datatoserver.STORAN_DATE    = $filter('date')(new Date(),'yyyy-MM-dd');
+        datatoserver.OUTLET_ID      = $scope.stores.OUTLET_CODE;
+        datatoserver.TTL_STORAN     = $scope.setoran.WITHDRAW;
+        datatoserver.IMG            = $scope.gambarbukti;
+        console.log(datatoserver);
+        TransaksiFac.SetTranskasiClosing(datatoserver)
+        .then(function(responsesetoran)
+        {
+            console.log(responsesetoran)
+        },
+        function(errorsetoran)
+        {
+            console.log(errorsetoran);
+        });
+    }
     
 });
