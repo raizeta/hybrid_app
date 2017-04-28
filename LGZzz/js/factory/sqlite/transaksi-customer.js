@@ -79,7 +79,7 @@ angular.module('starter')
         var CASHIER_ID      = datatosave.CASHIER_ID;
         var CASHIER_NAME    = datatosave.CASHIER_NAME;
         var STATUS_BUY      = datatosave.STATUS_BUY;
-        var IS_ONSERVER     = 0;
+        var IS_ONSERVER     = datatosave.IS_ONSERVER;
 
         var isitable                = [TGL_TRANS,DATETIME_TRANS,NOMOR_TRANS,CASHIER_ID,CASHIER_NAME,STATUS_BUY,IS_ONSERVER]
         var queryinserttranscust    = 'INSERT INTO Tbl_CustBuyTrans (TGL_TRANS,DATETIME_TRANS,NOMOR_TRANS,CASHIER_ID,CASHIER_NAME,STATUS_BUY,IS_ONSERVER) VALUES (?,?,?,?,?,?,?)';
@@ -155,7 +155,7 @@ angular.module('starter')
         var HARGA_ITEM          = datatosave.HARGA_ITEM;
         var QTY_BUY             = datatosave.QTY_BUY;
         var DISCOUNT_ITEM       = datatosave.DISCOUNT_ITEM;
-        var IS_ONSERVER         = 0;
+        var IS_ONSERVER         = datatosave.IS_ONSERVER;
 
         var isitable                        = [TGL_BUYTRANS,DATETIME_BUYTRANS,NOMOR_TRANS,ITEM_ID,ITEM_NAMA,HARGA_ITEM,QTY_BUY,DISCOUNT_ITEM,IS_ONSERVER]
         var queryinserttranscustbuydetail   = 'INSERT INTO Tbl_CustBuyDetail (TGL_BUYTRANS,DATETIME_BUYTRANS,NOMOR_TRANS,ITEM_ID,ITEM_NAMA,HARGA_ITEM,QTY_BUY,DISCOUNT_ITEM,IS_ONSERVER) VALUES (?,?,?,?,?,?,?,?,?)';

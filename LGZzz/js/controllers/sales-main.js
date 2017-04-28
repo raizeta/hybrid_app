@@ -100,6 +100,7 @@ angular.module('starter')
             datacustrans.CASHIER_NAME       = $scope.profile.username;
             datacustrans.DATETIME_TRANS     = $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss');
             datacustrans.STATUS_BUY         = 'INCOMPLETE';
+            datacustrans.IS_ONSERVER        = 0;
             if(responselite.length > 0)
             {
                 var lastbookingserialnumber     = responselite[responselite.length - 1].NOMOR_TRANS;
@@ -184,6 +185,7 @@ angular.module('starter')
             datatosave.ITEM_HARGA       = $scope.item.ITEM_HARGA;
             datatosave.QTY_INCART       = $scope.item.QTY_INCART;
             datatosave.DISCOUNT         = 10;
+            datatosave.IS_ONSERVER      = 0;
 
             if(angular.isArray(response) && response.length > 0)
             {
@@ -334,6 +336,7 @@ angular.module('starter')
                 datatosave.QTY_INCART       = item.QTY_INCART;
                 datatosave.STOCK_MAX        = item.STOCK_MAX;
                 datatosave.DISCOUNT         = 10;
+                datatosave.IS_ONSERVER      = 0;
 
                 if(angular.isArray(response) && response.length > 0)
                 {
@@ -628,6 +631,7 @@ angular.module('starter')
                 datacustrans.CASHIER_ID         = $scope.profile.id;
                 datacustrans.CASHIER_NAME       = $scope.profile.username;
                 datacustrans.STATUS_BUY         = 'INCOMPLETE';
+                datacustrans.IS_ONSERVER        = 0;
                 if(responselite.length > 0)
                 {
                     var lastbookingserialnumber     = responselite[responselite.length - 1].NOMOR_TRANS;
@@ -803,6 +807,7 @@ angular.module('starter')
                     datacustrans.CASHIER_ID         = $scope.profile.id;
                     datacustrans.CASHIER_NAME       = $scope.profile.username;
                     datacustrans.STATUS_BUY         = 'INCOMPLETE';
+                    datacustrans.IS_ONSERVER        = 0;
                     if(responselite.length > 0)
                     {
                         var lastbookingserialnumber     = responselite[responselite.length - 1].NOMOR_TRANS;

@@ -1,17 +1,20 @@
 angular.module('starter')
 .factory('TransaksiHeaderFac',function($http, $q, $window,$rootScope,UtilService)
 {
-    var GetTransaksiHeaders = function(kodestore,tanggalsekarang,transtype)
+    var GetTransaksiHeaders = function(TGL_SAVE,ACCESS_UNIX,OUTLET_ID)
     {
-        var deferred        = $q.defer();
-        var globalurl       = UtilService.ApiUrl();
-        // var url             = globalurl + "efenbi-rasasayang/transaksis";
-        var url             = globalurl + "efenbi-rasasayang/transaksi-headers?OUTLET_ID=" + kodestore + "&TRANS_DATE="+ tanggalsekarang +"&TRANS_TYPE=" + transtype;
-        var method          = "GET";
-        $http({method:method, url:url,cache:false})
+        var deferred            = $q.defer();
+        var globalurl           = UtilService.ApiUrl();
+        var url                 = "http://api.lukisongroup.com/kontrolgampang-transaksi/penjualan-headers";
+        var params              = {};
+        params['TGL_SAVE']      = TGL_SAVE;
+        params['ACCESS_UNIX']   = ACCESS_UNIX;
+        params['OUTLET_ID']     = OUTLET_ID;
+        var method              = "GET";
+        $http({method:method, url:url,params:params})
         .success(function(response) 
         {
-            deferred.resolve(response.transaksi);
+            deferred.resolve(response.header);
         })
         .error(function(err,status)
         {

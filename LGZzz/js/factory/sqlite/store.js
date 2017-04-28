@@ -1,7 +1,7 @@
 angular.module('starter')
 .factory('StoreLiteFac',function($rootScope,$http, $q, $filter, $window,$cordovaSQLite,UtilService)
 {
-    var GetPureStores = function ()
+    var GetStore = function ()
     {
         var deferred = $q.defer();
         var queryselectstore = 'SELECT * FROM Tbl_Store';
@@ -25,7 +25,7 @@ angular.module('starter')
         return deferred.promise;
     }
     
-    var SetPureStore = function (datatosave)
+    var SetStore = function (datatosave)
     {
         var deferred        = $q.defer();
         var OUTLET_BARCODE  = datatosave.OUTLET_BARCODE;
@@ -42,6 +42,7 @@ angular.module('starter')
         var UPDATE_BY       = datatosave.UPDATE_BY;
         var CREATE_AT       = datatosave.CREATE_AT;
         var UPDATE_AT       = datatosave.UPDATE_AT;
+        var IS_ONSERVER     = datatosave.IS_ONSERVER;
 
         var isitable            = [OUTLET_BARCODE,OUTLET_NM,LOCATE,LOCATE_NAME,LOCATE_SUB,LOCATE_SUB_NAME,ALAMAT,PIC,TLP,STATUS,CREATE_BY,UPDATE_BY,CREATE_AT,UPDATE_AT]
         var queryinsertstore    = 'INSERT INTO Tbl_Store (OUTLET_BARCODE,OUTLET_NM,LOCATE,LOCATE_NAME,LOCATE_SUB,LOCATE_SUB_NAME,ALAMAT,PIC,TLP,STATUS,CREATE_BY,UPDATE_BY,CREATE_AT,UPDATE_AT) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
@@ -56,6 +57,7 @@ angular.module('starter')
         });
         return deferred.promise; 
     }
+
     var SetStoreCheck = function (datatosave)
     {
         var deferred        = $q.defer();
@@ -105,8 +107,8 @@ angular.module('starter')
     }
 
     return{
-            GetPureStores:GetPureStores,
-            SetPureStore:SetPureStore,
+            GetStore:GetStore,
+            SetStore:SetStore,
             SetStoreCheck:SetStoreCheck,
             GetStoreCheck:GetStoreCheck
         }

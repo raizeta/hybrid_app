@@ -1,19 +1,6 @@
 angular.module('starter')
 .config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) 
-{
-  // $stateProvider.state('tab.cashier', 
-  // {
-  //     url: '/cashier',
-  //     views: 
-  //     {
-  //         'view-content': 
-  //           {
-  //             templateUrl: 'templates/sales/cashier.html',
-  //             controller: 'CashierCtrl'
-  //         }
-  //     }
-  // });
-    
+{  
   $stateProvider.state('tab.sales', 
   {
       url: '/sales',

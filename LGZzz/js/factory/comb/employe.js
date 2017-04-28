@@ -1,10 +1,12 @@
 angular.module('starter')
-.factory('StoreCombFac',function($rootScope,$http,$q,$filter,$cordovaSQLite,StoreLiteFac,StoreFac)
+.factory('EmployeCombFac',function($rootScope,$http,$q,$filter,$cordovaSQLite,EmployeLiteFac,EmployeFac)
 {
-    var GetStoreComb  = function ()
+    var GetEmployeComb  = function (OUTLET_CODE,access_token)
     {
+        var OUTLET_CODE     = OUTLET_CODE;
+        var access_token    = access_token;
         var deferred        = $q.defer();
-        StoreLiteFac.GetStore()
+        EmployeLiteFac.GetEmploye(OUTLET_CODE)
         .then(function(responselite)
         {
             if(angular.isArray(responselite) && responselite.length > 0)
@@ -13,15 +15,15 @@ angular.module('starter')
             }
             else
             {
-                StoreFac.GetBearerStores()
+                EmployeFac.GetEmploye(OUTLET_CODE,access_token)
                 .then(function(responseserver)
                 {
                     if(angular.isArray(responseserver) && responseserver.length > 0 )
                     {
                         angular.forEach(responseserver,function(value,key)
                         {
-                            value.IS_ONSERVER   = 1;
-                            StoreLiteFac.SetStore(value);
+                            value.IS_ONSERVER = 1;
+                            EmployeLiteFac.SetEmploye(value);
                         });
                         deferred.resolve(responseserver);
                     }
@@ -40,6 +42,6 @@ angular.module('starter')
     }
         
     return{
-            GetStoreComb:GetStoreComb
+            GetEmployeComb:GetEmployeComb
         }
 });

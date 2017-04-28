@@ -12,7 +12,7 @@ angular.module('starter')
         var ITEM_HARGA          = datatosave.ITEM_HARGA;
         var QTY_INCART          = datatosave.QTY_INCART;
         var DISCOUNT            = datatosave.DISCOUNT;
-        var IS_ONSERVER         = 0;
+        var IS_ONSERVER         = datatosave.IS_ONSERVER;
         var isitable            = [TGL_ADDTOCART,DATETIME_ADDTOCART,NOMOR_TRANS,ITEM_ID,ITEM_NM,ITEM_HARGA,QTY_INCART,DISCOUNT,IS_ONSERVER];
         var queryinsertshopcart = 'INSERT INTO Tbl_ShopCart (TGL_ADDTOCART,DATETIME_ADDTOCART,NOMOR_TRANS,ITEM_ID,ITEM_NM,ITEM_HARGA,QTY_INCART,DISCOUNT,IS_ONSERVER) VALUES (?,?,?,?,?,?,?,?,?)';
         $cordovaSQLite.execute($rootScope.db,queryinsertshopcart,isitable)

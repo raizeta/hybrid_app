@@ -4,12 +4,12 @@ angular.module('starter')
 
     
 })
-.controller('AbsensiCtrl', function($filter,$scope,$state,$location,$timeout,$ionicLoading,$ionicModal,$ionicHistory,$cordovaCamera,UtilService,StorageService,AbsensiLiteFac,EmployeFac) 
+.controller('AbsensiCtrl', function($filter,$scope,$state,$location,$timeout,$ionicLoading,$ionicModal,$ionicHistory,$cordovaCamera,UtilService,StorageService,AbsensiLiteFac,EmployeCombFac,EmployeFac) 
 {
-	EmployeFac.GetEmploye($scope.stores.OUTLET_CODE,$scope.profile.access_token)
-	.then(function(responsegetserveremploye)
+	EmployeCombFac.GetEmployeComb($scope.stores.OUTLET_CODE,$scope.profile.access_token)
+	.then(function(resemployecomb)
 	{
-		$scope.dataemploye = responsegetserveremploye;
+		$scope.dataemploye = resemployecomb;
 	});
 
 	$scope.openmodalabsensi	= function(item)	
