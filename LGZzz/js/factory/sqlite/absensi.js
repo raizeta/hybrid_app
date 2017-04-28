@@ -39,7 +39,7 @@ angular.module('starter')
         var IMG_ABSENSI     = datatosave.IMG_ABSENSI;
         var LAT_POST        = datatosave.LAT_POST;
         var LNG_POST        = datatosave.LNG_POST;
-        var IS_ONSERVER     = 0;
+        var IS_ONSERVER     = datatosave.IS_ONSERVER;
 
         var isitable            = [TGL_SAVE,WAKTU_ABSENSI,TYPE_ABSENSI,OUTLET_CODE,EMP_ID,USERNAME,ACCESS_UNIX,IMG_ABSENSI,LAT_POST,LNG_POST,IS_ONSERVER]
         var queryinsertabsensi  = 'INSERT INTO Tbl_Absensi (TGL_SAVE,WAKTU_ABSENSI,TYPE_ABSENSI,OUTLET_CODE,EMP_ID,USERNAME,ACCESS_UNIX,IMG_ABSENSI,LAT_POST,LNG_POST,IS_ONSERVER) VALUES (?,?,?,?,?,?,?,?,?,?,?)';
@@ -55,8 +55,25 @@ angular.module('starter')
         return deferred.promise; 
     }
 
+    var UpdateIsOnServer = function (datatoupdate)
+    {
+        var deferred        = $q.defer();
+        var updatestatus    = 'UPDATE Tbl_Absensi SET IS_ONSERVER = ? WHERE OUTLET_CODE = ? AND EMP_ID = ? AND ACCESS_UNIX = ?';
+        $cordovaSQLite.execute($rootScope.db,updatestatus,datatoupdate)
+        .then(function(result) 
+        {
+            deferred.resolve(result);
+        },
+        function(error) 
+        {
+            deferred.reject(error);
+        });
+        return deferred.promise; 
+    }
+
     return{
             GetAbsensi:GetAbsensi,
-            SetAbsensi:SetAbsensi
+            SetAbsensi:SetAbsensi,
+            UpdateIsOnServer:UpdateIsOnServer
         }
 });

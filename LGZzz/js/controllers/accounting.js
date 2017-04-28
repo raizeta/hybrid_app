@@ -206,6 +206,7 @@ function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,Storag
 
 .controller('SetoranCtrl', function($filter,$ionicLoading,$ionicHistory,$ionicModal,$timeout,$scope,$state,$cordovaCamera,UtilService,CloseBookLiteFac,SummaryLiteFac,TransaksiFac)
 {
+    $scope.gambarbukti = 'img/save-image.png';
     CloseBookLiteFac.GetCloseBookByUsername($scope.profile.username)
     .then(function(responseclosebook)
     {
@@ -214,8 +215,11 @@ function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,Storag
             if(responseclosebook[responseclosebook.length - 1].NAMA_TYPE == 'CLOSEBOOK')
             {
                 $scope.setoran = responseclosebook[responseclosebook.length - 1];
-                $scope.gambarbukti = 'img/save-image.png';
             }  
+        }
+        else
+        {
+            alert("Kamu Belum Melakukan Closing.Lakukan Closing Terlebih Dahulu");
         }
     },
     function(error)
@@ -238,23 +242,35 @@ function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,Storag
     $scope.submitsetoran = function()
     {
         
-        var datatoserver    = {};
-        datatoserver.CLOSING_ID     = '13.13.13';
-        datatoserver.ACCESS_UNIX    = $scope.profile.ACCESS_UNIX;
-        datatoserver.STORAN_DATE    = $filter('date')(new Date(),'yyyy-MM-dd');
-        datatoserver.OUTLET_ID      = $scope.stores.OUTLET_CODE;
-        datatoserver.TTL_STORAN     = $scope.setoran.WITHDRAW;
-        datatoserver.IMG            = $scope.gambarbukti;
-        console.log(datatoserver);
-        TransaksiFac.SetTranskasiClosing(datatoserver)
-        .then(function(responsesetoran)
+        $ionicLoading.show
+        ({
+          template: 'Loading...'
+        })
+        .then(function()
         {
-            console.log(responsesetoran)
-        },
-        function(errorsetoran)
-        {
-            console.log(errorsetoran);
+            var datatoserver    = {};
+            datatoserver.CLOSING_ID     = '13.13.13';
+            datatoserver.ACCESS_UNIX    = $scope.profile.ACCESS_UNIX;
+            datatoserver.STORAN_DATE    = $filter('date')(new Date(),'yyyy-MM-dd');
+            datatoserver.OUTLET_ID      = $scope.stores.OUTLET_CODE;
+            datatoserver.TTL_STORAN     = $scope.setoran.WITHDRAW;
+            datatoserver.IMG            = $scope.gambarbukti;
+            console.log(datatoserver);
+            TransaksiFac.SetTranskasiClosing(datatoserver)
+            .then(function(responsesetoran)
+            {
+                alert("Bukti Setoran Telah Berhasil Diupload Ke Server");
+                $scope.disablesubmit    = true;
+            },
+            function(errorsetoran)
+            {
+                console.log(errorsetoran);
+            })
+            .finally(function()
+            {
+                $ionicLoading.show({template: 'Loading...',duration: 500});
+            });
         });
     }
-    
+  
 });

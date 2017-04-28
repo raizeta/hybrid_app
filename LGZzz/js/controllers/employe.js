@@ -79,6 +79,7 @@ angular.module('starter')
         datatosave.ACCESS_UNIX	= $scope.dataemployedetail.ACCESS_UNIX;
         datatosave.LAT_POST		= 1234567890;
         datatosave.LNG_POST		= 1234567890;
+        datatosave.IS_ONSERVER  = 0;
         
         document.addEventListener("deviceready", function () 
         {
@@ -98,6 +99,7 @@ angular.module('starter')
 			        {
 			        	if(masukataukeluar == 'MASUK')
 			        	{
+			        		alert("Absensi Masuk Berhasil.")
 			        		$scope.disablemasuk  = true;
 			        		$scope.disablekeluar = false;
 			        	}
@@ -113,7 +115,12 @@ angular.module('starter')
 			        	EmployeFac.SetEmployeAbsensi(datatosave)
 			        	.then(function(responsesetabsensiserver)
 			        	{
-			        		console.log(responsesetabsensiserver);
+			        		var datatoupdate = [1,datatosave.OUTLET_CODE,datatosave.EMP_ID,datatosave.ACCESS_UNIX];
+			        		AbsensiLiteFac.UpdateIsOnServer(datatoupdate)
+			        		.then(function(responseupdate)
+			        		{
+			        			console.log(responseupdate);
+			        		});
 			        	},
 			        	function(errorsetabsensiserver)
 			        	{
@@ -131,7 +138,6 @@ angular.module('starter')
                 });
             });
         }, false);
-
 	}
 
 	$scope.notifikasiabsensi 	= function()
