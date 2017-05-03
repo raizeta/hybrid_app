@@ -1,0 +1,166 @@
+<ion-view hide-nav-bar="false" view-title="{{noresi}}">
+  <ion-nav-buttons side="right">
+      <button class="button button-icon icon  ion-power" ng-click="checkout()">
+      </button>
+  </ion-nav-buttons>  
+  <ion-content class="has-header" padding="false" scroll="false">
+<!--     <label class = "item item-input item-select">
+      <div class = "input-label">ITEM GROUP</div>
+      <select ng-model="store" ng-options="item.OUTLET_NM for item in datastores" ng-change="selecttoko(store)"required>
+        <option value="">Pilih Group</option>
+      </select>
+    </label> -->
+
+    <div class="row" style="max-height:94%">
+      <div class="col col-33" style="padding-left:10px">
+        <div style="height:97%;">
+          <ion-item class="item-assertive" >
+            <div class="item-icon-left" ng-click="newcustomertransaksi()">
+              <i class="icon ion-person-add"></i>
+              <h2>{{namacustomer|uppercase}}</h2>
+            </div>
+            <div class="item-icon-right" ng-click="savetobill()">
+                <i class="icon ion-android-exit"></i>
+            </div>
+          </ion-item>
+          <div class="row" ng-if="itemincart.length > 0">
+              <div class="my-col" style="min-width:130px">
+                #.&nbsp;&nbsp;NAMA
+              </div>
+              <div class ="my-col">
+                HARGA
+              </div>
+              <div class ="my-col">
+                QTY
+              </div>
+              <div class ="my-col">
+                <div style="float:right">
+                  SUB
+                </div>
+              </div>
+          </div>
+          <ion-scroll direction="y" overflow-scroll="true" delegate-handle="scrolltobottom" style="position: relative !important;max-height:60%;overflow-y: scroll;">
+            <div class="row" ng-repeat="item in itemincart track by $index" style='padding-top:5px;padding-bottom:5px;border-top: 1px solid rgba(1, 1, 1, 0.1);' ng-click="AddToCart(item,'fromcart')">
+                <div class="my-col" style="min-width:130px">
+                  {{$index + 1}}.&nbsp;&nbsp;{{item.ITEM_NM}}
+                </div>
+                <div class="my-col">
+                  {{item.ITEM_HARGA|number}}
+                </div>
+                <div class="my-col">
+                  {{item.QTY_INCART}}
+                </div>
+                <div class="my-col">
+                  <div style="float:right">
+                    {{item.ITEM_HARGA*item.QTY_INCART|number}}
+                  </div>
+                </div>
+            </div>
+          </ion-scroll>
+          <div class="row">
+              <div class="my-col">
+                <h5>Total </h5>
+              </div>
+              <div class="my-col">
+                <div style="float:right">
+                  <h5>{{itemincart.length}} Item</h5>
+                </div>
+              </div>
+              <div class="my-col">
+                <div style="float:right;padding-right: 0px;">
+                  <h5 ng-if="itemincart.length > 0">{{hitungtotal(itemincart)|number}}</h5>
+                  <h5 ng-if="itemincart.length == 0">0</h5>
+                </div>
+              </div>
+          </div>
+          <div style="position:relative;bottom:0px;padding:0px;margin-right:-1px;margin-left:-1px;margin-bottom:-20px">
+            <button class="button button-assertive button-block button-full" ng-click="lakukanpembayaran(noresi,hitungtotal(itemincart))" ng-if="itemincart.length > 0">
+              Total Pay : Rp. {{hitungtotal(itemincart)|number}}
+            </button>
+            <button class="button button-assertive button-block button-full" ng-if="itemincart.length == 0">
+              Total Pay : Rp. 0
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col col-66">
+        <div style="height:100%;">
+          <div style="padding-left: 10px;">
+            <ion-item class="item-assertive" style="padding-top: 1px;padding-bottom: 1px;">
+              <div class="item-icon-right" ng-click="gridornot.grid = !gridornot.grid">
+                <i style="padding-right:0px" class="icon ion-grid" ng-if="!gridornot.grid"></i>
+                <i style="padding-right:0px" class="icon ion-navicon" ng-if="gridornot.grid"></i>
+              </div>
+              <div class="item-icon-left" ng-click="TambahItemProduct()">
+                <i style="padding-right:0px;" class="icon icon ion-plus"></i>
+              </div>
+              <label class="item item-input" style="width:82%;padding-top: 3px;margin-left: 10%">
+                <i class="icon ion-search placeholder-icon"></i>
+                <input type="text" style="height:16px" ng-model="xxx" ng-change="changefilter(xxx)">
+              </label>
+            </ion-item>
+          </div>
+          <ion-scroll direction="y" overflow-scroll="true" style="position: relative !important;height:99%;overflow-y: scroll;">
+            <div class="row" style="flex-wrap: wrap;" ng-hide="!gridornot.grid">
+              <div class="col col-20" ng-repeat="item in datas | filter: filterproduct track by $index" >
+                <div class="list">
+                  <div class="item item-image" style="padding-right:3px">
+                    <img  ng-click="tambahqtyitem(item)" ng-src="{{item.GAMBAR}}" width="100%" ng-if="item.GAMBAR"/>
+                    <img  ng-click="tambahqtyitem(item)" ng-src="img/bika-ambon.jpg" width="100%" ng-if="!item.GAMBAR"/>
+                  </div>
+
+                  <a class="aitem item-icon-right">
+                  <p style="font-size: 12px;text-align:left;">
+                    {{item.ITEM_NM|cuttext:true:9:'...'}} <br/>
+                    <span style="font-weight: bold;color: black;">{{item.DEFAULT_HARGA|number}}</span>
+                    <!-- <span style="font-weight: bold;color: black;"> -->
+                      {{findharga(item,$index)}}
+                    <!-- </span> -->
+                  </p>
+                  <i style="font-size: 35px; margin-right:0px;right:1px;"  ng-click="AddToCart(item)" class="icon ion-ios-cart">
+                    <span class="badge badge-balanced icon-badge" ng-if="item.QTY_INCART > 0">{{item.QTY_INCART|number}}</span>
+                    <span class="badge badge-positive icon-badge" ng-if="item.QTY_INCART == 0">{{item.QTY_INCART|number}}</span>
+                  </i>
+                  </a>
+                  <div class="ribbon"><span>{{item.DEFAULT_STOCK|number}}</span></div>
+                </div>
+              </div>
+            </div>
+            <style>
+                i.icon.xxx {font-size: 16px;}
+            </style>
+            <div class="row"  style="flex-wrap: wrap;padding-top: 10px;" ng-hide="gridornot.grid">
+              <div class="col col-33"  ng-repeat="item in datas | filter: filterproduct track by $index">
+                <ion-list>
+                  <ion-item class="item-stable" style="padding-top: 5px;padding-bottom: 5px">
+                    <div class="item-icon-left" style="padding-left:34px" ng-click="tambahqtyitem(item)">
+                        <i class="icon xxx">{{item.DEFAULT_STOCK|number}}</i>
+                        <span style="font-size: 12px;text-align:left;">
+                          {{item.ITEM_NM|cuttext:true:19:'...'}}
+                        </span></br>
+                        <span style="font-size:12px;font-weight: bold;color: black;"> 
+                          {{item.DEFAULT_HARGA|number}}
+                        </span>
+                    </div>
+                    <div class="item-icon-right" ng-click="AddToCart(item,'fromlist')">
+                        <i style="font-size: 35px; margin-right:0px;right:1px;"   class="icon ion-ios-cart">
+                        <span class="badge badge-balanced icon-badge" style="right:0px;" ng-if="item.QTY_INCART > 0">{{item.QTY_INCART|number}}</span>
+                        <span class="badge badge-positive icon-badge" style="right:0px;"  ng-if="item.QTY_INCART == 0">{{item.QTY_INCART|number}}</span>
+                      </i>
+                    </div>
+                  </ion-item>
+                </ion-list>
+              </div>
+            </div>
+          </ion-scroll>
+        </div>
+      </div>
+    </div>
+    <div class="row" ng-if="datas.length < 1">
+      Belum Ada Product Yang Akan Dijual
+    </div>
+  </ion-content>
+  <!-- <button class="button button-tambahitem" ng-click="TambahItemProduct()">
+    <i class="icon ion-plus"></i>
+  </button> -->
+</ion-view>

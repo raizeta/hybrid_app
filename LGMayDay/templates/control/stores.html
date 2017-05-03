@@ -1,0 +1,155 @@
+<ion-view view-title="TRANS PENJUALAN {{tglsekarang}}">  
+  <ion-content class="has-header" padding="false" scroll="false">
+    <div class="row" style="height:100%">
+      <div class="col col-33" >
+        <div style="padding-left:0px;padding-right: 10px;border-right: 2px solid rgba(1, 1, 1, 0.1);height: 100%">
+          <ion-item class="item-assertive" >
+            <div class="item-icon-left">
+              <i class="icon ion-ios-chatboxes-outline"></i>
+              <h2>LIST STORES</h2>
+            </div>
+            <div class="item-icon-right" ng-click="modaltambahstoreopen()">
+                <i class="icon ion-android-add"></i>
+            </div>
+          </ion-item>
+          <ion-item  ng-repeat="store in datastore" ng-class="isGroupShown(store) ? 'custom-active':''" >
+              <div class="item-icon-left" on-tap="detailstore(store)">
+                  <i class="icon">{{$index + 1}}</i>
+                  <h2>OUTLET {{store.OUTLET_CODE}}</h2>
+              </div>
+              <div class="item-icon-right">
+                  <i class="icon ion-ios-arrow-right"></i>
+              </div>
+          </ion-item>
+        </div>
+      </div>
+      <div class="col col-66">
+      <ion-scroll direction="y" overflow-scroll="true" style="position: relative !important;height:100%;overflow-y: scroll;">
+        <div>
+          <ion-item class="item-assertive">
+            <div class="item-icon-left" ng-click="toggleGroup('product')">
+              <i class="icon" ng-class="showproduct ? 'ion-ios-arrow-down' : 'ion-ios-arrow-right'"></i>
+              <h2>PRODUCTS</h2>
+            </div>
+            <div class="item-icon-right" ng-click="modaltambahproductopen()">
+              <i class="icon ion-ios-compose"></i>
+            </div>
+          </ion-item>
+          <div ng-show="showproduct">
+            <div class="row"  style="flex-wrap: wrap;padding-top: 10px;">
+              <div class="col col-33"  ng-repeat="item in datadetail.items track by $index">
+                <ion-list>
+                  <ion-item class="item-stable" style="padding-top: 5px;padding-bottom: 5px">
+                    <div class="item-icon-left" style="padding-left:34px">
+                        <i class="icon ion-ios-compose"></i>
+                        <span style="font-size: 12px;text-align:left;">
+                          {{item.ITEM_NM|cuttext:true:19:'...'}}
+                        </span></br>
+                        <span style="font-size:12px;font-weight: bold;color: black;" ng-if="item.ITEM_HARGA"> 
+                          {{item.ITEM_HARGA|number}}
+                        </span>
+                        <span style="font-size:12px;font-weight: bold;color: black;" ng-if="!item.ITEM_HARGA"> 
+                          {{1200|number}}
+                        </span>
+                    </div>
+                  </ion-item>
+                </ion-list>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="padding-top: 10px;">
+          <ion-item class="item-assertive">
+            <div class="item-icon-left" ng-click="toggleGroup('merchant')">
+              <i class="icon" ng-class="showmerchant ? 'ion-ios-arrow-down' : 'ion-ios-arrow-right'"></i>
+              <h2>MERCHANTS</h2>
+            </div>
+            <div class="item-icon-right">
+              <i class="icon ion-ios-compose"></i>
+            </div>
+          </ion-item>
+          <div ng-show="showmerchant">
+            <div class="row"  style="flex-wrap: wrap;padding-top: 10px;">
+            </div>
+          </div>
+        </div>
+        <div style="padding-top: 10px;">
+          <ion-item class="item-assertive">
+            <div class="item-icon-left" ng-click="toggleGroup('employe')">
+              <i class="icon" ng-class="showemploye ? 'ion-ios-arrow-down' : 'ion-ios-arrow-right'"></i>
+              <h2>EMPLOYES</h2>
+            </div>
+            <div class="item-icon-right">
+              <i class="icon ion-ios-compose"></i>
+            </div>
+          </ion-item>
+          <div ng-show="showemploye">
+            <div class="row"  style="flex-wrap: wrap;padding-top: 10px;">
+            </div>
+          </div>
+        </div>
+        <div style="padding-top: 10px;">
+          <ion-item class="item-assertive" ng-click="toggleGroup('basic')">
+            <div class="item-icon-left" ng-click="newcustomertransaksi()">
+              <i class="icon" ng-class="showbasic ? 'ion-ios-arrow-down' : 'ion-ios-arrow-right'"></i>
+              <h2>INFORMASI STORE</h2>
+            </div>
+            <div class="item-icon-right">
+              <i class="icon ion-ios-compose"></i>
+            </div>
+          </ion-item>
+          <div ng-show="showbasic">
+            <div class="row">
+              <div class="col col-25">
+                <h4 class="padding left">Nama Store</h4>
+              </div>
+              <div class="col col-75">      
+                <div class="padding">
+                  <label  class="item item-input" style="background-color: #f8f8f8">
+                    <input type="text" placeholder="Cash In Drawer" ng-model="datadetail.OUTLET_NM" readonly="true">
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-25">
+                <h4 class="padding left">Alamat Store</h4>
+              </div>
+              <div class="col col-75">      
+                <div class="padding">
+                  <label  class="item item-input" style="background-color: #f8f8f8">
+                    <input type="text" placeholder="Cash In Drawer" ng-model="datadetail.ALAMAT" readonly="true">
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-25">
+                <h4 class="padding left">Telp Store</h4>
+              </div>
+              <div class="col col-75">      
+                <div class="padding">
+                  <label  class="item item-input" style="background-color: #f8f8f8">
+                    <input type="text" placeholder="Cash In Drawer" ng-model="datadetail.TLP" readonly="true">
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-25">
+                <h4 class="padding left">PIC Store</h4>
+              </div>
+              <div class="col col-75">      
+                <div class="padding">
+                  <label  class="item item-input" style="background-color: #f8f8f8">
+                    <input type="text" placeholder="Cash In Drawer" ng-model="datadetail.PIC" readonly="true">
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ion-scroll>
+    </div>
+  </ion-content>
+</ion-view>

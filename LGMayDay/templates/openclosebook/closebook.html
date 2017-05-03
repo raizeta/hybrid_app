@@ -1,0 +1,100 @@
+<ion-view hide-nav-bar="false" view-title="CLOSE BOOK">
+  <ion-nav-buttons side="right">
+      <button class="button button-icon icon ion-printer" ng-disabled="closebookForm.$invalid || sudahclose" ng-click="submitclosebook()">
+    </button>
+  </ion-nav-buttons>
+<form name="closebookForm">
+  <ion-content scroll="false" class="has-header padding">
+      <div class="row responsive-md">
+        <div class="col col-75 col-offset-10">
+            <div class="row">
+                <div class="col col-25">
+                <h4 class="padding left">Modal Awal</h4>
+                </div>
+                <div class="col col-75">      
+                  <div class="padding">
+                    <label  class="item item-input" style="background-color: #f8f8f8">
+                    <style>
+                    i.icon.ion-card {
+                        font-size: 36px;
+                        padding-right: 50px
+                      }
+                      </style>
+                      <i class="icon ion-card placeholder-icon"></i>
+                      <input type="text" placeholder="Modal Awal" ng-model="dataclosebook.modalawal" readonly="true" format="number">
+                    </label>
+                  </div>
+                </div>
+            </div>
+            <div style="padding: 0px 20px 0px 0px;">
+              <div style="border-bottom:1px solid rgba(1, 1, 1, 0.1);"></div>
+            </div>
+            <div class="row">
+                <div class="col col-25">
+                <h4 class="padding left">Pendapatan</h4>
+                </div>
+                <div class="col col-75">      
+                  <div class="padding">
+                    <label  class="item item-input" style="background-color: #f8f8f8">
+                    <style>
+                    i.icon.ion-card {
+                        font-size: 36px;
+                        padding-right: 50px
+                      }
+                      </style>
+                      <i class="icon ion-card placeholder-icon"></i>
+                      <input type="text" placeholder="Income" ng-model="dataclosebook.totalpendapatan" format="number" readonly="true">
+                    </label>
+                  </div>
+                </div>
+            </div>
+            <div style="padding: 0px 20px 0px 0px;">
+              <div style="border-bottom:1px solid rgba(1, 1, 1, 0.1);"></div>
+            </div>
+            <div class="row">
+                <div class="col col-25">
+                <h4 class="padding left">Total</h4>
+                </div>
+                <div class="col col-75">      
+                  <div class="padding">
+                    <label  class="item item-input" style="background-color: #f8f8f8">
+                    <style>
+                    i.icon.ion-card {
+                        font-size: 36px;
+                        padding-right: 50px
+                      }
+                      </style>
+                      <i class="icon ion-card placeholder-icon"></i>
+                      <input type="text" placeholder="Income" ng-model="dataclosebook.grandtotal" readonly="true" format="number">
+                    </label>
+                  </div>
+                </div>
+            </div>
+            <div style="padding: 0px 20px 0px 0px;">
+              <div style="border-bottom:1px solid rgba(1, 1, 1, 0.1);"></div>
+            </div>
+            <div class="row">
+                <div class="col col-25">
+                <h4 class="padding left">Penarikan</h4>
+                </div>
+                <div class="col col-75">      
+                  <div class="padding">
+                    <label  class="item item-input" style="background-color: #f8f8f8">
+                    <style>
+                    i.icon.ion-card {
+                        font-size: 36px;
+                        padding-right: 50px
+                      }
+                      </style>
+                      <i class="icon ion-card placeholder-icon"></i>
+                      <input type="tel" placeholder="Withdraw" format="number" ng-model="dataclosebook.withdraw" required ng-readonly="sudahclose">
+                    </label>
+                  </div>
+                </div>
+            </div>
+        </div>
+          <div class="col col-10"></div>
+      </div>
+  </ion-content>
+</form>
+</ion-view>

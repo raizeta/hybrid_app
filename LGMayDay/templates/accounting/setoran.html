@@ -1,0 +1,152 @@
+<ion-view view-title="SETORAN {{tglskrg}}">  
+  <ion-content>
+    <div class="row" style="height:100%">
+      <div class="col col-33" style="padding-right:10px;border-right: 2px solid rgba(1, 1, 1, 0.1);">
+        <div style="height: 100%">
+          <ion-item class="item-assertive" >
+            <div class="item-icon-left" ng-click="newcustomertransaksi()">
+              <i class="icon ion-ios-chatboxes-outline"></i>
+              <h2>LIST SETORAN</h2>
+            </div>
+          </ion-item>
+          <ion-scroll direction="y" overflow-scroll="true" delegate-handle="scrolltobottom" style="position: relative !important;max-height:80%;overflow-y: scroll;">
+            <style>
+                i.icon.xxx {font-size: 16px;}
+                .item-icon-left.xxx {padding-left: 20px;}
+                .itemx {padding-top: 10px;padding-bottom: 10px;}
+            </style>
+            <div class="item item-divider item-calm" ng-if="setoranlocal.length > 0">
+              ON LOCAL
+            </div>
+            <ion-item class="item itemx"  ng-repeat="item in setoranlocal  track by $index " ng-click="showdetail(item)" ng-class="[isGroupShown(item) ? 'custom-active':'']" >
+                <div class="item-icon-left xxx" on-tap="detailstore(store)" >
+                    <i class="icon xxx">{{$index + 1}}.</i>
+                    <h2>{{item.CLOSING_ID}}</h2>
+                </div>
+                <div class="item-icon-right">
+                  <i class="icon ion-ios-arrow-right"></i>
+                </div>
+            </ion-item>
+            <div class="item item-divider item-calm" ng-if="setoranserver.length > 0">
+              ON SERVER
+            </div>
+            <ion-item class="item itemx"  ng-repeat="item in setoranserver track by $index" ng-click="showdetail(item)" ng-class="[isGroupShown(item) ? 'custom-active':'']" >
+                <div class="item-icon-left xxx" on-tap="detailstore(store)" >
+                    <i class="icon xxx">{{$index + 1}}.</i>
+                    <h2>{{item.CLOSING_ID}}</h2>
+                </div>
+                <div class="item-icon-right">
+                  <i class="icon ion-ios-arrow-right"></i>
+                </div>
+            </ion-item>
+          </ion-scroll>
+        </div>
+      </div>
+      <div class="col col-66" style="padding-left:10px;">
+      <ion-scroll direction="y" overflow-scroll="true" style="position: relative !important;height:100%;overflow-y: scroll;">
+        <ion-item class="item-assertive" >
+          <div class="item-icon-left">
+            <i class="icon ion-ios-chatboxes"></i>
+            <h2>DETAIL SETORAN {{setoran.CLOSING_ID}}</h2>
+          </div>
+        </ion-item>
+        <div class="row responsive-md" ng-if="setoran">
+          <div class="col col-100">
+              <div class="row">
+                  <div class="col col-25">
+                  <h4 class="padding left">Penyetor</h4>
+                  </div>
+                  <div class="col col-75">      
+                    <div style="padding:1px 10px 1px 10px;">
+                      <label  class="item item-input" style="background-color: #f8f8f8">
+                      <style>
+                      i.icon.ion-card {
+                          font-size: 36px;
+                          padding-right: 50px
+                        }
+                        </style>
+                        <i class="icon ion-card placeholder-icon"></i>
+                        <input type="text" placeholder="Withdraw" ng-model="setoran.ACCESS_UNIX" required readonly="true">
+                      </label>
+                    </div>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col col-25">
+                    <h4 class="padding left">Setoran</h4>
+                  </div>
+                  <div class="col col-75">      
+                    <div style="padding:1px 10px 1px 10px;">
+                      <label  class="item item-input" style="background-color: #f8f8f8">
+                      <style>
+                      i.icon.ion-card {
+                          font-size: 36px;
+                          padding-right: 50px
+                        }
+                        </style>
+                        <i class="icon ion-card placeholder-icon"></i>
+                        <input type="text" placeholder="Withdraw" format="number" ng-model="setoran.TTL_STORAN" required readonly="true">
+                      </label>
+                    </div>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col col-25">
+                    <h4 class="padding left">Setor Ke</h4>
+                  </div>
+                  <div class="col col-75">      
+                    <div style="padding:1px 10px 1px 10px;">
+                      <label  class="item item-input" style="background-color: #f8f8f8">
+                      <style>
+                      i.icon.ion-card {
+                          font-size: 36px;
+                          padding-right: 50px
+                        }
+                        </style>
+                        <i class="icon ion-card placeholder-icon"></i>
+                        <input type="text" placeholder="BANK BCA STEPHEN S DJAJA" format="number" readonly="true">
+                      </label>
+                      <div style="padding-top: 10px"></div>
+                      <label  class="item item-input" style="background-color: #f8f8f8;">
+                      <style>
+                      i.icon.ion-card {
+                          font-size: 36px;
+                          padding-right: 50px
+                        }
+                        </style>
+                        <i class="icon ion-card placeholder-icon"></i>
+                        <input type="text" placeholder="1234-5678-9012-3456" format="number" readonly="true">
+                      </label>
+                    </div>
+                  </div>
+              </div>
+              <div class="row" >
+                  <div class="col col-25">
+                  <h4 class="padding left">Bukti</h4>
+                  </div>
+                  <div class="col col-75">      
+                    <div class="padding"  ng-click="fotobuktisetoran()">
+                      <label class="item item-input item-stacked-label" style="padding-left:40%">
+                        <div class="col col-33">
+                          <img id="myImage" ng-src="{{setoran.IMG}}" width="100%">
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+              </div>
+              <div class="row">
+                <div class="col col-100">      
+                  <div class="padding">
+                    <button class="button button-block button-balanced" ng-click="submitsetoran()" ng-hide="disablesubmit">
+                      SUBMIT
+                    </button>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+      </ion-scroll>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,36 @@
+<ion-modal-view class="mymodalsavetobill">
+  <form name="newstoreForm" ng-submit="modaltambahstoresubmit()">
+  <ion-header-bar class="bar bar-header bar-assertive">
+    <h1 class="title">TAMBAH PRODUCT</h1>
+    <button class="button button-clear right" ng-click="modaltambahstoreclose()">
+      <i class="icon ion-ios-close-outline"></i>
+    </button>
+    <button class="button button-clear left"  type="submit" ng-disabled="customerForm.$invalid">
+      <i class="icon ion-android-checkbox-outline"></i>
+    </button>
+  </ion-header-bar>
+  <ion-content>
+    <div class="list">
+      <label class="item item-input item-stacked-label">
+       <span class="input-label">Nama Outlet</span>
+        <input type="text" placeholder="Nama Outlet" ng-model="newstore.OUTLET_NM" required>
+      </label>
+      <label class="item item-input item-stacked-label">
+       <span class="input-label">Alamat Outlet</span>
+        <input type="text" placeholder="Alamat Outlet" ng-model="newstore.ALAMAT" required>
+      </label>
+      <label class="item item-input item-stacked-label">
+       <span class="input-label">Telp Outlet</span>
+        <input type="text" placeholder="Telp Outlet" ng-model="newstore.TLP" required>
+      </label>
+      <label class="item item-input item-stacked-label">
+       <span class="input-label">PIC Outlet</span>
+        <input type="text" placeholder="PIC Outlet" ng-model="newstore.PIC" required>
+      </label>
+    </div>
+  </ion-content>
+  </form>
+  <div class="bar bar-footer bar-assertive">
+     <h1 class="title">Semoga Usaha Anda Sukses Terus</h1>
+  </div
+</ion-modal-view>

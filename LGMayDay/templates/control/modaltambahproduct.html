@@ -1,0 +1,36 @@
+<ion-modal-view class="mymodalpembayarannotifikasi">
+  <ion-header-bar class="bar bar-header bar-assertive">
+    <h1 class="title">TAMBAH PRODUCT</h1>
+    <button class="button button-clear right" ng-click="modaltambahproductclose()">
+      <i class="icon ion-ios-close-outline"></i>
+    </button>
+    <button class="button button-clear left" ng-click="modaltambahproductsubmit()">
+      <i class="icon ion-android-checkbox-outline"></i>
+    </button>
+  </ion-header-bar>
+  <ion-content>
+    <div class="row">
+      <div class="col col-50">      
+        <div class="button-bar">
+          <a grouped-radio="'selectall'" ng-model="selectradio.value" ng-change='radiochange("select")'>
+            SELECT ALL
+          </a>
+        </div>
+      </div>
+      <div class="col col-50">      
+        <div class="button-bar">
+          <a grouped-radio="'unselectall'" ng-model="selectradio.value"  ng-change='radiochange("unselect")'>
+            UNSELECT ALL
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="row"  style="flex-wrap: wrap;padding-top: 10px;">
+      <div class="col col-25" ng-repeat="item in datasproducts">
+        <ion-checkbox  ng-model="item.checked" ng-checked="item.checked">
+          {{ item.ITEM_NM }}
+        </ion-checkbox>
+      </div>
+    </div>
+  </ion-content>
+</ion-modal-view>

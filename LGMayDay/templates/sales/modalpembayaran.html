@@ -1,0 +1,107 @@
+<ion-modal-view class="mymodalpembayaran">
+  <ion-header-bar class="bar bar-header bar-assertive">
+    <h1 class="title">METODE PEMBAYARAN</h1>
+<!--     <button type="submit" class="button button-stable left" ng-click="ModalPembayaranCancel()">
+      Cancel
+    </button> -->
+<!--     <button class="button button-positive right" ng-click="ModalPembayaranClose()">
+      Charge
+    </button> -->
+    <button class="button button-icon icon ion-backspace-outline" ng-click="ModalPembayaranCancel()"></button>
+    <button class="button button-icon icon ion-android-done-all" ng-click="ModalPembayaranClose()"></button>
+  </ion-header-bar>
+  <ion-content scroll="true" class="has-header padding">
+    <div class="row responsive-md">
+      <div class="col col-75 col-offset-10">
+        <div class="row">
+            <div class="col col-25">
+            <h4 class="padding left">Cash</h4>
+            </div>
+            <div class="col col-75">      
+              <div class="button-bar padding">
+                <a grouped-radio="yangdibayarkan.yangdibayar" ng-model="pembayaran.uang" ng-change='radiochange("cash")' ng-repeat="yangdibayarkan in yangdibayarkan">
+                  {{yangdibayarkan.yangdibayar|number}}
+                </a>
+              </div>
+              <div class="padding">
+                <label  class="item item-input">
+                  <input type="tel" placeholder="Nilai Lain" format="number" ng-model="pembayaran.uang" ng-change="radiochange('cash')" select-on-click>
+                </label>
+              </div>
+            </div>
+        </div>
+<!--         <div style="padding: 10px 20px 10px 20px;">
+          <div style="border-bottom:1px solid rgba(1, 1, 1, 0.1);"></div>
+        </div>
+        <div class="row">
+            <div class="col col-25">
+            <h4 class="padding left">Card</h4>
+            </div>
+            <div class="col col-75">      
+              <div class="padding">
+                <label  class="item item-input">
+                <style>
+                i.icon.ion-card {
+                    font-size: 36px;
+                    padding-right: 50px
+                  }
+                  </style>
+                  <i class="icon ion-card placeholder-icon"></i>
+                  <input type="text" placeholder="Search">
+                </label>
+              </div>
+            </div>
+        </div> -->
+        <div style="padding: 10px 20px 10px 20px;">
+          <div style="border-bottom:1px solid rgba(1, 1, 1, 0.1);"></div>
+        </div>
+        <div class="row">
+            <div class="col col-25">
+            <h4 class="padding left">Card</h4>
+            </div>
+            <div class="col col-75">      
+              <div class="button-bar padding">
+                <a grouped-radio="'edc'" ng-model="pembayaran.other" ng-change='radiochange("other")'>
+                  EDC
+                </a>
+                <a grouped-radio="'acc'" ng-model="pembayaran.other" ng-change='radiochange("other")'>
+                  CREDIT CARD
+                </a>
+              </div>
+              <div class="list list-inset" ng-show="pembayaran.other == 'edc' || pembayaran.other == 'acc' " style="margin: 5px 10px;">
+                <label  class="item item-input item-select" style="padding: 0px 0 0px 16px">
+                  <div class="input-label">
+                    PILIH MERCHANT
+                  </div>
+                  <!-- <input type="text" placeholder="Optional Note" ng-required="pembayaran.other == 'edc'"> -->
+                  <select ng-model="pembayaran.merchant" ng-options="item.MERCHANT_NM for item in datamerchant" ng-required="pembayaran.other == 'edc'">
+                    <option value="">-- Pilih Account --</option>
+                  </select>
+                </label>
+              </div>
+              <div class="list list-inset" ng-show="pembayaran.merchant.MERCHANT_NM != undefined" style="margin: 5px 10px;">
+                <label  class="item item-input " style="background-color: #f8f8f8;padding: 0px 0 0px 16px">
+                  <div class="input-label">
+                    NOMOR REKENING
+                  </div>
+                  <input style="text-align:right;" type="text" placeholder="Optional Note" ng-model="pembayaran.merchant.MERCHANT_NO" readonly="true">
+                </label>
+              </div>
+              <div class="list list-inset" ng-show="pembayaran.merchant.MERCHANT_NM != undefined" style="margin: 5px 10px;">
+                <label  class="item item-input " style="background-color: #f8f8f8;padding: 0px 0 0px 16px">
+                  <div class="input-label">
+                    PEMILIK REKENING
+                  </div>
+                  <input style="text-align:right;" type="text" placeholder="Optional Note" ng-model="pembayaran.merchant.MERCHANT_OWNER" readonly="true">
+                </label>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="col col-10"></div>
+    </div>
+  </ion-content>
+<!--   <div class="bar bar-footer bar-dark">
+     <h1 class="title">Terimakasih Atas Kunjungan Anda</h1>
+  </div> -->
+</ion-modal-view>

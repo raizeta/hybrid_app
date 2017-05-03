@@ -1,0 +1,21 @@
+<ion-view view-title="LIST KARYAWAN">
+<ion-nav-buttons side="right">
+  </ion-nav-buttons>
+  <ion-content class="has-header" padding="false" scroll="true">
+    <ion-list>
+        <ion-item ng-class="active" ng-repeat="item in dataemploye" ng-click="openmodalabsensi(item)">
+          <div class="item-icon-left" style="padding-left:34px">
+              <i class="icon ion-person-stalker"></i>
+              <span style="font-size: 12px;text-align:left;">
+                {{item.NAME}}
+              </span>
+          </div>
+          <div class="item-icon-right">
+            <i style="color:green;" class="icon ion-ios-arrow-right"></i>
+          </div>
+        </ion-item>
+      </div>
+    </ion-list>
+    <ion-list style="padding:30px"></ion-list>
+  </ion-content>
+</ion-view>

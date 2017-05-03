@@ -1,0 +1,126 @@
+<ion-view view-title="SUMMARY">
+	<ion-content>
+    <div class="row" style="flex-wrap: wrap;">
+        <div class="col col-20">
+            <div class="list card" >
+              <div class="item item-devider" style="background-color: bisque">
+                <h2 style="text-align: center;">COMPLETE</h2>
+              </div>
+
+              <div class="item item-body" style="min-height: 50px">
+                <h1>
+                    {{jlhcomplete}}
+                </h1>
+              </div>
+            </div>  
+        </div>
+        <div class="col col-20">
+            <div class="list card" >
+              <div class="item item-devider" style="background-color: bisque">
+                <h2 style="text-align: center;">BAYAR CASH</h2>
+              </div>
+
+              <div class="item item-body" style="min-height: 50px">
+                <h1>
+                    {{bayarcash|number}}
+                </h1>
+              </div>
+            </div>  
+        </div>
+        <div class="col col-20">
+            <div class="list card" >
+              <div class="item item-devider" style="background-color: bisque">
+                <h2 style="text-align: center;">MESIN EDC</h2>
+              </div>
+
+              <div class="item item-body" style="min-height: 50px">
+                <h1>
+                    {{bayaredc|number}}
+                </h1>
+              </div>
+            </div>  
+        </div>
+        <div class="col col-20">
+            <div class="list card" >
+              <div class="item item-devider" style="background-color: bisque">
+                <h2 style="text-align: center;">CREDIT CARD</h2>
+              </div>
+
+              <div class="item item-body" style="min-height: 50px">
+                <h1>
+                    {{bayaracc|number}}
+                </h1>
+              </div>
+            </div>  
+        </div>
+        <div class="col col-20">
+            <div class="list card" >
+              <div class="item item-devider" style="background-color: bisque">
+                <h2 style="text-align: center;">TOTAL</h2>
+              </div>
+
+              <div class="item item-body" style="min-height: 50px">
+                <h1>
+                    {{(bayarcash + bayaredc + bayaracc)|number}}
+                </h1>
+              </div>
+            </div>  
+        </div>
+    </div>
+    <div class="row" style="flex-wrap: wrap;">
+        <div class="col col-20">
+            <div class="list card" >
+              <div class="item item-devider" style="background-color: bisque">
+                <h2 style="text-align: center;">FIND IN DRAWER</h2>
+              </div>
+
+              <div class="item item-body" style="min-height: 50px">
+                <h1>
+                    {{findindrawer|number}}
+                </h1>
+              </div>
+            </div>  
+        </div>
+        <div class="col col-20">
+            <div class="list card" >
+              <div class="item item-devider" style="background-color: bisque">
+                <h2 style="text-align: center;">CASH CHECKED</h2>
+              </div>
+
+              <div class="item item-body" style="min-height: 50px">
+                <h1>
+                    {{checkcash|number}}
+                </h1>
+              </div>
+            </div>  
+        </div>
+        <div class="col col-20">
+            <div class="list card" >
+              <div class="item item-devider" style="background-color: bisque">
+                <h2 style="text-align: center;">ADDED CASH</h2>
+              </div>
+
+              <div class="item item-body" style="min-height: 50px">
+                <h1>
+                    {{addedcash|number}}
+                </h1>
+              </div>
+            </div>  
+        </div>
+        <div class="col col-20">
+            <div class="list card" >
+              <div class="item item-devider" style="background-color: bisque">
+                <h2 style="text-align: center;">SALDO AWAL</h2>
+              </div>
+
+              <div class="item item-body" style="min-height: 50px">
+                <h1>
+                    {{saldoawal|number}}
+                </h1>
+              </div>
+            </div>  
+        </div>
+    </div>
+	</ion-content>
+</ion-view>
+
