@@ -4,6 +4,7 @@ angular.module('starter')
     var ApiUrl = function()
     {
       return "http://api.lukisongroup.com/";
+      // return "http://api.kontrolgampang.com/";
     }
     
     var ArrayChunk = function (arr, size) 

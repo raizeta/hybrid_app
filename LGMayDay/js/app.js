@@ -57,6 +57,10 @@ angular.module('starter', ['ionic','ngCordova','ui.grid', 'ui.grid.selection','d
 {
     // $httpProvider.interceptors.push('authInterceptor');
     // $httpProvider.defaults.headers.common['Authorization'] = 'Bearer 7VfRncAwITfZrY2THUGkNq9JZOyExS5u';
+    // $httpProvider.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
+    // $httpProvider.defaults.withCredentials = false;
+    // $httpProvider.defaults.useXDomain = true;
+    // delete $httpProvider.defaults.headers.common["X-Requested-With"];
 })
 .controller('AppCtrl', function($ionicLoading,$window,$timeout,$ionicHistory,$rootScope,$scope,$filter,$state,StorageService,MerchantLiteFac) 
 {
@@ -154,15 +158,15 @@ angular.module('starter', ['ionic','ngCordova','ui.grid', 'ui.grid.selection','d
                                 {child:'CLOSE',path:'#/tab/closebook'}
                               ]
                     },
-                    {
-                      name: 'Control','icons':'ion-wrench',
-                      items: [
-                                {child:'STORES',path:'#/tab/control/stores'},
-                                {child:'PRODUCTS',path:'#/tab/control/product'},
-                                {child:'EMPLOYES',path:'#/tab/control/employe'},
-                                {child:'MERCHANTS',path:'#/tab/control/merchant'}
-                              ]
-                    }
+                    // {
+                    //   name: 'Control','icons':'ion-wrench',
+                    //   items: [
+                    //             {child:'STORES',path:'#/tab/control/stores'},
+                    //             {child:'PRODUCTS',path:'#/tab/control/product'},
+                    //             {child:'EMPLOYES',path:'#/tab/control/employe'},
+                    //             {child:'MERCHANTS',path:'#/tab/control/merchant'}
+                    //           ]
+                    // }
                   ];
 
 

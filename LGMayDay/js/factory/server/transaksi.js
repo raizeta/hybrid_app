@@ -5,7 +5,7 @@ angular.module('starter')
     {
         var deferred            = $q.defer();
         var globalurl           = UtilService.ApiUrl();      
-        var url                 = "http://api.lukisongroup.com/kontrolgampang-transaksi/penjualan-closing-buktis";
+        var url                 = globalurl + "kontrolgampang-transaksi/penjualan-closing-buktis";
 
         var result              = UtilService.SerializeObject(datatosave);
         var serialized          = result.serialized;
@@ -24,8 +24,38 @@ angular.module('starter')
         });
         return deferred.promise;  
     }
+    var GetTransaksiClosing = function(STORAN_DATE,ACCESS_UNIX,OUTLET_ID,TOKEN)
+    {
+        var deferred            = $q.defer();
+        var globalurl           = UtilService.ApiUrl();
+        var url                 = globalurl + "kontrolgampang-transaksi/penjualan-closing-buktis";
+        var params              = {};
+        params['STORAN_DATE']   = STORAN_DATE;
+        params['ACCESS_UNIX']   = ACCESS_UNIX;
+        params['OUTLET_ID']     = OUTLET_ID;
+        params['access-token']  = TOKEN;
+        var method              = "GET";
+        $http({method:method, url:url,params:params})
+        .success(function(response) 
+        {
+            deferred.resolve(response.detail);
+        })
+        .error(function(err,status)
+        {
+            if (status === 404)
+            {
+                deferred.resolve([]);
+            }
+            else    
+            {
+                deferred.reject(err);
+            }
+        }); 
+        return deferred.promise;
+    }
 
 	return{
-            SetTranskasiClosing:SetTranskasiClosing
+            SetTranskasiClosing:SetTranskasiClosing,
+            GetTransaksiClosing:GetTransaksiClosing
         }
 });

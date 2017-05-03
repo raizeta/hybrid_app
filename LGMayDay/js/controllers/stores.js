@@ -76,8 +76,15 @@ angular.module('starter')
 					console.log(responsesetstorecheck);
 				});
 
-				
-				
+				TransaksiCombFac.GetSetoranBookComb(tglsekarang,profile.ACCESS_UNIX,stores.lokasistore.OUTLET_CODE,STATUS = 1,IS_ONSERVER = 1,profile.access_token)
+				.then(function(responsesetoranbook)
+				{
+					console.log(responsesetoranbook);
+				},
+				function(errorsetoranbook)
+				{
+					console.log(errorsetoranbook);
+				});
 				$scope.outtime = 5000;
 			}
 			else

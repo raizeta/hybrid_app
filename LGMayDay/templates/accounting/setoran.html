@@ -43,13 +43,14 @@
         </div>
       </div>
       <div class="col col-66" style="padding-left:10px;">
+      <ion-item class="item-assertive" >
+        <div class="item-icon-left">
+          <i class="icon ion-ios-chatboxes"></i>
+          <h2>DETAIL SETORAN {{setoran.CLOSING_ID}}</h2>
+        </div>
+      </ion-item>
       <ion-scroll direction="y" overflow-scroll="true" style="position: relative !important;height:100%;overflow-y: scroll;">
-        <ion-item class="item-assertive" >
-          <div class="item-icon-left">
-            <i class="icon ion-ios-chatboxes"></i>
-            <h2>DETAIL SETORAN {{setoran.CLOSING_ID}}</h2>
-          </div>
-        </ion-item>
+        
         <div class="row responsive-md" ng-if="setoran">
           <div class="col col-100">
               <div class="row">

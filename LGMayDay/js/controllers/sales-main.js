@@ -5,6 +5,12 @@ angular.module('starter')
     $scope.namacustomer     = 'NEW CUSTOMER';
     $scope.noresi           = StorageService.get('TRANS-ACTIVE');
     var tglsekarang         = $filter('date')(new Date(),'yyyy-MM-dd');
+
+    $scope.changefilter = function(valeu)
+    {
+        $scope.filterproduct = valeu;
+    }
+    
     $scope.newcusttrans     = function()
     {
         TransaksiCombFac.GetTransCustsHeaderComb(tglsekarang,$scope.profile.ACCESS_UNIX,$scope.stores.OUTLET_CODE,$scope.profile.access_token)

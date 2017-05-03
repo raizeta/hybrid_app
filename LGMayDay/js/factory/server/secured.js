@@ -4,16 +4,19 @@ angular.module('starter')
 	var userInfo;
     var Login = function(username,password,uuid)
     {
-        var urla = UtilService.ApiUrl();
+        var globalurl   = UtilService.ApiUrl();
 
         var deferred    = $q.defer();
         var username    = username;
         var password    = password;
-        var url         = "http://api.lukisongroup.com/logintest/user-tokens";
+        var url         = globalurl + "logintest/user-tokens" ;
         var method      = "GET";
-        $http({method:method,url:url,params:{'username':username}})
+        var params              = {};
+        params['username']      = username;
+        $http({method:method,url:url,params:params})
         .success(function(response) 
         {
+            console.log(response);
             if(angular.isDefined(response.statusCode))
             {
                if(response.statusCode == 404 || response.statusCode == 204)
@@ -51,6 +54,7 @@ angular.module('starter')
             {
                 deferred.reject("jaringan");
             }
+            deferred.reject(err);
         });
 
         return deferred.promise;
@@ -59,7 +63,8 @@ angular.module('starter')
     var UserProfile = function(username,access_token)
     {
         var deferred            = $q.defer();
-        var url                 = 'http://api.lukisongroup.com/logintest/users';
+        var globalurl           = UtilService.ApiUrl();
+        var url                 = globalurl + "logintest/users";
         var params              = {};
         params['username']      = username;
         params['access-token']  = access_token;

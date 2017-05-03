@@ -5,7 +5,7 @@ angular.module('starter')
     {
         var deferred        = $q.defer();
         var globalurl       = UtilService.ApiUrl();
-        var url             = "http://api.lukisongroup.com/kontrolgampang-hirs/employe-datas";
+        var url             = globalurl + "kontrolgampang-hirs/employe-datas";
         var method          = "GET";
         var params                  = {};
         params['OUTLET_CODE']       = OUTLET_CODE;
@@ -33,7 +33,7 @@ angular.module('starter')
     {
         var deferred            = $q.defer();
         var globalurl           = UtilService.ApiUrl();      
-        var url                 = "http://api.lukisongroup.com/kontrolgampang-hirs/employe-datas"
+        var url                 = globalurl + "kontrolgampang-hirs/employe-datas"
 
         var result              = UtilService.SerializeObject(data);
         var serialized          = result.serialized;
@@ -55,7 +55,7 @@ angular.module('starter')
     {
         var deferred            = $q.defer();
         var globalurl           = UtilService.ApiUrl();      
-        var url                 = "http://api.lukisongroup.com/kontrolgampang-hirs/employe-absensis"
+        var url                 = globalurl + "kontrolgampang-hirs/employe-absensis"
 
         var result              = UtilService.SerializeObject(data);
         var serialized          = result.serialized;
@@ -77,7 +77,7 @@ angular.module('starter')
     {
         var deferred        = $q.defer();
         var globalurl       = UtilService.ApiUrl();
-        var url             = "http://api.lukisongroup.com/kontrolgampang-hirs/employe-absensis";
+        var url             = globalurl + "kontrolgampang-hirs/employe-absensis";
         var method          = "GET";
         var params                  = {};
         params['OUTLET_CODE']       = OUTLET_CODE;

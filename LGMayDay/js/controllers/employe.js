@@ -81,19 +81,19 @@ angular.module('starter')
         datatosave.LNG_POST		= 1234567890;
         datatosave.IS_ONSERVER  = 0;
         
-        // document.addEventListener("deviceready", function () 
-        // {
-        //     var options = UtilService.CameraOptions();
-        //     $cordovaCamera.getPicture(options)
-        //     .then(function (imageData) 
-        //     {
-        //         datatosave.IMG_ABSENSI	= 'data:image/jpeg;base64,' + imageData;
-        //         $ionicLoading.show
-        //         ({
-        //             template: 'Loading...'
-        //         })
-        //         .then(function()
-        //         {
+        document.addEventListener("deviceready", function () 
+        {
+            var options = UtilService.CameraOptions();
+            $cordovaCamera.getPicture(options)
+            .then(function (imageData) 
+            {
+                datatosave.IMG_ABSENSI	= 'data:image/jpeg;base64,' + imageData;
+                $ionicLoading.show
+                ({
+                    template: 'Loading...'
+                })
+                .then(function()
+                {
                 	AbsensiLiteFac.SetAbsensi(datatosave)
 			        .then(function(responsesetabsensi)
 			        {
@@ -135,9 +135,9 @@ angular.module('starter')
 		        	{
 		        		$ionicLoading.show({template: 'Loading...',duration: 500});
 		        	});
-        //         });
-        //     });
-        // }, false);
+                });
+            });
+        }, false);
 	}
 
 	$scope.notifikasiabsensi 	= function()

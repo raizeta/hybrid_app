@@ -5,7 +5,7 @@ angular.module('starter')
     {
         var deferred                = $q.defer();
         var globalurl               = UtilService.ApiUrl();
-        var url                     = "http://api.lukisongroup.com/kontrolgampang-master/stores";
+        var url                     = globalurl + "kontrolgampang-master/stores";
         var method                  = "GET";
         var params                  = {};
         params['ACCESS_UNIX']       = ACCESS_UNIX;
@@ -41,7 +41,7 @@ angular.module('starter')
     {
         var deferred                = $q.defer();
         var globalurl               = UtilService.ApiUrl();
-        var url                     = "http://api.lukisongroup.com/kontrolgampang-master/stores";
+        var url                     = globalurl + "kontrolgampang-master/stores";
         var method                  = "GET";
         var params                  = {};
         params['ACCESS_UNIX']       = ACCESS_UNIX;
@@ -77,7 +77,7 @@ angular.module('starter')
     {
         var deferred                = $q.defer();
         var globalurl               = UtilService.ApiUrl();
-        var url                     = "http://api.lukisongroup.com/kontrolgampang-master/stores";
+        var url                     = globalurl + "kontrolgampang-master/stores";
         var method                  = "GET";
         var params                  = {};
         params['ACCESS_UNIX']       = ACCESS_UNIX;

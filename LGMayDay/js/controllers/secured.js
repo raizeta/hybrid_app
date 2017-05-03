@@ -32,7 +32,6 @@ angular.module('starter')
                     }
                     
                 });
-
             }
             else
             {

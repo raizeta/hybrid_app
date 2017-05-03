@@ -5,7 +5,7 @@ angular.module('starter')
     {
         var deferred            = $q.defer();
         var globalurl           = UtilService.ApiUrl();      
-        var url                 = "http://api.lukisongroup.com/kontrolgampang-transaksi/penjualan-details";
+        var url                 = globalurl + "kontrolgampang-transaksi/penjualan-details";
 
         var result              = UtilService.SerializeObject(data);
         var serialized          = result.serialized;
@@ -27,7 +27,7 @@ angular.module('starter')
     {
         var deferred            = $q.defer();
         var globalurl           = UtilService.ApiUrl();      
-        var url                 = "http://api.lukisongroup.com/kontrolgampang-transaksi/penjualan-closing-buktis";
+        var url                 = globalurl + "kontrolgampang-transaksi/penjualan-closing-buktis";
 
         var result              = UtilService.SerializeObject(data);
         var serialized          = result.serialized;

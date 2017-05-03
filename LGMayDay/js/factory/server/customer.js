@@ -5,7 +5,7 @@ angular.module('starter')
     {
         var deferred        = $q.defer();
         var globalurl       = UtilService.ApiUrl();
-        var url             = "http://api.lukisongroup.com/kontrolgampang-master/customers";
+        var url             = globalurl + "kontrolgampang-master/customers";
         var method          = "GET";
         var params                  = {};
         params['ACCESS_UNIX']       = ACCESS_UNIX;
@@ -34,7 +34,7 @@ angular.module('starter')
     {
         var deferred            = $q.defer();
         var globalurl           = UtilService.ApiUrl();      
-        var url                 = "http://api.lukisongroup.com/kontrolgampang-master/customers"
+        var url                 = globalurl + "kontrolgampang-master/customers"
 
         var result              = UtilService.SerializeObject(datacustomer);
         var serialized          = result.serialized;
