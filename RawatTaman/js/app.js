@@ -37,7 +37,7 @@ angular.module('starter', ['ionic','ionic-ratings','ui.calendar','auth0'])
 {
     $scope.tglskrg            = $filter('date')(new Date(),'yyyy-MM-dd');
     var menus       = [];
-    menus.push({src: "img/200x200/schedule.png",link:"#/tab/jadwal",judul:"Jadwal",keterangan:null});
+    menus.push({src: "img/200x200/schedule.png",link:"#/tab/jadwal",judul:"Jadwal Kunjungan",keterangan:null});
     menus.push({src: "img/200x200/history.png",link:"#/tab/history",judul:"History",keterangan:null});
     menus.push({src: "img/200x200/feedback.jpg",link:"#/tab/feedback",judul:"FeedBack",keterangan:null});
     menus.push({src: "img/200x200/information.png",link:"#/tab/informasi",judul:"Informasi",keterangan:'DEV'});

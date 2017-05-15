@@ -50,6 +50,15 @@ angular.module('starter')
             $ionicLoading.hide();
         });
     });
+    $scope.ratingsKaryawan = {
+        iconOn: 'ion-ios-star',    //Optional
+        iconOff: 'ion-ios-star-outline',   //Optional
+        iconOnColor: 'rgb(200, 200, 100)',  //Optional
+        iconOffColor:  'rgb(200, 100, 100)',    //Optional
+        rating:  4, //Optional
+        minRating:4,    //Optional
+        readOnly: true, //Optional
+      };
     $scope.ratingsObject = {
         iconOn: 'ion-ios-star',    //Optional
         iconOff: 'ion-ios-star-outline',   //Optional
@@ -71,12 +80,33 @@ angular.module('starter')
             console.log('Selected rating is : ', rating, ' and the index is : ', index);
             $scope.openmodalratingjelek();
         }
-      }; 
+      };
 
-      $scope.todolist = [
-                            {'todo':'Merias','checked':true},
-                            {'todo':'Menghias','checked':true},
-                            {'todo':'Memupuk','checked':true},
-                            {'todo':'Merawat','checked':true}
-                        ];
+    $scope.gambar = [{'namagambar':'img/ben.png'},{'namagambar':'img/adam.jpg'},{'namagambar':'img/ben.png'},{'namagambar':'img/adam.jpg'}];
+    $scope.openModalImages = function(index) 
+    {
+        
+        $scope.activeSlide = index;
+        $scope.showModaImages('templates/jadwal/modalgambar.html');
+    }
+    
+    $scope.showModaImages = function(templateUrl) 
+    {
+        $ionicModal.fromTemplateUrl(templateUrl, 
+        {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function(modal) 
+        {
+            $scope.gambar = [{'namagambar':'img/ben.png'},{'namagambar':'img/adam.jpg'},{'namagambar':'img/ben.png'},{'namagambar':'img/adam.jpg'}];
+            $scope.modalimages = modal;
+            $scope.modalimages.show();
+        });
+    }
+ 
+    $scope.closeModalImages = function() 
+    {
+        $scope.modalimages.hide();
+        $scope.modalimages.remove()
+    };
 });
