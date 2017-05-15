@@ -1,0 +1,44 @@
+<ion-view id="login" hide-nav-bar="true" view-title="Login Area" name="login-view">
+    <ion-content padding="true" scroll="false">
+        <div class="row responsive-md">
+            <div class="col col-50 col-offset-25" style="padding-top: 5%">
+                <form name="loginForm" ng-submit="registerbaru(customers)">
+                    <div class="list list-inset">
+                        <label class="item item-input item-floating-label" style="background-color: #f8f8f8">
+                            <span class="input-label">Email</span>
+                            <input type="email" ng-model="customers.email" class="form-control" placeholder="Email" required>
+                        </label>
+                        <label class="item item-input item-floating-label" style="background-color: #f8f8f8">
+                            <span class="input-label">Password</span>
+                            <input type="password" ng-model="customers.new_pass" class="form-control" placeholder="Password" required>
+                        </label>
+
+                        <label class="item item-input item-floating-label" style="background-color: #f8f8f8">
+                          <span class="input-label">Nama</span>
+                            <input type="text" ng-model="customers.NAMA" class="form-control" placeholder="Nama" required>
+                        </label>
+                        <label class="item item-input item-floating-label" style="background-color: #f8f8f8">
+                          <span class="input-label">Alamat</span>
+                            <input type="text" ng-model="customers.ALAMAT" class="form-control" placeholder="Alamat" required>
+                        </label>
+                        <label class="item item-input item-floating-label" style="background-color: #f8f8f8">
+                          <span class="input-label">No.Telp</span>
+                            <input type="tel" ng-model="customers.HP" class="form-control" placeholder="No Telepon" required>
+                        </label>
+                        <label class="item item-input item-select" style="background-color: #f8f8f8">
+                            <div class="input-label">
+                              Luas Rumah
+                            </div>
+                            <select ng-model="customers.LUAS_TANAH" ng-options="item.nama for item in luasrumah" required>
+                              <option value="">-- Pilih Luas --</option>
+                            </select>
+                        </label> 
+                    </div>
+                    <button type="submit" class="button button-block button-assertive" ng-disabled="loginForm.$invalid" round>
+                      Login
+                    </button>
+                </form>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

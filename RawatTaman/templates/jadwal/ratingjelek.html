@@ -1,0 +1,36 @@
+<ion-modal-view class="modaldetail">
+  <ion-header-bar class="bar bar-header bar-assertive">
+    <h1 class="title">RATING JELEK</h1>
+    <button class="button button-icon icon ion-arrow-left-c" ng-click="closemodalratingjelek()"></button>
+    <button class="button button-icon"></button>
+  </ion-header-bar>
+  <ion-content>
+      <div class="list card" >
+        <div class="item row" style="border-top: 1px solid rgba(1, 1, 1, 0.1);">
+          <span style="text-align:left" class="col col-50">Pilih Alasan</span>
+        </div>
+        <div class="row"  style="flex-wrap: wrap;">
+          <div class="col col-50" ng-repeat="item in alasan">
+            <ion-checkbox  ng-model="item.checked" ng-checked="item.checked">
+              {{ item.todo }}
+            </ion-checkbox>
+          </div>
+        </div>
+        <div class="item row">
+          <span style="text-align:left" class="col col-50">Alasan Lain</span>
+        </div>
+        <div class="item item-body">
+            <textarea placeholder="Masukkan Alasan Disini"></textarea>
+        </div>
+        <div class="row">
+        <div class="col col-100">
+          <div class="list">
+            <button type="submit" class="button button-block button-balanced" ng-click="closemodalratingjelek()">
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+  </ion-content>
+</ion-modal-view>

@@ -1,0 +1,26 @@
+<ion-view view-title="HISTORY">
+	<ion-content>
+	    <div class="list card" ng-repeat="jadwal in datajadwal " ng-click="openmodaldetail(jadwal)">
+			<div class="item row">
+			  <span style="text-align:left;" class="col col-50">
+			  	{{jadwal.ID_PEKERJA}}
+			  </span>
+			  	<span style="text-align:right;font-size: 14px" class="col col-50">
+			  		{{jadwal.TGL}} {{jadwal.JAM_MASUK}} - {{jadwal.JAM_KELUAR}}
+		  		</span>
+			</div>
+		    <div class="item item-body">
+		      <ion-item>
+                <div class="item-icon-left">
+                    <i class="icon ion-navicon"></i>
+                   	{{jadwal.ACCESS_UNIX}}
+                </div>
+                <div class="item-icon-right">
+                    <i class="icon ion-ios-star-outline"></i>
+                </div>
+            </ion-item>
+		    </div>
+	    </div>
+	</ion-content>
+</ion-view>
+

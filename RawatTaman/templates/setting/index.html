@@ -1,0 +1,31 @@
+<ion-view view-title="Account">
+	<ion-content>
+	  <ion-list>
+	    <ion-item class="profile-item">
+	      <div class="profile-picture big-profile-picture" style="background:#93C178">
+	        <img data-ng-src="{{profiles.picture}}" width="100%" height="100%">
+	      </div>
+	      <h5 class="profile-name dark">{{profiles.name}}</h5>
+	    </ion-item>
+	  </ion-list>
+	      <ion-list>
+	      <ion-toggle  ng-model="settings.enablefacebook">
+		        Link To Facebook
+		    </ion-toggle>
+		    <ion-toggle  ng-model="settings.enablegoogle">
+		        Link To Google+
+		    </ion-toggle>
+		    <ion-toggle  ng-model="settings.enablelinkedin">
+		        Link To Linkedin
+		    </ion-toggle>
+		    <ion-toggle  ng-model="settings.enabletwitter">
+		        Link To Twitter
+		    </ion-toggle>
+		    <ion-item class="item item-icon-right" type="item-text-wrap" ng-click="logout()">
+		        <h2>Log Out</h2>
+		        <i class="icon ion-log-out"></i>
+	      	</ion-item>
+	    </ion-list>
+	</ion-content>
+</ion-view>
+
