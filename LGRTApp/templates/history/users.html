@@ -1,0 +1,77 @@
+<ion-modal-view class="modaldetail">
+  <ion-header-bar class="bar bar-header bar-assertive">
+    <h1 class="title">DETAIL PEKERJA</h1>
+    <button class="button button-icon icon ion-arrow-left-c" ng-click="closemodaldetailuser()"></button>
+    <button class="button button-icon"></button>
+  </ion-header-bar>
+  <ion-content>
+    <div class="list card">
+      <ion-item class="profile-item">
+        <div class="profile-picture big-profile-picture" style="background:#93C178">
+          <img data-ng-src="data:image/png;base64,{{detailpekerja.PHOTO}}" width="100%" height="100%">
+        </div>
+        <h5 class="profile-name dark">{{detailpekerja.NAMA}}</h5>
+      </ion-item>
+<!--       <ion-item class="profile-item">
+        <ionic-ratings ratingsobj='ratingsObject' index='0'></ionic-ratings>
+      </ion-item> -->
+
+    </div>
+      <div class="list card">
+        <div class="item row">
+          <span style="text-align:left" class="col col-50">Info Personal</span>
+        </div>
+<!--         <div class="item item-body">
+            <p align='justify'>
+              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+            </p>
+        </div> -->
+        <ion-item>
+            <div class="item-icon-left">
+                <i class="icon ion-key"></i>
+                <p>{{detailpekerja.ID_PEKERJA|uppercase}}</p>
+            </div>
+            <div class="item-icon-right">
+                <i class="icon ion-ios-arrow-right"></i>
+            </div>
+        </ion-item>
+        <ion-item>
+            <div class="item-icon-left">
+                <i class="icon ion-social-whatsapp custom-icon-green"></i>
+                <p>{{detailpekerja.HP|uppercase}}</p>
+            </div>
+            <div class="item-icon-right">
+                <i class="icon ion-ios-arrow-right"></i>
+            </div>
+        </ion-item>
+        <ion-item>
+            <div class="item-icon-left">
+                <i class="icon ion-male" ng-if="detailpekerja.GENDER == 'pria'"></i>
+                <i class="icon ion-female" ng-if="detailpekerja.GENDER != 'pria'"></i>
+                <p>{{detailpekerja.GENDER|uppercase}}</p>
+            </div>
+            <div class="item-icon-right">
+                <i class="icon ion-ios-arrow-right"></i>
+            </div>
+        </ion-item>
+        <ion-item ng-if="detailpekerja.ALAMAT">
+            <div class="item-icon-left">
+                <i class="icon ion-ios-home-outline"></i>
+                <p>{{detailpekerja.ALAMAT}}</p>
+            </div>
+            <div class="item-icon-right">
+                <i class="icon ion-ios-arrow-right"></i>
+            </div>
+        </ion-item>
+        <ion-item ng-if="detailpekerja.EMAIL">
+            <div class="item-icon-left">
+                <i class="icon ion-ios-email-outline"></i>
+                <p>{{detailpekerja.EMAIL}}</p>
+            </div>
+            <div class="item-icon-right">
+                <i class="icon ion-ios-arrow-right"></i>
+            </div>
+        </ion-item>
+      </div>
+  </ion-content>
+</ion-modal-view>

@@ -1,0 +1,35 @@
+<!-- <ion-modal-view class="modaldetail">
+  <ion-header-bar class="bar bar-header bar-assertive">
+    <h1 class="title">PHOTO</h1>
+    <button class="button button-clear left" ng-click="closeModalImages()">
+    	<i class="icon ion-ios-close-outline"></i>
+    </button>
+  </ion-header-bar>
+
+  <ion-content class="padding">
+		<div class="modal image-modal transparent">
+		    <ion-slide-box on-slide-changed="slideChanged(index)" show-pager="true" active-slide="activeSlide">
+		        <ion-slide ng-repeat="item in gambar">
+		            <img data-ng-src="{{item.IMAGE_64}}" zoom-src="{{item.IMAGE_64}}" zoom-view class="fullscreen-image"/>
+                <p class="info"> {{item.KETERANGAN}} </p>
+		        </ion-slide>
+		    </ion-slide-box>
+		</div>
+  </ion-content>
+</ion-modal-view> -->
+
+
+<div class="modal image-modal transparent" on-swipe-down="closeModalImages()" on-swipe-up="closeModalImages()">
+  <ion-slide-box on-slide-changed="slideChanged(index)" active-slide="activeSlide">
+    <ion-slide ng-repeat="item in gambar">
+ 
+      <ion-scroll direction="xy" scrollbar-x="false" scrollbar-y="false"
+      zooming="true" min-zoom="zoomMin" style="width: 100%; height: 100%"
+      delegate-handle="scrollHandle{{$index}}" on-scroll="updateSlideStatus(activeSlide)" on-release="updateSlideStatus(activeSlide)">
+ 
+      <div class="image" style='background-image: url("{{item.IMAGE_64}}")'></div>
+      
+    </ion-scroll>
+  </ion-slide>
+</ion-slide-box>
+</div>

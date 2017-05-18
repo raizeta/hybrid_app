@@ -1,0 +1,32 @@
+<ion-view view-title="HISTORY">
+	<ion-content>
+	    <div class="list card" ng-repeat="jadwal in datajadwal " ng-click="openmodaldetail(jadwal)">
+			<div class="item row">
+			  <span style="text-align:left;" class="col col-50" >
+			  	<style>
+			  		li + li::before {content: ",";};
+		  		</style>
+			  	<ul>
+			  		<li ng-repeat="pekerja in jadwal.LIST_PEKERJA" style="display:inline">
+			  			<span style="text-align:left;font-size:12px;">{{pekerja.NAMA|uppercase}}</span>
+			  		</li> 
+			  	</ul>
+			  </span>
+			  	<span style="text-align:right;font-size: 14px" class="col col-50">
+			  		{{jadwal.JAM_MASUK|date :'h:mm'}} - {{jadwal.JAM_KELUAR}}
+		  		</span>
+			</div>
+		    <div class="item item-body">
+		      <ion-item>
+                <div class="item-icon-left">
+                    <i class="icon ion-navicon"></i>
+                   	{{jadwal.TGL | date :'EEEE,dd-MM-yyyy'}} 
+                </div>
+                <div class="item-icon-right">
+                    <i class="icon ion-star custom-icon-gold"></i>
+                </div>
+            </ion-item>
+		    </div>
+	    </div>
+	</ion-content>
+</ion-view>

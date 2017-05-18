@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<!--     <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com https://raizeta.auth0.com.auth0.com; style-src 'self' 'unsafe-inline' https://cdn.auth0.com; media-src *; img-src https:; font-src https://cdn.auth0.com;" /> -->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+
+    <link rel="manifest" href="manifest.json">
+
+    <!-- un-comment this code to enable service worker
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js')
+          .then(() => console.log('service worker installed'))
+          .catch(err => console.log('Error', err));
+      }
+    </script>-->
+
+
+    <!-- compiled css output -->
+    <link href="css/ionic.app.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/modal.css" rel="stylesheet">
+    <link rel="stylesheet" href="lib/fullcalendar/dist/fullcalendar.css"/>
+    <script type="text/javascript" src="lib/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/moment/min/moment.min.js"></script>
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+    <script src="lib/ionic-ratings/src/ionic-ratings.js"></script>
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
+    
+
+    
+    <script type="text/javascript" src="lib/angular-ui-calendar/src/calendar.js"></script>
+    <script type="text/javascript" src="lib/fullcalendar/dist/fullcalendar.min.js"></script>
+    <script type="text/javascript" src="lib/fullcalendar/dist/gcal.js"></script>
+    <script type="text/javascript" src="lib/ionic-zoom-view/dist/ionic-zoom-view.js"></script>
+
+<!--     <script src="lib/auth0-lock/build/auth0-lock.js"></script>
+    <script src="lib/auth0.js/build/auth0.js"></script> -->
+    <!-- <script type="text/javascript" src="//cdn.auth0.com/w2/auth0-6.7.js"></script> -->
+    <script src="js/autho.js"></script>
+    <script src="lib/auth0-angular/build/auth0-angular.js"></script>
+
+    <script src="js/app.js"></script>
+    <script src="js/routing/secured.js"></script>
+    <script src="js/routing/feedback.js"></script>
+    <script src="js/routing/history.js"></script>
+    <script src="js/routing/informasi.js"></script>
+    <script src="js/routing/jadwal.js"></script>
+    <script src="js/routing/setting.js"></script>
+    <script src="js/controller/secured.js"></script>
+    <script src="js/controller/history.js"></script>
+    <script src="js/controller/jadwal.js"></script>
+    <script src="js/controller/setting.js"></script>
+    <script src="js/services/storage.js"></script>
+    <script src="js/services/util.js"></script>
+    <script src="js/factory/secured.js"></script>
+    <script src="js/factory/jadwal.js"></script>
+  </head>
+  <body ng-app="starter">
+    <ion-nav-bar class="bar-dark">
+        <ion-nav-back-button></ion-nav-back-button>
+    </ion-nav-bar>
+    <ion-nav-view></ion-nav-view>
+  </body>
+</html>

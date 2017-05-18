@@ -1,0 +1,13 @@
+<ion-view view-title="DASHBOARD" name="dashboard-view">
+	<ion-content scroll="true">
+        <div class="row" style="flex-wrap: wrap;">
+            <div class="col col-33" style="cursor:pointer" ng-repeat="item in menus">
+            	<a ng-href="{{item.link}}">
+                    <img ng-src="{{item.src}}" width="100%" style="border-radius: 50%;"/>
+                </a>
+                <h5 style="text-align:center;display:block;margin-top:-5px">{{item.judul}}</h5>
+            </div>
+        </div>
+        
+    </ion-content>
+</ion-view>
