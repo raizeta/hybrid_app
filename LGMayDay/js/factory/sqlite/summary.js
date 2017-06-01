@@ -35,6 +35,23 @@ angular.module('starter')
         return deferred.promise; 
     }
 
+    var SumTransHeaderCompletePerShift = function (ACCESS_UNIX,OUTLET_ID,STATUS_BUY,TRANS_DATE,SHIFT_ID)
+    {
+        var deferred            = $q.defer();
+        var qcounttransaksi     = 'SELECT sum(TOTAL_HARGA) AS TOTAL FROM Tbl_CustBuyTrans WHERE ACCESS_UNIX = ? AND OUTLET_ID = ? AND STATUS_BUY = ? AND TRANS_DATE = ? AND SHIFT_ID = ?';
+        $cordovaSQLite.execute($rootScope.db,qcounttransaksi,[ACCESS_UNIX,OUTLET_ID,STATUS_BUY,TRANS_DATE,SHIFT_ID])
+        .then(function(result) 
+        {
+            var response = UtilService.SqliteToArray(result);
+            deferred.resolve(response);
+        },
+        function (error)
+        {
+            deferred.reject(error);
+        });
+        return deferred.promise; 
+    }
+
     var JoinTransWithShopCart = function (STATUS_BUY)
     {
         var deferred            = $q.defer();
@@ -73,6 +90,7 @@ angular.module('starter')
     return{
             CountTransaksiComplete:CountTransaksiComplete,
             SumTransHeaderComplete:SumTransHeaderComplete,
+            SumTransHeaderCompletePerShift:SumTransHeaderCompletePerShift,
             JoinTransWithShopCart:JoinTransWithShopCart,
             BayarCash:BayarCash
         }

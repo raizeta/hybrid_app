@@ -5,6 +5,7 @@ angular.module('starter')
     {
         var deferred            = $q.defer();
         var TGL_CLOSE           = datatosave.TGL_CLOSE;
+        var SHIFT_ID            = datatosave.SHIFT_ID;
         var ACCESS_UNIX         = datatosave.ACCESS_UNIX;
         var OUTLET_CODE         = datatosave.OUTLET_CODE;
         var CASHINDRAWER        = datatosave.CASHINDRAWER;
@@ -16,8 +17,8 @@ angular.module('starter')
         var IS_OPEN             = datatosave.IS_OPEN;
         var IS_CLOSE            = datatosave.IS_CLOSE;
         var IS_ONSERVER         = datatosave.IS_ONSERVER;
-        var isitable            = [TGL_CLOSE,ACCESS_UNIX,OUTLET_CODE,CASHINDRAWER,CHECKCASH,ADDCASH,SELLCASH,TOTALCASH,WITHDRAW,IS_OPEN,IS_CLOSE,IS_ONSERVER];
-        var queryinsertclose    = 'INSERT INTO Tbl_CloseBook (TGL_CLOSE,ACCESS_UNIX,OUTLET_CODE,CASHINDRAWER,CHECKCASH,ADDCASH,SELLCASH,TOTALCASH,WITHDRAW,IS_OPEN,IS_CLOSE,IS_ONSERVER) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)';
+        var isitable            = [TGL_CLOSE,SHIFT_ID,ACCESS_UNIX,OUTLET_CODE,CASHINDRAWER,CHECKCASH,ADDCASH,SELLCASH,TOTALCASH,WITHDRAW,IS_OPEN,IS_CLOSE,IS_ONSERVER];
+        var queryinsertclose    = 'INSERT INTO Tbl_CloseBook (TGL_CLOSE,SHIFT_ID,ACCESS_UNIX,OUTLET_CODE,CASHINDRAWER,CHECKCASH,ADDCASH,SELLCASH,TOTALCASH,WITHDRAW,IS_OPEN,IS_CLOSE,IS_ONSERVER) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)';
         $cordovaSQLite.execute($rootScope.db,queryinsertclose,isitable)
         .then(function(result) 
         {
@@ -128,7 +129,29 @@ angular.module('starter')
         });
         return deferred.promise; 
     }
-
+    var GetSetoranBookWithoutStatus = function (STORAN_DATE,ACCESS_UNIX,OUTLET_CODE)
+    {
+        var deferred        = $q.defer();
+        var query           = 'SELECT * FROM Tbl_Setoran WHERE STORAN_DATE = ? AND ACCESS_UNIX = ? AND OUTLET_CODE  = ?';
+        $cordovaSQLite.execute($rootScope.db, query,[STORAN_DATE,ACCESS_UNIX,OUTLET_CODE])
+        .then(function(result) 
+        {
+            if(result.rows.length > 0)
+            {
+                var response = UtilService.SqliteToArray(result);
+                deferred.resolve(response);
+            }
+            else
+            {
+                deferred.resolve([]);
+            }
+        },
+        function (error)
+        {
+            deferred.reject(error); 
+        });
+        return deferred.promise; 
+    }
     var UpdateStatusSetoranBook = function (datatoupdate)
     {
         var deferred        = $q.defer();
@@ -171,6 +194,7 @@ angular.module('starter')
             UpdateOpenCloseBook:UpdateOpenCloseBook,
             SetSetoranBook:SetSetoranBook,
             GetSetoranBook:GetSetoranBook,
+            GetSetoranBookWithoutStatus:GetSetoranBookWithoutStatus,
             UpdateStatusSetoranBook:UpdateStatusSetoranBook,
             UpdateIsOnServerSetoranBook:UpdateIsOnServerSetoranBook
         }

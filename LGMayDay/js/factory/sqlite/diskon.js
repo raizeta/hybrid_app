@@ -36,11 +36,12 @@ angular.module('starter')
         var PERIODE_TGL2        = datatosave.PERIODE_TGL2;
         var PERIODE_TIME1       = datatosave.PERIODE_TIME1;
         var PERIODE_TIME2       = datatosave.PERIODE_TIME2;
-        var STATUS              = datatosave.START_TIME;
         var DCRIPT              = datatosave.DCRIPT;
+        var STATUS              = datatosave.STATUS;
+        var IS_ONSERVER         = datatosave.IS_ONSERVER;
 
-        var isitable            = [ITEM_ID,OUTLET_CODE,DISCOUNT_PERCENT,MAX_DISCOUNT,PERIODE_TGL1,PERIODE_TGL2,PERIODE_TIME1,PERIODE_TIME2,STATUS,DCRIPT]
-        var queryinsertdiskon   = 'INSERT INTO Tbl_Diskon (ITEM_ID,OUTLET_CODE,DISCOUNT_PERCENT,MAX_DISCOUNT,PERIODE_TGL1,PERIODE_TGL2,PERIODE_TIME1,PERIODE_TIME2,STATUS,DCRIPT) VALUES (?,?,?,?,?,?,?,?,?,?)';
+        var isitable            = [ITEM_ID,OUTLET_CODE,DISCOUNT_PERCENT,MAX_DISCOUNT,PERIODE_TGL1,PERIODE_TGL2,PERIODE_TIME1,PERIODE_TIME2,DCRIPT,STATUS,IS_ONSERVER]
+        var queryinsertdiskon   = 'INSERT INTO Tbl_Diskon (ITEM_ID,OUTLET_CODE,DISCOUNT_PERCENT,MAX_DISCOUNT,PERIODE_TGL1,PERIODE_TGL2,PERIODE_TIME1,PERIODE_TIME2,DCRIPT,STATUS,IS_ONSERVER) VALUES (?,?,?,?,?,?,?,?,?,?,?)';
         $cordovaSQLite.execute($rootScope.db,queryinsertdiskon,isitable)
         .then(function(result) 
         {

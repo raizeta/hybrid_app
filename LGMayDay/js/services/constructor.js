@@ -57,10 +57,11 @@ angular.module('starter')
 
         return transheader;
     }
-    var OpenBookConstructor     = function()
+    var OpenBookConstructor     = function(SHIFT_ID)
     {
         var openbook    = {};
         openbook.TGL_CLOSE    = tanggalsekarang;
+        openbook.SHIFT_ID     = profile.ACCESS_UNIX + stores.OUTLET_CODE + SHIFT_ID;
         openbook.ACCESS_UNIX  = profile.ACCESS_UNIX;
         openbook.OUTLET_CODE  = stores.OUTLET_CODE;
         openbook.CASHINDRAWER = 0;
@@ -77,10 +78,10 @@ angular.module('starter')
         return openbook;
     }
 
-    var SetoranConstructor     = function()
+    var SetoranConstructor     = function(nomorurut)
     {
         var setoran     = {};
-        setoran.CLOSING_ID      = '2.' + stores.OUTLET_CODE + '.' + $filter('date')(new Date(),'yyyyMMdd');
+        setoran.CLOSING_ID      = '2.' + stores.OUTLET_CODE + '.' + $filter('date')(new Date(),'yyyyMMdd') + '.' + nomorurut;
         setoran.ACCESS_UNIX     = profile.ACCESS_UNIX;
         setoran.STORAN_DATE     = tanggalsekarang;
         setoran.OUTLET_CODE     = stores.OUTLET_CODE;
@@ -94,6 +95,23 @@ angular.module('starter')
         setoran.IS_ONSERVER     = 0;
 
         return setoran;
+    }
+
+    var ShiftConstructor        = function()
+    {
+        var shift   = {};
+        shift.SHIFT_ID      = '';
+        shift.SHIFT_DATE    = tanggalsekarang;
+        shift.ACCESS_UNIX   = profile.ACCESS_UNIX;
+        shift.OUTLET_CODE   = stores.OUTLET_CODE;
+        shift.STATUS        = 0;
+        shift.CREATE_BY     = profile.ACCESS_UNIX;
+        shift.CREATE_AT     = waktusekarang;
+        shift.UPDATE_BY     = profile.ACCESS_UNIX;
+        shift.UPDATE_AT     = waktusekarang;
+        shift.IS_ONSERVER   = 0;
+
+        return shift
     }
 	return{
 			ProductConstructor:ProductConstructor,

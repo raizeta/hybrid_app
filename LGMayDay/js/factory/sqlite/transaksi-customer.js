@@ -93,10 +93,11 @@ angular.module('starter')
         var UPDATE_AT       = datatosave.UPDATE_AT;
         var STATUS          = datatosave.STATUS;
         var STATUS_BUY      = datatosave.STATUS_BUY;
+        var SHIFT_ID        = datatosave.SHIFT_ID;
         var IS_ONSERVER     = datatosave.IS_ONSERVER;
 
-        var isitable                = [ID_SERVER,TRANS_DATE,TRANS_ID,ACCESS_UNIX,OUTLET_ID,TOTAL_ITEM,TOTAL_HARGA,TYPE_PAY,BANK_NM,BANK_NO,CONSUMER_NM,CONSUMER_EMAIL,CONSUMER_PHONE,CREATE_BY,CREATE_AT,UPDATE_BY,UPDATE_AT,STATUS,STATUS_BUY,IS_ONSERVER]
-        var queryinserttranscust    = 'INSERT INTO Tbl_CustBuyTrans (ID_SERVER,TRANS_DATE,TRANS_ID,ACCESS_UNIX,OUTLET_ID,TOTAL_ITEM,TOTAL_HARGA,TYPE_PAY,BANK_NM,BANK_NO,CONSUMER_NM,CONSUMER_EMAIL,CONSUMER_PHONE,CREATE_BY,CREATE_AT,UPDATE_BY,UPDATE_AT,STATUS,STATUS_BUY,IS_ONSERVER) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+        var isitable                = [ID_SERVER,TRANS_DATE,TRANS_ID,ACCESS_UNIX,OUTLET_ID,TOTAL_ITEM,TOTAL_HARGA,TYPE_PAY,BANK_NM,BANK_NO,CONSUMER_NM,CONSUMER_EMAIL,CONSUMER_PHONE,CREATE_BY,CREATE_AT,UPDATE_BY,UPDATE_AT,STATUS,STATUS_BUY,SHIFT_ID,IS_ONSERVER]
+        var queryinserttranscust    = 'INSERT INTO Tbl_CustBuyTrans (ID_SERVER,TRANS_DATE,TRANS_ID,ACCESS_UNIX,OUTLET_ID,TOTAL_ITEM,TOTAL_HARGA,TYPE_PAY,BANK_NM,BANK_NO,CONSUMER_NM,CONSUMER_EMAIL,CONSUMER_PHONE,CREATE_BY,CREATE_AT,UPDATE_BY,UPDATE_AT,STATUS,STATUS_BUY,SHIFT_ID,IS_ONSERVER) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
         $cordovaSQLite.execute($rootScope.db,queryinserttranscust,isitable)
         .then(function(result) 
         {
@@ -112,7 +113,7 @@ angular.module('starter')
     var UpdateTransCustsHeader = function (datatoupdate)
     {
         var deferred        = $q.defer();
-        var query           = 'UPDATE Tbl_CustBuyTrans SET STATUS_BUY = ?,TOTAL_HARGA = ?,TYPE_PAY = ?,TOTAL_ITEM = ?, BANK_NM = ?, BANK_NO = ? WHERE TRANS_ID = ?';
+        var query           = 'UPDATE Tbl_CustBuyTrans SET STATUS_BUY = ?,TOTAL_HARGA = ?,TYPE_PAY = ?,TOTAL_ITEM = ?, BANK_NM = ?, BANK_NO = ?,SHIFT_ID = ? WHERE TRANS_ID = ?';
         $cordovaSQLite.execute($rootScope.db,query,datatoupdate)
         .then(function(result) 
         {

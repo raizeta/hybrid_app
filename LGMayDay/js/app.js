@@ -33,25 +33,29 @@ angular.module('starter', ['ionic','ngCordova','ui.grid', 'ui.grid.selection','d
                       .handleNotificationOpened(notificationOpenedCallback)
                       .endInit();
     });
-    $rootScope.db = window.openDatabase("rasasayang.db", "1.0", "Your App", 200000);
+    $rootScope.db = window.openDatabase("rasasayang.db", "1.0", "Your App", 2000000);
     $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_Store (id INTEGER PRIMARY KEY AUTOINCREMENT,ACCESS_UNIX TEXT,OUTLET_CODE TEXT,OUTLET_NM TEXT,LOCATE_PROVINCE TEXT,LOCATE_CITY TEXT,ALAMAT TEXT,PIC TEXT,TLP TEXT,FAX TEXT,EXPIRED TEXT,STATUS INTEGER,CREATE_BY TEXT,UPDATE_BY TEXT,CREATE_AT TEXT,UPDATE_AT TEXT,IS_ONSERVER INTEGER)');
     $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_BarangPenjualan (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_SAVE TEXT,OUTLET_CODE TEXT,ITEM_ID TEXT,ITEM_NM TEXT,SATUAN TEXT,DEFAULT_HARGA INTEGER,DEFAULT_STOCK INTEGER,DEFAULT_DISCOUNT TEXT,DEFAULT_IMAGE TEXT,UPDATE_AT TEXT,STATUS INT,IS_ONSERVER INT)');
-    $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_CustBuyTrans (id INTEGER PRIMARY KEY AUTOINCREMENT,ID_SERVER INT,TRANS_DATE TEXT,TRANS_ID TEXT,ACCESS_UNIX TEXT,OUTLET_ID TEXT,TOTAL_ITEM INTEGER,TOTAL_HARGA INTEGER,TYPE_PAY INTEGER,BANK_NM TEXT,BANK_NO TEXT,CONSUMER_NM TEXT,CONSUMER_EMAIL TEXT,CONSUMER_PHONE TEXT,CREATE_BY TEXT,CREATE_AT TEXT,UPDATE_BY TEXT,UPDATE_AT TEXT,STATUS INT,STATUS_BUY TEXT,IS_ONSERVER INT)');
+    $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_CustBuyTrans (id INTEGER PRIMARY KEY AUTOINCREMENT,ID_SERVER INT,TRANS_DATE TEXT,TRANS_ID TEXT,ACCESS_UNIX TEXT,OUTLET_ID TEXT,TOTAL_ITEM INTEGER,TOTAL_HARGA INTEGER,TYPE_PAY INTEGER,BANK_NM TEXT,BANK_NO TEXT,CONSUMER_NM TEXT,CONSUMER_EMAIL TEXT,CONSUMER_PHONE TEXT,CREATE_BY TEXT,CREATE_AT TEXT,UPDATE_BY TEXT,UPDATE_AT TEXT,STATUS INT,STATUS_BUY TEXT,SHIFT_ID TEXT,IS_ONSERVER INT)');
+    $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_CloseBook (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_CLOSE TEXT,SHIFT_ID TEXT,ACCESS_UNIX TEXT,OUTLET_CODE TEXT,CASHINDRAWER INT,CHECKCASH INT,ADDCASH INT,SELLCASH INT,TOTALCASH INT,WITHDRAW INT,IS_OPEN INTEGER,IS_CLOSE INTEGER,IS_ONSERVER INT)');
     
-    $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_CloseBook (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_CLOSE TEXT,ACCESS_UNIX TEXT,OUTLET_CODE TEXT,CASHINDRAWER INT,CHECKCASH INT,ADDCASH INT,SELLCASH INT,TOTALCASH INT,WITHDRAW INT,IS_OPEN INTEGER,IS_CLOSE INTEGER,IS_ONSERVER INT)');
+    $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_Diskon (id INTEGER PRIMARY KEY AUTOINCREMENT,ITEM_ID TEXT,OUTLET_CODE TEXT,DISCOUNT_PERCENT TEXT,MAX_DISCOUNT TEXT,PERIODE_TGL1 TEXT,PERIODE_TGL2 TEXT,PERIODE_TIME1 TEXT,PERIODE_TIME2 TEXT,DCRIPT TEXT,STATUS INTEGER,IS_ONSERVER INTEGER)');
+    
+    $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_BarangImage (id INTEGER PRIMARY KEY AUTOINCREMENT,ITEM_ID TEXT,OUTLET_CODE TEXT,CREATE_AT TEXT,UPDATE_AT TEXT,IMG64 TEXT,IS_ONSERVER INTEGER)');
     
 
-    $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_ShopCart (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_ADDTOCART TEXT,DATETIME_ADDTOCART TEXT,NOMOR_TRANS TEXT,ITEM_ID TEXT,ITEM_NM TEXT,ITEM_HARGA INTEGER,QTY_INCART INTEGER,DISCOUNT TEXT,IS_ONSERVER INT)');
+    $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_ShopCart (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_ADDTOCART TEXT,DATETIME_ADDTOCART TEXT,NOMOR_TRANS TEXT,ITEM_ID TEXT,ITEM_NM TEXT,ITEM_HARGA INTEGER,QTY_INCART INTEGER,DISCOUNT TEXT,SATUAN TEXT,IS_ONSERVER INT)');
     $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_SaveBill (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_SAVE TEXT,NOMOR_TRANS TEXT,ALIAS_TRANS TEXT)');
     $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_Customer (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_SAVE TEXT,ACCESS_UNIX TEXT,OUTLET_CODE TEXT,NAME TEXT,EMAIL TEXT,PHONE TEXT,CREATE_AT TEXT,UPDATE_AT TEXT,IS_ONSERVER INT)');
     $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_Harga (id INTEGER PRIMARY KEY AUTOINCREMENT,ITEM_ID TEXT,OUTLET_CODE TEXT,ITEM_HARGA INTEGER,PERIODE_TGL1 TEXT,PERIODE_TGL2 TEXT,START_TIME TEXT,DCRIPT TEXT)');
-    $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_Diskon (id INTEGER PRIMARY KEY AUTOINCREMENT,ITEM_ID TEXT,OUTLET_CODE TEXT,DISCOUNT_PERCENT TEXT,MAX_DISCOUNT TEXT,PERIODE_TGL1 TEXT,PERIODE_TGL2 TEXT,PERIODE_TIME1 TEXT,PERIODE_TIME2 TEXT,STATUS INT,DCRIPT TEXT)');
     $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_Absensi (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_SAVE TEXT,WAKTU_ABSENSI TEXT,TYPE_ABSENSI TEXT,OUTLET_CODE TEXT,EMP_ID TEXT,USERNAME TEXT,ACCESS_UNIX TEXT,IMG_ABSENSI TEXT,LAT_POST TEXT,LNG_POST TEXT,IS_ONSERVER INT)');
     $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_StoreCheck (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_SAVE TEXT,OUTLET_CODE TEXT,USERNAME TEXT,ACCESS_UNIX TEXT,STATUS_CHECK INT)');
     $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_Merchant (id INTEGER PRIMARY KEY AUTOINCREMENT,TGL_SAVE TEXT,OUTLET_CODE TEXT,MERCHANT_NO TEXT,MERCHANT_NM TEXT,MERCHANT_OWNER TEXT,STATUS_DISPLAY INT,IS_ONSERVER INT)');
     $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_Employe (id INTEGER PRIMARY KEY AUTOINCREMENT,ACCESS_UNIX TEXT,OUTLET_CODE TEXT,EMP_ID TEXT,NAME TEXT,EMP_KTP TEXT,EMP_ALAMAT TEXT,EMP_GENDER TEXT,EMP_STS_NIKAH TEXT,EMP_TLP TEXT,EMP_HP TEXT,EMP_EMAIL TEXT,IS_ONSERVER INT)');
     
     $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_Setoran (id INTEGER PRIMARY KEY AUTOINCREMENT,CLOSING_ID TEXT,ACCESS_UNIX TEXT,STORAN_DATE TEXT,OUTLET_CODE TEXT,TTL_STORAN TEXT,IMG TEXT,STATUS INTEGER,CREATE_BY TEXT,CREATE_AT TEXT,UPDATE_BY TEXT,UPDATE_AT TEXT,IS_ONSERVER INT)');
+    $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Tbl_Shift (id INTEGER PRIMARY KEY AUTOINCREMENT,SHIFT_ID TEXT,SHIFT_DATE TEXT,ACCESS_UNIX TEXT,OUTLET_CODE TEXT,STATUS INTEGER,CREATE_BY TEXT,CREATE_AT TEXT,UPDATE_BY TEXT,UPDATE_AT TEXT,IS_ONSERVER INT)');
+    
 })
 .config(function ($httpProvider) 
 {
@@ -122,40 +126,26 @@ angular.module('starter', ['ionic','ngCordova','ui.grid', 'ui.grid.selection','d
 
 
   $scope.groups = [
-                    // {
-                    //   name: 'Check Store','icons':'ion-funnel',
-                    //   items: [
-                    //             {child:'RCVD',path:'#/tab/checkstore-inventory'},
-                    //             {child:'BOOK',path:'#/tab/checkstore-booking'},
-                    //             {child:'SYNC',path:'#/tab/checkstore-sync'}
-                    //           ]
-                    // },
-                    // {
-                    //   name: 'Check HO','icons':'ion-shuffle',
-                    //   items: [
-                    //             {child:'BOOK',path:'#/tab/ho-inventory'}
-                    //           ]
-                    // },
+              
                     {
-                      name: 'Accounting','icons':'ion-cash',
+                      name: 'Akuntansi','icons':'ion-cash',
                       items: [
-                                {child:'SUMMARY',path:'#/tab/accounting-summary'},
-                                {child:'TRANSACTION',path:'#/tab/accounting-transaksi'},
-                                {child:'SETORAN',path:'#/tab/accounting-setoran'}
-                                // {child:'OUTCOME',path:'#/tab/accounting-outcome'}
+                                {child:'RINGKASAN',path:'#/tab/accounting-summary'},
+                                {child:'TRANSAKSI',path:'#/tab/accounting-transaksi'}
                               ]
                     },
                     {
-                      name: 'Employe','icons':'ion-person-stalker',
+                      name: 'Karyawan','icons':'ion-person-stalker',
                       items: [
                                 {child:'ABSENSI',path:'#/tab/absensi'}
                               ]
                     },
                     {
-                      name: 'Book','icons':'ion-umbrella',
+                      name: 'Mutasi','icons':'ion-umbrella',
                       items: [
                                 {child:'OPEN',path:'#/tab/openbook'},
-                                {child:'CLOSE',path:'#/tab/closebook'}
+                                {child:'CLOSE',path:'#/tab/closebook'},
+                                {child:'SETORAN',path:'#/tab/accounting-setoran'}
                               ]
                     },
                     // {

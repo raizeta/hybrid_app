@@ -1,16 +1,46 @@
 angular.module('starter')
-.controller('SalesCtrl', function($rootScope,$ionicHistory,$timeout,$ionicPosition,$scope,$state,$location,$ionicLoading,$ionicScrollDelegate,$ionicPopup,$ionicModal,$filter,UtilService,ConstructorService,StorageService,uiGridConstants,TransaksiCombFac,TransCustLiteFac,ShopCartLiteFac,BarangForSaleLiteFac,TransaksiHeaderFac,TransaksiDetailFac,SaveToBillLiteFac,CustomerLiteFac,CustomerFac) 
+.controller('SalesCtrl', function($rootScope,$ionicHistory,$timeout,$ionicPosition,$scope,$state,$location,$ionicLoading,$ionicScrollDelegate,$ionicPopup,$ionicModal,$filter,UtilService,ConstructorService,StorageService,uiGridConstants,TransaksiCombFac,TransCustLiteFac,ShopCartLiteFac,BarangForSaleLiteFac,TransaksiHeaderFac,TransaksiDetailFac,SaveToBillLiteFac,CustomerLiteFac,CustomerFac,CloseBookLiteFac,HargaLiteFac) 
 {
     $scope.gridornot        = {grid: false};
+    $scope.soundon          = {on:false}
     $scope.namacustomer     = 'NEW CUSTOMER';
     $scope.noresi           = StorageService.get('TRANS-ACTIVE');
     var tglsekarang         = $filter('date')(new Date(),'yyyy-MM-dd');
+    var cektglresi          = $filter('date')(new Date(),'yyyyMMdd');
 
     $scope.changefilter = function(valeu)
     {
         $scope.filterproduct = valeu;
     }
-    
+    CloseBookLiteFac.GetOpenCloseBook(tglsekarang,$scope.profile.ACCESS_UNIX,$scope.stores.OUTLET_CODE,IS_OPEN = 1,IS_CLOSE = 0)
+    .then(function(responseclosebook)
+    {
+        if(responseclosebook.length == 0)
+        {
+            CloseBookLiteFac.GetOpenCloseBook(tglsekarang,$scope.profile.ACCESS_UNIX,$scope.stores.OUTLET_CODE,IS_OPEN = 1,IS_CLOSE = 1)
+            .then(function(responsehasopenclosebook)
+            {
+                var SHIFT_ID = '';
+                if(angular.isArray(responsehasopenclosebook) && responsehasopenclosebook.length > 0)
+                {
+                    var xxx         = responsehasopenclosebook[responsehasopenclosebook.length - 1].SHIFT_ID;
+                    var lastthree   = xxx.substr(xxx.length - 3);
+                    SHIFT_ID        = UtilService.StringPad(Number(lastthree) + 1,'000');
+                }
+                else
+                {
+                    SHIFT_ID = '001';
+                }
+                $scope.openbookdata = ConstructorService.OpenBookConstructor(SHIFT_ID);
+                $scope.SHIFT_ID     = $scope.openbookdata.SHIFT_ID;
+            });      
+        }
+        else
+        {
+            $scope.SHIFT_ID = responseclosebook[responseclosebook.length - 1].SHIFT_ID;
+        }
+    });
+
     $scope.newcusttrans     = function()
     {
         TransaksiCombFac.GetTransCustsHeaderComb(tglsekarang,$scope.profile.ACCESS_UNIX,$scope.stores.OUTLET_CODE,$scope.profile.access_token)
@@ -57,19 +87,32 @@ angular.module('starter')
     }
     if($scope.noresi)
     {
-        ShopCartLiteFac.GetShopCartByNomorTrans($scope.noresi)
-        .then(function(response)
+        var splitnoresi     = $scope.noresi.split('.');
+        var unixnoresi      = splitnoresi[0];
+        var outletnoresi    = splitnoresi[1];
+        var tanggalnoresi   = splitnoresi[2].substring(0, 8);;
+        if((outletnoresi == $scope.stores.OUTLET_CODE) && (tanggalnoresi == cektglresi) && (unixnoresi == $scope.profile.ACCESS_UNIX))
         {
-            if(angular.isArray(response) && response.length > 0)
+            ShopCartLiteFac.GetShopCartByNomorTrans($scope.noresi)
+            .then(function(response)
             {
-                $scope.itemincart = response;
-            }
-            else
-            {
-                $scope.itemincart = [];
-            }
-            $scope.loadproductforsale();
-        });    
+                if(angular.isArray(response) && response.length > 0)
+                {
+                    $scope.itemincart = response;
+                    console.log($scope.itemincart);
+                }
+                else
+                {
+                    $scope.itemincart = [];
+                }
+                $scope.loadproductforsale();
+            });
+        }
+        else
+        {
+            $scope.newcusttrans();
+            $scope.loadproductforsale();   
+        }    
     }          
     else
     {
@@ -79,8 +122,12 @@ angular.module('starter')
     
     $scope.tambahqtyitem = function(item)
     {
-        $scope.audio = new Audio('img/beep-07.wav');
-        $scope.audio.play();
+        if($scope.soundon.on)
+        {
+            $scope.audio = new Audio('img/beep-07.wav');
+            $scope.audio.play();   
+        }
+        
         if(item.DEFAULT_STOCK > 0)
         {
             ShopCartLiteFac.GetShopCartByItemAndNoTrans(item.ITEM_ID,$scope.noresi)
@@ -105,7 +152,8 @@ angular.module('starter')
                 datashopcarttosave.ITEM_NM              = item.ITEM_NM;
                 datashopcarttosave.ITEM_HARGA           = item.DEFAULT_HARGA;
                 datashopcarttosave.QTY_INCART           = item.QTY_INCART;
-                datashopcarttosave.DISCOUNT             = 10;
+                datashopcarttosave.SATUAN               = item.SATUAN;
+                datashopcarttosave.DISCOUNT             = Number(item.DEFAULT_DISCOUNT);
                 datashopcarttosave.IS_ONSERVER          = 0;
 
                 if(angular.isArray(response) && response.length > 0)
@@ -237,7 +285,7 @@ angular.module('starter')
 
             var TOTAL_ITEM = $scope.itemincart.length;
             var OLD_NORESI = $scope.noresi;
-            TransCustLiteFac.UpdateTransCustsHeader(['COMPLETE',$scope.totalpembayaran,$scope.methodpembayaran,TOTAL_ITEM,$scope.namabank,$scope.nomorrek,$scope.noresi])
+            TransCustLiteFac.UpdateTransCustsHeader(['COMPLETE',$scope.totalpembayaran,$scope.methodpembayaran,TOTAL_ITEM,$scope.namabank,$scope.nomorrek,$scope.SHIFT_ID,$scope.noresi])
             .then(function(responseupdatetransheader)
             {
                 $scope.newcusttrans();
@@ -337,6 +385,7 @@ angular.module('starter')
                             datadetailsaveserver.ITEM_QTY           = datadetail[i].QTY_INCART;
                             datadetailsaveserver.HARGA              = datadetail[i].ITEM_HARGA;
                             datadetailsaveserver.DISCOUNT           = datadetail[i].DISCOUNT;
+                            datadetailsaveserver.SATUAN             = datadetail[i].SATUAN;
                             datadetailsaveserver.DISCOUNT_STT       = 1;
                             datadetailsaveserver.STATUS             = 1;
                             datadetailsaveserver.CREATE_AT          = datadetail[i].DATETIME_ADDTOCART;
@@ -365,7 +414,6 @@ angular.module('starter')
                                     TransaksiHeaderFac.SetTranskasiHeader(dataheader)
                                     .then(function(responsetransaksiheaderfromserver)
                                     {
-                                        console.log(responsetransaksiheaderfromserver);
                                         TransCustLiteFac.UpdateTransCustHeaderIsOnServer($scope.oldnoresi,responsetransaksiheaderfromserver.ID)
                                         .then(function(responseupdateheaderinonserver)
                                         {
@@ -426,11 +474,11 @@ angular.module('starter')
         BarangForSaleLiteFac.SetBarangForSale($scope.newproduct)
         .then(function(responsesetbarang)
         {
-            console.log(responsesetbarang);
+            console.log("Set Barang Ke Local Sukses");
         },
-        function(error)
+        function(errorsetbarang)
         {
-            console.log(error);
+            console.log("Set Barang Ke Local Error");
         });
         $scope.tambahitemproduct.remove();
     };
@@ -526,12 +574,12 @@ angular.module('starter')
                 },
                 function(error)
                 {
-                    console.log(error);
+                    console.log("Get Trans Header Ke Sqlite Error");
                 });
             },
-            function(error)
+            function(errorgetcustomerlocal)
             {
-                console.log(error);
+                console.log("Get Customer Ke Sqlite Error");
             });
         });
     }
@@ -595,4 +643,296 @@ angular.module('starter')
         $scope.modalcustomernewtransaksi.remove();
     }
 
+    $scope.savetobill     = function()
+    {
+        $ionicModal.fromTemplateUrl('templates/sales/modalsavetobill.html', 
+        {
+            scope: $scope,
+            animation: 'fade-in-scale',
+            backdropClickToClose: true,
+            hardwareBackButtonClose: false,
+            backdrop:false
+        })
+        .then(function(modal) 
+        {
+            SaveToBillLiteFac.GetSaveToBillByDate()
+            .then(function(responselite)
+            {
+                $scope.listbill = responselite;
+            });
+            $scope.savetobillmodal  = modal;
+            $scope.billidentity     = $scope.noresi;
+            $scope.savetobillmodal.show();
+        });
+    }
+
+    $scope.ModalSaveToBillCancel = function()
+    {
+        $scope.savetobillmodal.remove();   
+    }
+    $scope.ModalSaveToBillClose = function() 
+    {
+        if($scope.itemincart.length > 0)
+        {
+            SaveToBillLiteFac.GetSaveToBillByNomorTrans($scope.noresi)
+            .then(function(responsesavebill)
+            {
+                if(responsesavebill.length == 0)
+                {
+                    var datatosavebill = {};
+                    datatosavebill.NOMOR_TRANS = $scope.noresi;
+                    if($scope.billidentity != $scope.noresi)
+                    {
+                        datatosavebill.ALIAS_TRANS = $scope.billidentity;
+                    }
+                    else
+                    {
+                        datatosavebill.ALIAS_TRANS = '';
+                    }
+                    SaveToBillLiteFac.SetSaveToBill(datatosavebill)
+                    .then(function(responsesave)
+                    {
+                        console.log(responsesave);
+                    },
+                    function(error)
+                    {
+                        console.log(error);
+                    });
+                }
+                $scope.newcusttrans();
+                $scope.loadproductforsale();
+            },
+            function(error)
+            {
+                console.log(error);
+            });
+        }
+        else
+        {
+            alert("Belum Ada Item Yang Dipilih.Minimal Harus Ada Satu Item.");    
+        }
+        
+        $scope.savetobillmodal.remove();
+    };
+
+    $scope.splitenomorbill = function(item)
+    {
+        var split = item.split('.');
+        return split[2];
+    }
+    $scope.loadfrombill = function(item)
+    {
+        StorageService.set('TRANS-ACTIVE',item.NOMOR_TRANS);
+        $scope.noresi = item.NOMOR_TRANS;
+        
+        ShopCartLiteFac.GetShopCartByNomorTrans(item.NOMOR_TRANS)
+        .then(function(response)
+        {
+            if(angular.isArray(response) && response.length > 0)
+            {
+                $scope.itemincart = response;
+                $scope.loadproductforsale();
+            }
+            else
+            {
+                $scope.itemincart = [];
+            }
+            $scope.banyakdicart = $scope.itemincart.length;
+        });
+        $scope.savetobillmodal.remove();
+    }
+    $scope.AddToCart = function(item,mode) 
+    {
+        console.log(item);
+        if(mode == 'fromcart')
+        {
+            var index = _.findIndex($scope.datas,{'ITEM_ID':item.ITEM_ID});
+            $scope.itemasli     = angular.copy($scope.datas[index]);
+            $scope.itemdecinc   = angular.copy($scope.datas[index]);
+            $scope.item         = $scope.datas[index];
+        }
+        else
+        {
+            $scope.itemasli     = angular.copy(item);
+            $scope.itemdecinc   = angular.copy(item);
+            $scope.item = item;   
+        }
+        
+        $ionicModal.fromTemplateUrl('templates/sales/modaladdtocart.html', 
+        {
+            scope: $scope,
+            animation: 'fade-in-scale',
+            backdropClickToClose: false,
+            hardwareBackButtonClose: false
+        })
+        .then(function(modal) 
+        {
+            $scope.modaladdtocart            = modal;
+            $scope.modaladdtocart.show();
+            if(!angular.isDefined($scope.item.QTY_INCART))
+            {
+                item.QTY_INCART = 0;
+            }
+            
+        });  
+    };
+
+    $scope.CloseModalAddToCart = function() 
+    {
+        ShopCartLiteFac.GetShopCartByItemAndNoTrans($scope.item.ITEM_ID,$scope.noresi)
+        .then(function(response)
+        {
+            var datatosave              = {};
+            datatosave.NOMOR_TRANS      = $scope.noresi;
+            datatosave.ITEM_ID          = $scope.item.ITEM_ID;
+            datatosave.ITEM_NM          = $scope.item.ITEM_NM;
+            datatosave.ITEM_HARGA       = $scope.item.DEFAULT_HARGA;
+            datatosave.QTY_INCART       = $scope.item.QTY_INCART;
+            datatosave.DISCOUNT         = 10;
+            datatosave.IS_ONSERVER      = 0;
+
+            if(angular.isArray(response) && response.length > 0)
+            {
+                if($scope.item.QTY_INCART > 0)
+                {
+                    ShopCartLiteFac.UpdateShopCartQty(datatosave)
+                    .then(function(response)
+                    {
+                        if($scope.item.QTY_INCART > $scope.itemasli.QTY_INCART)
+                        {
+                            var selisih = Number($scope.item.QTY_INCART) - Number($scope.itemasli.QTY_INCART);
+                            $scope.item.DEFAULT_STOCK -= selisih;
+                        }
+                        else
+                        {
+                            var selisih = Number($scope.itemasli.QTY_INCART) - Number($scope.item.QTY_INCART);
+                            $scope.item.DEFAULT_STOCK += selisih; 
+                        }
+                        BarangForSaleLiteFac.UpdateBarangForSaleByDateAndItem($scope.item)
+                        .then(function(response)
+                        {
+                            console.log(response);
+                        });
+                    });  
+                }
+                else
+                {
+                    ShopCartLiteFac.DeleteShopCartByNoTransAndItemId(datatosave)
+                    .then(function(response)
+                    {
+                        $scope.banyakdicart     -= 1;
+                        $scope.item.DEFAULT_STOCK    = $scope.itemasli.QTY_INCART + $scope.itemasli.DEFAULT_STOCK;
+                        BarangForSaleLiteFac.UpdateBarangForSaleByDateAndItem($scope.item)
+                        .then(function(response)
+                        {
+                            console.log(response);
+                        });
+                    });
+                    var index = _.findIndex($scope.itemincart,{'ITEM_ID':$scope.itemdecinc.ITEM_ID});
+                    $scope.itemincart.splice(index,1);
+                    $scope.audio = new Audio('wav/recycle.wav');
+                    $scope.audio.play(); 
+                }
+                
+            }
+            else
+            {
+                if($scope.item.QTY_INCART > 0)
+                {
+                    ShopCartLiteFac.SetShopCart(datatosave)
+                    .then(function(response)
+                    {
+                        $scope.banyakdicart     += 1;
+                        $scope.item.DEFAULT_STOCK   -= $scope.item.QTY_INCART;
+                        $scope.itemincart.push(datatosave);
+                        BarangForSaleLiteFac.UpdateBarangForSaleByDateAndItem($scope.item)
+                        .then(function(response)
+                        {
+                            console.log(response);
+                        });
+                    },
+                    function(error)
+                    {
+                        console.log(error);
+                    });  
+                }
+            }
+        });
+        $scope.modaladdtocart.remove();
+    };
+
+    $scope.incdec = function(incdec)
+    {
+        
+        var index = _.findIndex($scope.itemincart,{'ITEM_ID':$scope.itemdecinc.ITEM_ID});
+        if(incdec == 'inc')
+        {
+            if($scope.soundon.on)
+            {
+                $scope.audio = new Audio('img/beep-07.wav');
+                $scope.audio.play();   
+            }
+            $scope.itemdecinc.DEFAULT_STOCK         -= 1;
+            if($scope.itemdecinc.DEFAULT_STOCK >= 0) 
+            {
+                $scope.item.QTY_INCART  += 1;
+                $scope.itemincart[index].QTY_INCART += 1;
+            }    
+        }
+        else if(incdec == 'dec')
+        {
+            if($scope.soundon.on)
+            {
+                $scope.audio = new Audio('img/beep-5.wav');
+                $scope.audio.play();
+            }
+            if($scope.item.QTY_INCART > 0)
+            {
+                $scope.item.QTY_INCART -= 1; 
+                $scope.itemincart[index].QTY_INCART -= 1;  
+            } 
+        }
+    }
+    $scope.clearquantity = function()
+    {
+        $scope.item.QTY_INCART = 0;
+    }
+
+    HargaLiteFac.GetHarga($scope.stores.OUTLET_CODE,'2017-04-23','2017-04-24')
+    .then(function(responseharga)
+    {
+        $scope.harga    = responseharga;
+    },
+    function(errorharga)
+    {
+        console.log(errorharga)
+    });
+
+    $scope.findharga    = function(itemsproduct,$index)
+    {
+        var indexharga  = _.findIndex($scope.harga,{'ITEM_ID':itemsproduct.ITEM_ID});
+        if(indexharga > -1)
+        {
+            $scope.datas[$index].ITEM_HARGA = $scope.harga[indexharga].ITEM_HARGA;   
+        }
+    }
+
+    BarangForSaleLiteFac.GetBarangImageForSale($scope.stores.OUTLET_CODE)
+    .then(function(responsegetimage)
+    {
+        $scope.barangimage    = responsegetimage;
+    },
+    function(errorgetimage)
+    {
+        console.log(errorgetimage)
+    });
+
+    $scope.findimage    = function(itemsproduct,$index)
+    {
+        var indexgambar  = _.findIndex($scope.barangimage,{'ITEM_ID':itemsproduct.ITEM_ID});
+        if(indexgambar > -1)
+        {
+            $scope.datas[$index].GAMBAR = $scope.barangimage[indexgambar].IMG64;   
+        }
+    }
 });

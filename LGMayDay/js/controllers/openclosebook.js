@@ -1,5 +1,5 @@
 angular.module('starter')
-.controller('OpenBookCtrl', function($filter,$ionicLoading,$ionicHistory,$timeout,$scope,$state,$location,CloseBookLiteFac,ConstructorService) 
+.controller('OpenBookCtrl', function($filter,$ionicLoading,$ionicHistory,$timeout,$scope,$state,$location,CloseBookLiteFac,UtilService,ConstructorService) 
 {
 	var tglsekarang         = $filter('date')(new Date(),'yyyy-MM-dd');
     var IS_OPEN             = 1;
@@ -7,10 +7,25 @@ angular.module('starter')
     CloseBookLiteFac.GetOpenCloseBook(tglsekarang,$scope.profile.ACCESS_UNIX,$scope.stores.OUTLET_CODE,IS_OPEN,IS_CLOSE)
     .then(function(responseclosebook)
     {
-        console.log(responseclosebook);
         if(responseclosebook.length == 0)
         {
-            $scope.openbookdata = ConstructorService.OpenBookConstructor();      
+            CloseBookLiteFac.GetOpenCloseBook(tglsekarang,$scope.profile.ACCESS_UNIX,$scope.stores.OUTLET_CODE,IS_OPEN,IS_CLOSE = 1)
+            .then(function(responsehasopenclosebook)
+            {
+                var SHIFT_ID = '';
+                if(angular.isArray(responsehasopenclosebook) && responsehasopenclosebook.length > 0)
+                {
+                    var xxx         = responsehasopenclosebook[responsehasopenclosebook.length - 1].SHIFT_ID;
+                    var lastthree   = xxx.substr(xxx.length - 3);
+                    SHIFT_ID        = UtilService.StringPad(Number(lastthree) + 1,'000');
+                }
+                else
+                {
+                    SHIFT_ID = '001';
+                }
+                $scope.openbookdata = ConstructorService.OpenBookConstructor(SHIFT_ID);
+            });
+                  
         }
         else
         {
@@ -54,7 +69,7 @@ angular.module('starter')
         }); 
     }
 })
-.controller('CloseBookCtrl', function($filter,$ionicLoading,$ionicHistory,$ionicModal,$timeout,$scope,$state,UtilService,CloseBookLiteFac,SummaryLiteFac,ConstructorService)
+.controller('CloseBookCtrl', function(StorageService,$filter,$ionicLoading,$ionicHistory,$ionicModal,$timeout,$scope,$state,UtilService,CloseBookLiteFac,SummaryLiteFac,ConstructorService)
 {
 	$scope.dataclosebook   = {'modalawal':0,'withdraw':0,'totalpendapatan':0,'grandtotal':0}             
 	var tglsekarang        = $filter('date')(new Date(),'yyyy-MM-dd');
@@ -65,14 +80,22 @@ angular.module('starter')
     {
         if(responseclosebook.length > 0)
         {
+            
             var datawal = responseclosebook[responseclosebook.length - 1];
+            console.log(datawal);
             $scope.dataclosebook.modalawal  = Number(datawal.CHECKCASH) + Number(datawal.ADDCASH);
             $scope.dataclosebook.id         = datawal.id;
             $scope.sudahclose = false;
-            SummaryLiteFac.SumTransHeaderComplete($scope.profile.ACCESS_UNIX,$scope.stores.OUTLET_CODE,'COMPLETE',tglsekarang)
+            SummaryLiteFac.SumTransHeaderCompletePerShift($scope.profile.ACCESS_UNIX,$scope.stores.OUTLET_CODE,'COMPLETE',tglsekarang,datawal.SHIFT_ID)
             .then(function(response)
             {
-                var totalpendapatan = response[0].TOTAL;
+                console.log(response);
+                var totalpendapatan = 0;
+                if(angular.isArray(response) && response.length > 0)
+                {
+                    totalpendapatan += response[0].TOTAL;   
+                }
+                
                 var grandtotal     = $scope.dataclosebook.modalawal + totalpendapatan;
                 $scope.dataclosebook.totalpendapatan    = totalpendapatan;
                 $scope.dataclosebook.grandtotal         = grandtotal
@@ -89,6 +112,24 @@ angular.module('starter')
         console.log(error);
     });
 
+    var STATUS              = 0;
+    var IS_ONSERVER         = 0;
+    CloseBookLiteFac.GetSetoranBookWithoutStatus(tglsekarang,$scope.profile.ACCESS_UNIX,$scope.stores.OUTLET_CODE)
+    .then(function(responsesetoranbookonlocal)
+    {
+        if(angular.isArray(responsesetoranbookonlocal) && responsesetoranbookonlocal.length > 0)
+        {
+            var lastitem        = responsesetoranbookonlocal[responsesetoranbookonlocal.length - 1].CLOSING_ID;
+            var increment       = Number(lastitem.substr(lastitem.length - 3)) + 1;
+            var nomorurut       = UtilService.StringPad(increment,'000');
+            $scope.CLOSING_ID   = nomorurut;
+        }
+        else
+        {
+            $scope.CLOSING_ID = '001';
+        }
+
+    });
     $scope.submitclosebook = function()
     {
     	var datatoupdate = {};
@@ -115,7 +156,7 @@ angular.module('starter')
                 console.log(error);
             });
 
-            $scope.setoran              = ConstructorService.SetoranConstructor();
+            $scope.setoran              = ConstructorService.SetoranConstructor($scope.CLOSING_ID);
             $scope.setoran.TTL_STORAN  += datatoupdate.WITHDRAW;
             CloseBookLiteFac.SetSetoranBook($scope.setoran)
             .then(function(responsesetsetoran)

@@ -26,84 +26,165 @@ angular.module('starter')
 
 	$scope.choosestore = function(stores)
 	{
-		var paramsstorecheck		 	= {};
-		paramsstorecheck.TGL_SAVE		= tglsekarang;
-		paramsstorecheck.OUTLET_CODE	= stores.lokasistore.OUTLET_CODE;
-		paramsstorecheck.USERNAME 		= profile.username;
-		paramsstorecheck.ACCESS_UNIX	= profile.ACCESS_UNIX;
-		StoreLiteFac.GetStoreCheck(paramsstorecheck)
-		.then(function(responsegetstorecheck)
+		if(stores)
 		{
-			if(angular.isArray(responsegetstorecheck) && responsegetstorecheck.length == 0)
+			var paramsstorecheck		 	= {};
+			paramsstorecheck.TGL_SAVE		= tglsekarang;
+			paramsstorecheck.OUTLET_CODE	= stores.lokasistore.OUTLET_CODE;
+			paramsstorecheck.USERNAME 		= profile.username;
+			paramsstorecheck.ACCESS_UNIX	= profile.ACCESS_UNIX;
+			StoreLiteFac.GetStoreCheck(paramsstorecheck)
+			.then(function(responsegetstorecheck)
 			{
-				angular.forEach(stores.lokasistore.items,function(value,key)
+				if(angular.isArray(responsegetstorecheck) && responsegetstorecheck.length == 0)
 				{
-					value.TGL_SAVE			= $filter('date')(new Date(),'yyyy-MM-dd');
-					value.DEFAULT_STOCK 	= value.DAFAULT_STOCK;
-					value.DEFAULT_DISCOUNT 	= 0;
-					value.DEFAULT_IMAGE 	= "img/bika-ambon.jpg";
-					value.IS_ONSERVER 		= 1;
-			        BarangForSaleLiteFac.SetBarangForSale(value)
-			        .then(function(responsesetbarang)
-			        {
-			        	console.log(responsesetbarang);
-			        },
-			        function(error)
-			        {
-			        	console.log(error);
-			        });
-				});
-				
-				TransaksiCombFac.GetTransCustsHeaderComb(tglsekarang,profile.ACCESS_UNIX,stores.lokasistore.OUTLET_CODE,profile.access_token)
-				.then(function(responsegettransheader)
-				{
-					console.log(responsegettransheader);
-				});
+					angular.forEach(stores.lokasistore.items,function(valueitems,key)
+					{
+						valueitems.TGL_SAVE			= $filter('date')(new Date(),'yyyy-MM-dd');
+						valueitems.DEFAULT_STOCK 	= valueitems.DAFAULT_STOCK;
+						valueitems.DEFAULT_DISCOUNT = 0;
+						valueitems.DEFAULT_IMAGE 	= "img/bika-ambon.jpg";
+						valueitems.IS_ONSERVER 		= 1;
 
-				CustomerCombFac.GetCustomerComb(profile.ACCESS_UNIX,stores.lokasistore.OUTLET_CODE,profile.access_token)
-				.then(function(responsegetcustomer)
-				{
-					console.log(responsegetcustomer);
-				},
-				function(errorgetcustomer)
-				{
-					console.log(errorgetcustomer);
-				})
+						angular.forEach(valueitems.HARGA,function(valueharga,keyharga)
+				        {
+				        	var datahargatosave 	= {};
+				        	datahargatosave.ITEM_ID			= valueitems.ITEM_ID;
+					        datahargatosave.OUTLET_CODE		= valueitems.OUTLET_CODE;
+					        datahargatosave.ITEM_HARGA		= valueharga.HARGA_JUAL;
+					        datahargatosave.PERIODE_TGL1 	= valueharga.PERIODE_TGL1;
+					        datahargatosave.PERIODE_TGL2 	= valueharga.PERIODE_TGL2;
+					        datahargatosave.START_TIME 		= valueharga.START_TIME;
+					        datahargatosave.DCRIPT			= valueharga.DCRIPT;
+				        	HargaLiteFac.SetHarga(datahargatosave)
+					        .then(function(responsesetharga)
+					        {
+					        	console.log(responsesetharga);
+					        },
+					        function(errorsetharga)
+					        {
+					        	console.log(errorsetharga);
+					        });
+				        });
 
-				StoreLiteFac.SetStoreCheck(paramsstorecheck)
-				.then(function(responsesetstorecheck)
-				{
-					console.log(responsesetstorecheck);
-				});
+				        angular.forEach(valueitems.DISCOUNT,function(valuediskon,keydiskon)
+				        {
+				        	var datadiskontosave = {};
+				        	datadiskontosave.ITEM_ID			= valueitems.ITEM_ID;
+					        datadiskontosave.OUTLET_CODE		= valueitems.OUTLET_CODE;
+					        datadiskontosave.DISCOUNT_PERCENT	= valuediskon.DISCOUNT_PERCENT;
+					        datadiskontosave.MAX_DISCOUNT 		= valuediskon.MAX_DISCOUNT;
+					        datadiskontosave.PERIODE_TGL1		= valuediskon.PERIODE_TGL1;
+					        datadiskontosave.PERIODE_TGL2		= valuediskon.PERIODE_TGL2;
+					        datadiskontosave.PERIODE_TIME1		= valuediskon.PERIODE_TIME1;
+					        datadiskontosave.PERIODE_TIME2		= valuediskon.PERIODE_TIME2;
+					        datadiskontosave.START_TIME			= valuediskon.START_TIME;
+					        datadiskontosave.DCRIPT 			= valuediskon.DCRIPT;
+					        datadiskontosave.STATUS 			= valuediskon.STATUS;
+					        datadiskontosave.IS_ONSERVER 		= 1;
+					        DiskonLiteFac.SetDiskon(datadiskontosave)
+					        .then(function(responsesetdiskon)
+					        {
+					        	console.log(responsesetdiskon);
+					        },
+					        function(errorsetdiskon)
+					        {
+					        	console.log(errorsetdiskon);
+					        })
+				        });
 
-				TransaksiCombFac.GetSetoranBookComb(tglsekarang,profile.ACCESS_UNIX,stores.lokasistore.OUTLET_CODE,STATUS = 1,IS_ONSERVER = 1,profile.access_token)
-				.then(function(responsesetoranbook)
+				        angular.forEach(valueitems.IMAGE,function(valueimage,keyimage)
+				        {
+				        	var png  = valueimage.IMG64.search("data:image/png;base64");
+				        	var jpg  = valueimage.IMG64.search("data:image/jpg;base64");
+				        	
+				        	var dataimagetosave 	= {};
+				        	dataimagetosave.ITEM_ID			= valueitems.ITEM_ID;
+					        dataimagetosave.OUTLET_CODE		= valueitems.OUTLET_CODE;
+					        dataimagetosave.CREATE_AT		= valueimage.CREATE_AT;
+					        dataimagetosave.UPDATE_AT 		= valueimage.UPDATE_AT;
+					        if((png == -1) && (jpg == -1))
+				        	{
+				        		dataimagetosave.IMG64 = 'data:image/png;base64,' + valueimage.IMG64;
+				        	}
+				        	else
+				        	{
+				        		dataimagetosave.IMG64 			= valueimage.IMG64;
+				        	}
+					        dataimagetosave.IS_ONSERVER 	= 1;
+				        	BarangForSaleLiteFac.SetBarangImageForSale(dataimagetosave)
+					        .then(function(responsesetimage)
+					        {
+					        	console.log(responsesetimage);
+					        },
+					        function(errorsetimage)
+					        {
+					        	console.log(errorsetimage);
+					        });
+				        });
+
+				        BarangForSaleLiteFac.SetBarangForSale(valueitems)
+				        .then(function(responsesetbarang)
+				        {
+				        	console.log(responsesetbarang);
+				        },
+				        function(error)
+				        {
+				        	console.log(error);
+				        });
+					});
+					
+					TransaksiCombFac.GetTransCustsHeaderComb(tglsekarang,profile.ACCESS_UNIX,stores.lokasistore.OUTLET_CODE,profile.access_token)
+					.then(function(responsegettransheader)
+					{
+						console.log(responsegettransheader);
+					});
+
+					CustomerCombFac.GetCustomerComb(profile.ACCESS_UNIX,stores.lokasistore.OUTLET_CODE,profile.access_token)
+					.then(function(responsegetcustomer)
+					{
+						console.log(responsegetcustomer);
+					},
+					function(errorgetcustomer)
+					{
+						console.log(errorgetcustomer);
+					})
+
+					StoreLiteFac.SetStoreCheck(paramsstorecheck)
+					.then(function(responsesetstorecheck)
+					{
+						console.log(responsesetstorecheck);
+					});
+
+					TransaksiCombFac.GetSetoranBookComb(tglsekarang,profile.ACCESS_UNIX,stores.lokasistore.OUTLET_CODE,STATUS = 1,IS_ONSERVER = 1,profile.access_token)
+					.then(function(responsesetoranbook)
+					{
+						console.log(responsesetoranbook);
+					},
+					function(errorsetoranbook)
+					{
+						console.log(errorsetoranbook);
+					});
+					$scope.outtime = 5000;
+				}
+				else
 				{
-					console.log(responsesetoranbook);
-				},
-				function(errorsetoranbook)
+					console.log("Sudah Di Check");
+					$scope.outtime = 1000;
+				}
+				$ionicLoading.show({template: 'Loading...',duration:$scope.outtime});
+				$timeout(function() 
 				{
-					console.log(errorsetoranbook);
-				});
-				$scope.outtime = 5000;
-			}
-			else
+					$ionicHistory.nextViewOptions({disableAnimate: true, disableBack: true});
+					StorageService.set('LokasiStore',stores.lokasistore);
+					$state.go('tab.sales');
+				}, $scope.outtime);
+			},
+			function(errorgetstorecheck)
 			{
-				console.log("Sudah Di Check");
-				$scope.outtime = 1000;
-			}
-			$ionicLoading.show({template: 'Loading...',duration:$scope.outtime});
-			$timeout(function() 
-			{
-				$ionicHistory.nextViewOptions({disableAnimate: true, disableBack: true});
-				StorageService.set('LokasiStore',stores.lokasistore);
-				$state.go('tab.sales');
-			}, $scope.outtime);
-		},
-		function(errorgetstorecheck)
-		{
-			console.log(errorgetstorecheck);
-		});
+				console.log(errorgetstorecheck);
+			});
+		}
 		
 			
 	}	

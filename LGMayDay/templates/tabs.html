@@ -9,21 +9,24 @@
     </ion-nav-bar>
     <ion-nav-view name="view-content"></ion-nav-view>
   </ion-side-menu-content>
-  <ion-side-menu side="left" width="300">
-    <ion-header-bar class="bar-assertive">
+  <ion-side-menu side="left" class="menu" width="300">
+    <!-- <ion-header-bar class="bar-assertive">
       <h1 class="title">{{appnamaperusahaan}}</h1>
-    </ion-header-bar>
-    <ion-content class="has-header" style="background-color: #B0BEC5;background: url('img/login_bg.jpg'); background-size: cover;">
-      <div class="item item-avatar">
-      <!-- <div class="item item-avatar" style="background-color: #444;"> -->
+    </ion-header-bar> -->
+    <ion-content  style="background: url('img/login_bg.jpg'); background-size: cover;">
+      <!-- <div class="item item-avatar">
         <img data-ng-src="img/adam.jpg">
         <h2>{{profile.username|capitalize}}</h2>
-      </div>
+      </div> -->
+      <div class="profile">
+            <img class="profile-picture" src="img/adam.jpg" />
+            <h3 class="name">{{profile.username|capitalize}}</h3>
+        </div>
       <ion-list>
         <ion-item class="item-stable" nav-clear menu-close href="#/tab/sales">
           <div class="item-icon-left">
               <i class="icon ion-ios-compose"></i>
-              <h2>{{'Cashier'|uppercase}}</h2>
+              <h2>{{'Kasir'|uppercase}}</h2>
             </div>
         </ion-item>
         <div ng-repeat="group in groups">

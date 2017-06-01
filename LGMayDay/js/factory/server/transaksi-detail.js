@@ -22,7 +22,33 @@ angular.module('starter')
         });
         return deferred.promise;  
     }
-
+    var GetTransaksiDetail = function(TRANS_ID,TOKEN)
+    {
+        var deferred            = $q.defer();
+        var globalurl           = UtilService.ApiUrl();
+        var url                 = globalurl + "kontrolgampang-transaksi/penjualan-details";
+        var params              = {};
+        params['TRANS_ID']      = TRANS_ID;
+        params['access-token']  = TOKEN;
+        var method              = "GET";
+        $http({method:method, url:url,params:params})
+        .success(function(response) 
+        {
+            deferred.resolve(response.detail);
+        })
+        .error(function(err,status)
+        {
+            if (status === 404)
+            {
+                deferred.resolve([]);
+            }
+            else    
+            {
+                deferred.reject(err);
+            }
+        }); 
+        return deferred.promise;
+    }
     var SetTranskasiClosing = function(data)
     {
         var deferred            = $q.defer();
@@ -47,6 +73,7 @@ angular.module('starter')
 
 	return{
             SetTranskasiDetail:SetTranskasiDetail,
+            GetTransaksiDetail:GetTransaksiDetail,
             SetTranskasiClosing:SetTranskasiClosing
         }
 });

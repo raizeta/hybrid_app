@@ -5,21 +5,16 @@
                 <div class="header padding text-center">
                     <img src="img/logo.png" alt="Your logo here"/>
                 </div>
-                <form name="storeForm" ng-submit="choosestore(stores)" novalidate="">
-                    <div class="list list-inset">
-                        <label class="item item-input item-select">
-                            <div class="input-label">
-                              LOKASI STORE
-                            </div>
-                            <select ng-model="stores.lokasistore" ng-options="item.OUTLET_NM for item in datastore" required="true">
-                              <option value="">-- Pilih Store --</option>
-                            </select>
-                        </label>
-                    </div>
-                    <button type="submit" class="button button-block button-assertive" ng-disabled="storeForm.$invalid">
-                      PILIH STORE
-                    </button>
-                </form>
+                <div class="list list-inset">
+                    <label class="item item-input item-select">
+                        <div class="input-label">
+                          LOKASI STORE
+                        </div>
+                        <select ng-model="stores.lokasistore" ng-options="item.OUTLET_NM for item in datastore" required="true" ng-change="choosestore(stores)">
+                          <option value="">-- Pilih Store --</option>
+                        </select>
+                    </label>
+                </div>
             </div>
         </div>
     </ion-content>

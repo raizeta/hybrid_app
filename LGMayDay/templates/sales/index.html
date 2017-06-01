@@ -91,10 +91,16 @@
                 <i style="padding-right:0px" class="icon ion-grid" ng-if="!gridornot.grid"></i>
                 <i style="padding-right:0px" class="icon ion-navicon" ng-if="gridornot.grid"></i>
               </div>
-              <div class="item-icon-left" ng-click="TambahItemProduct()">
-                <i style="padding-right:0px;" class="icon icon ion-plus"></i>
+              <div class="item-icon-left" >
+                <div ng-click="soundon.on = !soundon.on" >
+                  <i class="icon ion-android-notifications" style="padding-left:50px;" ng-if="soundon.on"></i>
+                  <i class="icon ion-android-notifications-off" style="padding-left:50px;" ng-if="!soundon.on"></i>
+                </div>
+                <div ng-click="TambahItemProduct()">
+                  <i class="icon ion-plus" ></i>
+                </div>
               </div>
-              <label class="item item-input" style="width:82%;padding-top: 3px;margin-left: 10%">
+              <label class="item item-input" style="width:78%;padding-top: 3px;margin-left: 15%">
                 <i class="icon ion-search placeholder-icon"></i>
                 <input type="text" style="height:16px" ng-model="xxx" ng-change="changefilter(xxx)">
               </label>
@@ -105,8 +111,9 @@
               <div class="col col-20" ng-repeat="item in datas | filter: filterproduct track by $index" >
                 <div class="list">
                   <div class="item item-image" style="padding-right:3px">
-                    <img  ng-click="tambahqtyitem(item)" ng-src="{{item.GAMBAR}}" width="100%" ng-if="item.GAMBAR"/>
+                    <img  ng-click="tambahqtyitem(item)" ng-src="{{item.GAMBAR}}" width="100%" height="118px" ng-if="item.GAMBAR"/>
                     <img  ng-click="tambahqtyitem(item)" ng-src="img/bika-ambon.jpg" width="100%" ng-if="!item.GAMBAR"/>
+                    {{findimage(item,$index)}}
                   </div>
 
                   <a class="aitem item-icon-right">
@@ -156,11 +163,5 @@
         </div>
       </div>
     </div>
-    <div class="row" ng-if="datas.length < 1">
-      Belum Ada Product Yang Akan Dijual
-    </div>
   </ion-content>
-  <!-- <button class="button button-tambahitem" ng-click="TambahItemProduct()">
-    <i class="icon ion-plus"></i>
-  </button> -->
 </ion-view>

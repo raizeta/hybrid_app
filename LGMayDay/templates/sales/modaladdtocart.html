@@ -1,6 +1,6 @@
 <ion-modal-view class="mymodaladdtocart" hide-nav-bar="true">
   <ion-header-bar class="bar bar-header bar-assertive">
-    <h1 class="title">{{iteminmodal.ITEM_NM}}</h1>
+    <h1 class="title">{{item.ITEM_NM}}</h1>
     <button class="button button-clear left" ng-click="CloseModalAddToCart()">
     <!-- <i class="icon ion-ios-close-outline"></i> -->
     </button>
@@ -18,7 +18,7 @@
               </button>
               <button class="button button-calm button-clear button-block  icon ion-minus" ng-click="incdec('dec')" ></button>
               <button class="button button-stable button-clear button-block button-small">  
-                {{iteminmodal.QTY_INCART|number}}
+                {{item.QTY_INCART|number}}
               </button>
               <button class="button button-positive button-clear button-block button-small icon ion-plus" ng-click="incdec('inc')"></button>
               <button ng-click="CloseModalAddToCart()" class="button button-balanced button-block button-small icon ion-checkmark-round left" >

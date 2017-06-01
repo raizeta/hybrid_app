@@ -30,7 +30,6 @@ angular.module('starter')
         });
         return deferred.promise; 
     }
-
     var GetBarangForSaleByDate = function (TGL_SAVE)
     {
         var deferred = $q.defer();
@@ -126,11 +125,62 @@ angular.module('starter')
         return deferred.promise; 
     }
 
+    var SetBarangImageForSale = function (datatosave)
+    {
+        var deferred            = $q.defer();
+        var ITEM_ID             = datatosave.ITEM_ID;
+        var OUTLET_CODE         = datatosave.OUTLET_CODE;
+        var CREATE_AT           = datatosave.CREATE_AT;
+        var UPDATE_AT           = datatosave.UPDATE_AT;
+        var IMG64               = datatosave.IMG64;
+        var IS_ONSERVER         = datatosave.IS_ONSERVER;
+
+        var isitable            = [ITEM_ID,OUTLET_CODE,CREATE_AT,UPDATE_AT,IMG64,IS_ONSERVER];
+        var query               = 'INSERT INTO Tbl_BarangImage (ITEM_ID,OUTLET_CODE,CREATE_AT,UPDATE_AT,IMG64,IS_ONSERVER) VALUES (?,?,?,?,?,?)';
+        $cordovaSQLite.execute($rootScope.db,query,isitable)
+        .then(function(result) 
+        {
+            deferred.resolve(result);
+        },
+        function (error)
+        {
+            deferred.reject(error);
+        });
+        return deferred.promise; 
+    }
+
+    var GetBarangImageForSale = function (OUTLET_CODE)
+    {
+        var deferred = $q.defer();
+        var queryselectinvcheck = 'SELECT * FROM Tbl_BarangImage WHERE OUTLET_CODE = ?';
+        $cordovaSQLite.execute($rootScope.db,queryselectinvcheck,[OUTLET_CODE])
+        .then(function(result) 
+        {
+            if(result.rows.length > 0)
+            {
+                var response = UtilService.SqliteToArray(result);
+                deferred.resolve(response);
+            }
+            else
+            {
+                deferred.resolve([]);
+            }
+            
+        },
+        function (error)
+        {
+            deferred.reject(error); 
+        });
+        return deferred.promise;
+    }
+
     return{
             SetBarangForSale:SetBarangForSale,
             GetBarangForSaleByDate:GetBarangForSaleByDate,
             GetBarangForSaleByDateAndCode:GetBarangForSaleByDateAndCode,
             GetBarangForSaleByDateAndItemID:GetBarangForSaleByDateAndItemID,
-            UpdateBarangForSaleByDateAndItem:UpdateBarangForSaleByDateAndItem
+            UpdateBarangForSaleByDateAndItem:UpdateBarangForSaleByDateAndItem,
+            SetBarangImageForSale:SetBarangImageForSale,
+            GetBarangImageForSale:GetBarangImageForSale
         }
 });

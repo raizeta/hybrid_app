@@ -15,8 +15,8 @@
                 .item-icon-left.xxx {padding-left: 20px;}
                 .itemx {padding-top: 10px;padding-bottom: 10px;}
             </style>
-            <div class="item item-divider item-calm">
-              OFFLINE MODE
+            <div class="item item-divider item-calm" ng-if="dataoffline.length > 0">
+              BELUM SINKRON
             </div>
             <ion-item class="item itemx"  ng-repeat="item in datas | orderBy:'IS_ONSERVER' track by $index " ng-click="showdetail(item)" ng-class="[isGroupShown(item) ? 'custom-active':'']" ng-if="!item.IS_ONSERVER">
                 <div class="item-icon-left xxx" on-tap="detailstore(store)" >
@@ -27,8 +27,8 @@
                     <i class="icon xxx">{{item.TOTAL_HARGA|number}}</i>
                 </div>
             </ion-item>
-            <div class="item item-divider item-calm">
-              ONLINE MODE
+            <div class="item item-divider item-calm" ng-if="dataonline.length > 0">
+              SUDAH SINKRON
             </div>
             <ion-item class="item itemx"  ng-repeat="item in datas | orderBy:'IS_ONSERVER'  track by $index" ng-click="showdetail(item)" ng-class="[isGroupShown(item) ? 'custom-active':'']" ng-if="item.IS_ONSERVER">
                 <div class="item-icon-left xxx" on-tap="detailstore(store)" >
@@ -89,9 +89,9 @@
             <h2>PEMBAYARAN {{headerdetail.TYPE_PAY}} {{headerdetail.BANK_NM}}</h2>
           </div>
         </ion-item>
-        <div style="padding-top: 10px;">
+        <div style="padding-top: 10px;" ng-if="headerdetail.CONSUMER_NM != 'undefined'">
           <ion-item class="item-assertive" >
-            <div class="item-icon-left" ng-click="newcustomertransaksi()">
+            <div class="item-icon-left">
               <i class="icon ion-person-add"></i>
               <h2>USER INFO</h2>
             </div>

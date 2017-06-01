@@ -1,5 +1,5 @@
 angular.module('starter')
-.factory('TransaksiCombFac',function($rootScope,$http,$q,$filter,$cordovaSQLite,TransaksiHeaderFac,TransCustLiteFac,TransaksiFac,CloseBookLiteFac)
+.factory('TransaksiCombFac',function($rootScope,$http,$q,$filter,$cordovaSQLite,TransaksiHeaderFac,TransCustLiteFac,TransaksiFac,CloseBookLiteFac,TransaksiDetailFac,ShopCartLiteFac)
 {
     var GetTransCustsHeaderComb = function (TRANS_DATE,ACCESS_UNIX,OUTLET_ID,TOKEN)
     {
@@ -77,9 +77,55 @@ angular.module('starter')
         return deferred.promise;
 
     }
-        
+       
+    var GetTransaksiDetail = function(NOMOR_TRANS,TOKEN)
+    {
+        var deferred        = $q.defer();
+        ShopCartLiteFac.GetShopCartByNomorTrans(NOMOR_TRANS)
+        .then(function(responseshopcartlocal)
+        {
+            if(angular.isArray(responseshopcartlocal) && responseshopcartlocal.length > 0)
+            {
+                deferred.resolve(responseshopcartlocal)
+            }
+            else
+            {
+                TransaksiDetailFac.GetTransaksiDetail(NOMOR_TRANS,TOKEN)
+                .then(function(responsetrandetailserver)
+                {
+                    if(angular.isArray(responsetrandetailserver) && responsetrandetailserver.length > 0 )
+                    {
+                        var responsedetail  = [];
+                        angular.forEach(responsetrandetailserver,function(value,key)
+                        {
+                            var datatosave ={};
+                            datatosave.TGL_ADDTOCART        = $filter('date')(new Date(),'yyyy-MM-dd');
+                            datatosave.DATETIME_ADDTOCART   = value.TRANS_DATE;
+                            datatosave.NOMOR_TRANS          = value.TRANS_ID;
+                            datatosave.ITEM_ID              = value.ITEM_ID;
+                            datatosave.ITEM_NM              = value.ITEM_NM;
+                            datatosave.ITEM_HARGA           = value.HARGA;
+                            datatosave.QTY_INCART           = value.ITEM_QTY;
+                            datatosave.DISCOUNT             = value.DISCOUNT;
+                            datatosave.IS_ONSERVER          = 1;
+                            responsedetail.push(datatosave);
+                            ShopCartLiteFac.SetShopCart(datatosave);
+                        });
+                        deferred.resolve(responsedetail);
+                    }
+                    else
+                    {
+                        deferred.resolve([]);
+                    }
+                })
+            }
+        });
+        return deferred.promise;
+
+    } 
     return{
             GetTransCustsHeaderComb:GetTransCustsHeaderComb,
-            GetSetoranBookComb:GetSetoranBookComb
+            GetSetoranBookComb:GetSetoranBookComb,
+            GetTransaksiDetail:GetTransaksiDetail
         }
 });

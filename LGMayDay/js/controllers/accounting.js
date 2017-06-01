@@ -59,7 +59,7 @@ angular.module('starter')
 })
 
 .controller('TransaksiCtrl', 
-function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,StorageService,TransCustLiteFac,ShopCartLiteFac,TransaksiFac) 
+function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,StorageService,TransaksiCombFac,TransCustLiteFac,ShopCartLiteFac,TransaksiFac,TransaksiHeaderFac,TransaksiDetailFac) 
 {
     var tanggalsekarang = $filter('date')(new Date(),'yyyy-MM-dd');
     var TRANS_DATE      = tanggalsekarang;
@@ -72,145 +72,150 @@ function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,Storag
     {
         $scope.total = 0;
         $scope.datas = [];
-        angular.forEach(response,function(value,key)
+        $scope.dataoffline  = [];
+        $scope.dataonline   = [];
+        if(angular.isArray(response) && response.length > 0)
         {
-            var splittransid    = value.TRANS_ID.split('.');
-            value.SPLIT         = splittransid[2];
-            $scope.total       += value.TOTAL_HARGA;
-            if(value.TYPE_PAY == 0)
+            angular.forEach(response,function(value,key)
             {
-                value.TYPE_PAY = 'CASH';
-            }
-            else if(value.TYPE_PAY = 1)
-            {
-                value.TYPE_PAY = 'EDC';
-            }
-            else
-            {
-                value.TYPE_PAY = 'ACC';
-            }
-            $scope.datas.push(value); 
-        });
-        $scope.showdetail($scope.datas[0]);
+                var splittransid    = value.TRANS_ID.split('.');
+                value.SPLIT         = splittransid[2];
+                $scope.total       += value.TOTAL_HARGA;
+                if(value.TYPE_PAY == 0)
+                {
+                    value.TYPE_PAY = 'CASH';
+                }
+                else if(value.TYPE_PAY = 1)
+                {
+                    value.TYPE_PAY = 'EDC';
+                }
+                else
+                {
+                    value.TYPE_PAY = 'ACC';
+                }
+                if(value.IS_ONSERVER)
+                {
+                    $scope.dataonline.push(value);
+                }
+                else
+                {
+                    $scope.dataoffline.push(value);
+                }
+                $scope.datas.push(value); 
+            });
+            $scope.showdetail($scope.datas[0]);
+        }
     });
     $scope.showdetail   = function(item)
     {
-        if ($scope.isGroupShown(item)) 
+        if (!$scope.isGroupShown(item)) 
         {
-          // $scope.shownGroup = null;
-        } 
-        else 
-        {
-          $scope.shownGroup = item;
-        }
-
-        $ionicLoading.show
-        ({
-          template: '<ion-spinner icon="spiral" class="spinner-energized"></ion-spinner>',
-          noBackdrop:true
-        })
-        .then(function()
-        {
-            if(item.BANK_NM == 'null')
+            $scope.shownGroup = item;
+            $ionicLoading.show
+            ({
+              template: '<ion-spinner icon="spiral" class="spinner-energized"></ion-spinner>',
+              noBackdrop:false
+            })
+            .then(function()
             {
-                item.BANK_NM = '';
-            }
-            $scope.headerdetail = angular.copy(item);
-            ShopCartLiteFac.GetShopCartByNomorTrans(item.TRANS_ID)
-            .then(function(responseshopcart)
-            {
-                $scope.datayangdibeli    = responseshopcart;
-            });
-        })
-        .finally(function()
-        {
-            $ionicLoading.show({template: '<ion-spinner icon="spiral" class="spinner-energized"></ion-spinner>',duration: 100});
-        });
-    }
-    $scope.synctoserver  	= function(items,$index)
-    {
-    	// items.show = !items.show;
-        var confirmPopup = $ionicPopup.confirm(
-                                {
-                                    title: 'Sync To Server',
-                                    template: 'Are you sure to sync this data to Our Server?'
-                                });
-        confirmPopup.then(function(res) 
-        {
-            if(res) 
-            {
-                var nomortransaksi  = items.NOMOR_TRANS;
-                $ionicLoading.show
-                ({
-                  template: 'Loading...'
-                })
-                .then(function()
+                if(item.BANK_NM == 'null')
                 {
-                    
-                    var itemyangdibeli  = angular.copy(items.datayangdibeli);
-                    var len             = itemyangdibeli.length;
-                    for(var i = len - 1;i >= 0;i--)
+                    item.BANK_NM = '';
+                }
+                $scope.headerdetail = angular.copy(item);
+                TransaksiCombFac.GetTransaksiDetail(item.TRANS_ID,$scope.profile.access_token)
+                .then(function(responseshopcart)
+                {
+                    $scope.datayangdibeli    = responseshopcart;
+                    $scope.synctoserver(item,$scope.datayangdibeli)
+                });
+            })
+            .finally(function()
+            {
+                $ionicLoading.show({template: '<ion-spinner icon="spiral" class="spinner-energized"></ion-spinner>',duration: 1000});
+            });
+        } 
+         
+    }
+    $scope.synctoserver  	= function(header,detail)
+    {
+        if(!header.IS_ONSERVER)
+        {
+            var itemyangdibeli  = angular.copy(detail);
+            var itemblmsinkron  = [];
+            angular.forEach(itemyangdibeli,function(value,key)
+            {
+                if(!value.IS_ONSERVER)
+                {
+                    itemblmsinkron.push(value);
+                }
+            });
+            var len   = itemblmsinkron.length;
+            for(var i = len - 1;i >= 0;i--)
+            {
+                var datadetailsaveserver    = {};
+                datadetailsaveserver.TRANS_ID           = header.TRANS_ID;
+                datadetailsaveserver.ACCESS_UNIX        = header.ACCESS_UNIX;
+                datadetailsaveserver.TRANS_DATE         = header.TRANS_DATE;
+                datadetailsaveserver.OUTLET_ID          = header.OUTLET_ID;
+                datadetailsaveserver.OUTLET_NM          = $scope.stores.OUTLET_NM;
+                datadetailsaveserver.ITEM_ID            = itemblmsinkron[i].ITEM_ID;   
+                datadetailsaveserver.ITEM_NM            = itemblmsinkron[i].ITEM_NM;
+                datadetailsaveserver.ITEM_QTY           = itemblmsinkron[i].QTY_INCART;
+                datadetailsaveserver.HARGA              = itemblmsinkron[i].ITEM_HARGA;
+                datadetailsaveserver.DISCOUNT           = itemblmsinkron[i].DISCOUNT;
+                datadetailsaveserver.SATUAN             = itemblmsinkron[i].SATUAN;
+                datadetailsaveserver.DISCOUNT_STT       = 1;
+                datadetailsaveserver.STATUS             = 1;
+                datadetailsaveserver.CREATE_AT          = itemblmsinkron[i].DATETIME_ADDTOCART;
+                datadetailsaveserver.CREATE_BY          = header.ACCESS_UNIX;
+                datadetailsaveserver.UPDATE_AT          = itemblmsinkron[i].DATETIME_ADDTOCART;
+                datadetailsaveserver.UPDATE_BY          = header.ACCESS_UNIX;
+                TransaksiDetailFac.SetTranskasiDetail(datadetailsaveserver)
+                .then(function(responsesavedetail)
+                {
+                    var datatosavedetailisonserver = {};
+                    datatosavedetailisonserver.NOMOR_TRANS  = header.TRANS_ID;
+                    datatosavedetailisonserver.ITEM_ID      = responsesavedetail.ITEM_ID;
+                    ShopCartLiteFac.UpdateIsOnServer(datatosavedetailisonserver)
+                    .then(function(responseupdatestatusisonserver)
                     {
-                        var datatosave  = {};
-                        datatosave.ITEM_QTY    = itemyangdibeli[i].QTY_INCART;
-                        datatosave.TRANS_TYPE  = 4;
-                        datatosave.ITEM_NM     = itemyangdibeli[i].ITEM_NM;
-                        datatosave.ITEM_ID     = itemyangdibeli[i].ITEM_ID;
-                        datatosave.CREATE_AT   = $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss');;
-                        datatosave.CREATE_BY   = $scope.profile.id;
-                        datatosave.USER_ID     = $scope.profile.id;
-                        datatosave.OUTLET_ID   = $scope.stores.OUTLET_CODE;
-                        datatosave.OUTLET_NM   = $scope.stores.OUTLET_NM;
-                        var lastthree          = nomortransaksi.substr(nomortransaksi.length - 3); // => "Tabs1"
-                        datatosave.TRANS_ID    = $scope.profile.ACCESS_UNIX + '.' + $scope.stores.OUTLET_CODE + '.' + $filter('date')(new Date(),'yyyyMMdd') + (Number(lastthree));
-                        datatosave.STATUS      = 1;
-
-                        TransaksiFac.SetTranskasi(datatosave)
-                        .then(function(response)
+                        console.log("Update Status Detail Ke Local Sukses");
+                    },
+                    function(errorupdatestatusinonserver)
+                    {
+                        console.log("Update Status Detail Ke Local Gagal");
+                    });
+                    itemblmsinkron.splice(i,1);
+                    if(itemblmsinkron.length == 0)
+                    {                                    
+                        header.STATUS             = 1;
+                        TransaksiHeaderFac.SetTranskasiHeader(header)
+                        .then(function(responsetransaksiheaderfromserver)
                         {
-                            var datatosavedetailisonserver = {};
-                            datatosavedetailisonserver.NOMOR_TRANS  = nomortransaksi;
-                            datatosavedetailisonserver.ITEM_ID      = response.ITEM_ID;
-                            ShopCartLiteFac.UpdateIsOnServer(datatosavedetailisonserver)
-                            .then(function(responseupdatestatusisonserver)
+                            TransCustLiteFac.UpdateTransCustHeaderIsOnServer(header.TRANS_ID,responsetransaksiheaderfromserver.ID)
+                            .then(function(responseupdateheaderinonserver)
                             {
-                                console.log("Update Status Detail Ke Local Sukses");
+                                console.log("Sukses Update Status Is On Server Di Local");
+                                header.IS_ONSERVER = 1;
                             },
-                            function(errorupdatestatusinonserver)
+                            function(errorupdateheaderinonserver)
                             {
-                                console.log("Update Status Detail Ke Local Gagal");
+                                console.log("Gagal Update Is On Server Di Local");
                             });
-
-                            itemyangdibeli.splice(i,1);
-                            if(itemyangdibeli.length == 0)
-                            {
-                               $scope.datas[$index].IS_ONSERVER = 1;
-                               TransCustLiteFac.UpdateIsOnServer(nomortransaksi)
-                                .then(function(responseheaderinonserver)
-                                {
-                                    console.log("Sukses Update Status Is On Server Di Local");
-                                },
-                                function(errorupdateisonserver)
-                                {
-                                    console.log("Gagal Update Is On Server Di Local");
-                                });
-                               $ionicLoading.show({template: 'Loading...',duration: 500});
-                               alert("Sync Data Ke Server Berhasil Dilakukan.Terima Kasih")
-                            }
                         },
-                        function(error)
+                        function(errorserver)
                         {
-                            console.log(error);
-                            $ionicLoading.show({template: 'Loading...',duration: 500});
-                        })
-                        .finally(function()
-                        {
-                           
+                            console.log("Gagal Menyimpan Header Ke Server");
                         });
                     }
-                });
+                },
+                function(errorsavedetail)
+                {
+                    console.log("Gagal Menyimpan Detail Ke Server");
+                }); 
             }
-        });
+        }
     }
     $scope.isGroupShown = function(datatoshow) 
     {
@@ -245,30 +250,21 @@ function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,Storag
     {
         if (!$scope.isGroupShown(item)) 
         {
-          $scope.shownGroup = item;
+            $scope.shownGroup = item;
+            $ionicLoading.show
+            ({
+                template: '<ion-spinner icon="spiral" class="spinner-energized"></ion-spinner>',
+                noBackdrop:true
+            })
+            .then(function()
+            {
+                $scope.setoran = item;  
+            })
+            .finally(function()
+            {
+                $ionicLoading.show({template: '<ion-spinner icon="spiral" class="spinner-energized"></ion-spinner>',duration: 100});
+            });
         }
-        if(item.IS_ONSERVER)
-        {
-            $scope.disablesubmit = true;
-        }
-        else
-        {
-           $scope.disablesubmit = false; 
-        }
-
-        $ionicLoading.show
-        ({
-            template: '<ion-spinner icon="spiral" class="spinner-energized"></ion-spinner>',
-            noBackdrop:true
-        })
-        .then(function()
-        {
-            $scope.setoran = item;  
-        })
-        .finally(function()
-        {
-            $ionicLoading.show({template: '<ion-spinner icon="spiral" class="spinner-energized"></ion-spinner>',duration: 100});
-        });
     }
     $scope.isGroupShown = function(datatoshow) 
     {
@@ -287,51 +283,67 @@ function($scope,$ionicLoading,$filter,$ionicPopup,$ionicModal,UtilService,Storag
                     $scope.setoran.IMG   = 'data:image/jpeg;base64,' + imageData;
                 });
             }, false);
+            $scope.setoran.OUTLET_ID    = $scope.setoran.OUTLET_CODE;
+            $scope.setoran.STATUS       = 1;
+
+            $ionicLoading.show
+            ({
+              template: '<ion-spinner icon="spiral" class="spinner-energized"></ion-spinner>',
+              noBackdrop:true
+            })
+            .then(function()
+            {
+                TransaksiFac.SetTranskasiClosing($scope.setoran)
+                .then(function(responsesetoran)
+                {
+                    alert("Bukti Setoran Telah Berhasil Diupload Ke Server");
+                    $scope.disablesubmit    = true;
+                    var index   = _.findIndex($scope.setoranlocal,{id:$scope.setoran.id});
+                    $scope.setoranlocal.splice(index,1);
+                    $scope.setoranserver.push($scope.setoran);
+                },
+                function(errorsetoran)
+                {
+                    console.log(errorsetoran);
+                })
+                .finally(function()
+                {
+                    $ionicLoading.hide();
+                });
+
+                CloseBookLiteFac.UpdateStatusSetoranBook($scope.setoran)
+                .then(function(responseupdatestatus)
+                {
+                    console.log(responseupdatestatus)
+                },
+                function(errorupdatestatus)
+                {
+                    console.log(errorupdatestatus);
+                });
+            });
         }
         else
         {
-            alert();
+            $scope.showModal('templates/accounting/modalimage.html');
         }
     }
 
-    $scope.submitsetoran = function()
+    $scope.showModal = function(templateUrl) 
     {
-        
-        $ionicLoading.show
-        ({
-          template: 'Loading...'
-        })
-        .then(function()
+        $ionicModal.fromTemplateUrl(templateUrl, 
         {
-            $scope.setoran.OUTLET_ID    = $scope.setoran.OUTLET_CODE;
-            $scope.setoran.STATUS       = 1;
-            TransaksiFac.SetTranskasiClosing($scope.setoran)
-            .then(function(responsesetoran)
-            {
-                alert("Bukti Setoran Telah Berhasil Diupload Ke Server");
-                $scope.disablesubmit    = true;
-                var index   = _.findIndex($scope.setoranlocal,{id:$scope.setoran.id});
-                $scope.setoranlocal.splice(index,1);
-                $scope.setoranserver.push($scope.setoran);
-            },
-            function(errorsetoran)
-            {
-                console.log(errorsetoran);
-            })
-            .finally(function()
-            {
-                $ionicLoading.show({template: 'Loading...',duration: 500});
-            });
-
-            CloseBookLiteFac.UpdateStatusSetoranBook($scope.setoran)
-            .then(function(responseupdatestatus)
-            {
-                console.log(responseupdatestatus)
-            },
-            function(errorupdatestatus)
-            {
-                console.log(errorupdatestatus);
-            })
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function(modal) 
+        {
+            $scope.modalimage = modal;
+            $scope.modalimage.show();
         });
     }
+ 
+    $scope.closeModal = function() 
+    {
+        $scope.modalimage.hide();
+        $scope.modalimage.remove()
+    };
 });
